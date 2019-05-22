@@ -15,7 +15,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader/root';
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   NavLink,
   Redirect,
   Route,

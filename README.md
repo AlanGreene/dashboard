@@ -45,21 +45,11 @@ $ kubectl port-forward $(kubectl get pod -l app=tekton-dashboard -o name) 9097:9
 - Visit [localhost:9097](http://localhost:9097) in your web browser.
 
 **Coming soon**
-- Deploying the dashboard without using the `config/` yaml, and accessing using kubectl proxy. To deploy the dashboard, execute the following command:
+- Deploying the dashboard without using the `config/` yaml. To deploy the dashboard, execute the following command:
 
 ```sh
 $ kubectl apply -f https://raw.githubusercontent.com/tektoncd/dashboard/...
 ```
-
-To access the Tekton Dashboard from your local workstation you must create a secure channel to your Kubernetes cluster. Run the following command:
-
-```sh
-$ kubectl proxy
-```
-Now access the Dashboard at:
-
-[`http://localhost:8001/api/v1/namespaces/tekton-pipelines/services/https:tekton-dashboard:/proxy/`](
-http://localhost:8001/api/v1/namespaces/tekton-pipelines/https:tekton-dashboard:/proxy/).
 
 ## Want to contribute
 
