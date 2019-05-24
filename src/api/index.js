@@ -13,20 +13,8 @@ limitations under the License.
 
 import { deleteRequest, get, post, put } from './comms';
 
-export function getAPIRoot() {
-  const { href, hash } = window.location;
-  let baseURL = href.replace(hash, '');
-  if (baseURL.endsWith('/')) {
-    baseURL = baseURL.slice(0, -1);
-  }
-  return baseURL;
-}
-
-const apiRoot = getAPIRoot();
-
 export function getAPI(type, { name = '', namespace } = {}, queryParams) {
   return [
-    apiRoot,
     '/v1/namespaces/',
     encodeURIComponent(namespace),
     '/',
@@ -38,7 +26,7 @@ export function getAPI(type, { name = '', namespace } = {}, queryParams) {
 }
 
 export function getExtensionBaseURL(name) {
-  return `${apiRoot}/v1/extensions/${name}`;
+  return `/v1/extensions/${name}`;
 }
 
 export function getExtensionBundleURL(name, bundlelocation) {
@@ -129,7 +117,7 @@ export function getTaskRunLog(name, namespace) {
 }
 
 export function createPipelineRun(payload) {
-  const uri = `${apiRoot}/`;
+  const uri = `/`;
   return post(uri, payload);
 }
 
@@ -159,12 +147,12 @@ export function deleteCredential(id, namespace) {
 }
 
 export function getExtensions() {
-  const uri = `${apiRoot}/v1/extensions`;
+  const uri = `/v1/extensions`;
   return get(uri);
 }
 
 export function getNamespaces() {
-  const uri = `${apiRoot}/v1/namespaces`;
+  const uri = `/v1/namespaces`;
   return get(uri).then(checkData);
 }
 
