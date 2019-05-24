@@ -54,119 +54,129 @@ import {
 import '../../components/App/App.scss';
 
 export /* istanbul ignore next */ class App extends Component {
+  state = {
+    basename: ''
+  };
+
   componentDidMount() {
     this.props.fetchExtensions();
     this.props.fetchNamespaces();
   }
 
   render() {
+    const { basename } = this.state;
+    if (!basename) {
+      return (
+        <Router>
+          <Route
+            render={props => {
+              console.log({ bootstrapPathname: props.location.pathname });
+              this.setState({ basename: props.location.pathname });
+            }}
+          />
+        </Router>
+      );
+    }
+
     const { extensions, namespace } = this.props;
 
     const { location } = window;
-    console.log({ location });
+    console.log({ locationPathname: location.pathname });
+
+    const routerBasename = basename === location.pathname ? '/' : basename;
+    console.log({ routerBasename });
 
     return (
-      <Router basename="/">
-        <Route render={props => console.log({ props })} />
-        <Router>
-          <>
-            <Header>
-              <Route path="*" component={Breadcrumbs} />
-            </Header>
-            <SideNav defaultExpanded expanded aria-label="Side navigation">
-              <SideNavItems>
-                <SideNavMenu title="Tekton">
-                  <SideNavLink
-                    element={NavLink}
-                    icon={<span />}
-                    to="/pipelines"
-                  >
-                    Pipelines
-                  </SideNavLink>
-                  <SideNavLink
-                    element={NavLink}
-                    icon={<span />}
-                    to="/pipelineruns"
-                  >
-                    PipelineRuns
-                  </SideNavLink>
-                  <SideNavLink element={NavLink} icon={<span />} to="/tasks">
-                    Tasks
-                  </SideNavLink>
+      <Router basename={routerBasename}>
+        <>
+          <Header>
+            <Route path="*" component={Breadcrumbs} />
+          </Header>
+          <SideNav defaultExpanded expanded aria-label="Side navigation">
+            <SideNavItems>
+              <SideNavMenu title="Tekton">
+                <SideNavLink element={NavLink} icon={<span />} to="/pipelines">
+                  Pipelines
+                </SideNavLink>
+                <SideNavLink
+                  element={NavLink}
+                  icon={<span />}
+                  to="/pipelineruns"
+                >
+                  PipelineRuns
+                </SideNavLink>
+                <SideNavLink element={NavLink} icon={<span />} to="/tasks">
+                  Tasks
+                </SideNavLink>
+              </SideNavMenu>
+              <NamespacesDropdown
+                titleText="Namespace"
+                selectedItem={{ text: namespace }}
+                onChange={event => {
+                  this.props.selectNamespace(event.selectedItem.text);
+                }}
+              />
+              {extensions.length > 0 && (
+                <SideNavMenu title="Extensions">
+                  {extensions.map(({ displayName, name }) => (
+                    <SideNavLink
+                      element={NavLink}
+                      icon={<span />}
+                      to={`/extensions/${name}`}
+                      key={name}
+                      title={displayName}
+                    >
+                      {displayName}
+                    </SideNavLink>
+                  ))}
                 </SideNavMenu>
-                <NamespacesDropdown
-                  titleText="Namespace"
-                  selectedItem={{ text: namespace }}
-                  onChange={event => {
-                    this.props.selectNamespace(event.selectedItem.text);
-                  }}
-                />
-                {extensions.length > 0 && (
-                  <SideNavMenu title="Extensions">
-                    {extensions.map(({ displayName, name }) => (
-                      <SideNavLink
-                        element={NavLink}
-                        icon={<span />}
-                        to={`/extensions/${name}`}
-                        key={name}
-                        title={displayName}
-                      >
-                        {displayName}
-                      </SideNavLink>
-                    ))}
-                  </SideNavMenu>
-                )}
-              </SideNavItems>
-            </SideNav>
+              )}
+            </SideNavItems>
+          </SideNav>
 
-            <Content>
-              <Switch>
-                <Redirect
-                  from="/pipelines/:pipelineName"
-                  exact
-                  to="/pipelines/:pipelineName/runs"
-                />
-                <Redirect
-                  from="/tasks/:taskName"
-                  exact
-                  to="/tasks/:taskName/runs"
-                />
-                <Route path="/pipelines" exact component={Pipelines} />
-                <Route path="/tasks" exact component={Tasks} />
-                <Route path="/pipelineruns" component={PipelineRuns} />
+          <Content>
+            <Switch>
+              <Redirect
+                from="/pipelines/:pipelineName"
+                exact
+                to="/pipelines/:pipelineName/runs"
+              />
+              <Redirect
+                from="/tasks/:taskName"
+                exact
+                to="/tasks/:taskName/runs"
+              />
+              <Route path="/pipelines" exact component={Pipelines} />
+              <Route path="/tasks" exact component={Tasks} />
+              <Route path="/pipelineruns" component={PipelineRuns} />
+              <Route
+                path="/pipelines/:pipelineName/runs"
+                exact
+                component={PipelineRuns}
+              />
+              <Route path="/tasks/:taskName/runs" exact component={TaskRuns} />
+              <Route
+                path="/pipelines/:pipelineName/runs/:pipelineRunName"
+                component={PipelineRun}
+              />
+              <Route path="/extensions" exact component={Extensions} />
+              {extensions.map(({ displayName, name, source }) => (
                 <Route
-                  path="/pipelines/:pipelineName/runs"
-                  exact
-                  component={PipelineRuns}
+                  key={name}
+                  path={`/extensions/${name}`}
+                  render={({ match }) => (
+                    <Extension
+                      displayName={displayName}
+                      match={match}
+                      source={source}
+                    />
+                  )}
                 />
-                <Route
-                  path="/tasks/:taskName/runs"
-                  exact
-                  component={TaskRuns}
-                />
-                <Route
-                  path="/pipelines/:pipelineName/runs/:pipelineRunName"
-                  component={PipelineRun}
-                />
-                <Route path="/extensions" exact component={Extensions} />
-                {extensions.map(({ displayName, name, source }) => (
-                  <Route
-                    key={name}
-                    path={`/extensions/${name}`}
-                    render={({ match }) => (
-                      <Extension
-                        displayName={displayName}
-                        match={match}
-                        source={source}
-                      />
-                    )}
-                  />
-                ))}
-                <Redirect to="/pipelines" />
-              </Switch>
-            </Content>
-          </>
-        </Router>
+              ))}
+              <Redirect to="/pipelines" />
+            </Switch>
+          </Content>
+        </>
       </Router>
     );
   }
