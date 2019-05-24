@@ -46,10 +46,17 @@ const extensionRoot = "/extensions"
 
 var webResourcesDir = os.Getenv("WEB_RESOURCES_DIR")
 
+func loggingHandler(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		logging.Log.Infof("Web resource request: %s", r.RequestURI)
+		h.ServeHTTP(w, r)
+	})
+}
+
 func (r Resource) RegisterWeb(container *restful.Container) {
 	logging.Log.Info("Adding web api")
 
-	container.Handle("/", http.FileServer(http.Dir(webResourcesDir)))
+	container.Handle("/", loggingHandler(http.FileServer(http.Dir(webResourcesDir))))
 }
 
 // Register APIs to interface with core Tekton/K8s pieces
@@ -176,7 +183,7 @@ func (r Resource) RegisterExtensions(container *restful.Container, namespace str
 			if len(url) != 0 {
 				paths = strings.Split(url, ".")
 			}
-		} 
+		}
 		for _, path := range paths {
 			// extension handler is registered at the url
 			routingPath := strings.TrimSuffix(base+"/"+path, "/")

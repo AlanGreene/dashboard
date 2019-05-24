@@ -65,6 +65,7 @@ export /* istanbul ignore next */ class App extends Component {
 
   render() {
     const { basename } = this.state;
+    console.log('render', { basename });
     if (!basename) {
       return (
         <Router>
@@ -78,13 +79,13 @@ export /* istanbul ignore next */ class App extends Component {
       );
     }
 
-    const { extensions, namespace } = this.props;
-
     const { location } = window;
     console.log({ locationPathname: location.pathname });
 
     const routerBasename = basename === location.pathname ? '/' : basename;
     console.log({ routerBasename });
+
+    const { extensions, namespace } = this.props;
 
     return (
       <Router basename="/api/v1/namespaces/default/services/tekton-dashboard-service:9097/proxy/">
