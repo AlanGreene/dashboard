@@ -87,7 +87,7 @@ export /* istanbul ignore next */ class App extends Component {
     console.log({ routerBasename });
 
     return (
-      <Router basename={routerBasename}>
+      <Router basename="/api/v1/namespaces/default/services/tekton-dashboard-service:9097/proxy/">
         <>
           <Header>
             <Route path="*" component={Breadcrumbs} />
