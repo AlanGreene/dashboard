@@ -20,6 +20,7 @@ import {
   StructuredListSkeleton,
   ToastNotification
 } from 'carbon-components-react';
+import dagre from 'dagre';
 
 import {
   getClusterTasks,
@@ -48,6 +49,38 @@ import {
 import { getStore } from '../../store/index';
 
 import '../../components/Run/Run.scss';
+
+function getPipelineRunDAG() {
+  // Create a new directed graph
+  const g = new dagre.graphlib.Graph();
+
+  // Set an object for the graph label
+  g.setGraph({});
+
+  // Default to assigning a new object as a label for each new edge.
+  g.setDefaultEdgeLabel(() => ({}));
+
+  // Add nodes to the graph. The first argument is the node id. The second is
+  // metadata about the node. In this case we're going to add labels to each of
+  // our nodes.
+  g.setNode('kspacey', { label: 'Kevin Spacey', width: 144, height: 100 });
+  g.setNode('swilliams', { label: 'Saul Williams', width: 160, height: 100 });
+  g.setNode('bpitt', { label: 'Brad Pitt', width: 108, height: 100 });
+  g.setNode('hford', { label: 'Harrison Ford', width: 168, height: 100 });
+  g.setNode('lwilson', { label: 'Luke Wilson', width: 144, height: 100 });
+  g.setNode('kbacon', { label: 'Kevin Bacon', width: 121, height: 100 });
+
+  // Add edges to the graph.
+  g.setEdge('kspacey', 'swilliams');
+  g.setEdge('swilliams', 'kbacon');
+  g.setEdge('bpitt', 'kbacon');
+  g.setEdge('hford', 'lwilson');
+  g.setEdge('lwilson', 'kbacon');
+
+  dagre.layout(g);
+
+  return g;
+}
 
 export /* istanbul ignore next */ class PipelineRunContainer extends Component {
   constructor(props) {
@@ -162,6 +195,15 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
   }
 
   render() {
+    const dag = getPipelineRunDAG();
+    console.log({ dag });
+    dag.nodes().forEach(v => {
+      console.log(`Node ${v}: ${JSON.stringify(dag.node(v))}`);
+    });
+    dag.edges().forEach(e => {
+      console.log(`Edge ${e.v} -> ${e.w}: ${JSON.stringify(dag.edge(e))}`);
+    });
+
     const { match, error } = this.props;
     const { pipelineRunName } = match.params;
 
