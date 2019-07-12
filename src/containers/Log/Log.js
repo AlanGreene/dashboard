@@ -12,10 +12,11 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
-
 import { withRouter } from 'react-router-dom';
+import { LazyLog, ScrollFollow } from 'react-lazylog';
+
 import Log from '../../components/Log';
-import { getPodLog } from '../../api';
+import { getPodLog, getPodLogURI } from '../../api';
 
 export class LogContainer extends Component {
   state = { logs: '' };
@@ -49,6 +50,35 @@ export class LogContainer extends Component {
     clearInterval(this.timer);
   }
 
+  getLazyLog() {
+    const { stepName, podName, namespace } = this.props;
+    if (!podName) {
+      return null;
+    }
+    const container = `step-${stepName}`;
+    const uri = getPodLogURI({
+      container,
+      name: podName,
+      namespace
+    });
+
+    return (
+      <ScrollFollow
+        startFollowing
+        render={({ follow, onScroll }) => (
+          <LazyLog
+            enableSearch
+            extraLines={1}
+            follow={follow}
+            onScroll={onScroll}
+            stream={false}
+            url={uri}
+          />
+        )}
+      />
+    );
+  }
+
   initPolling = () => {
     const { stepStatus } = this.props;
     if (!this.timer && stepStatus && !stepStatus.terminated) {
@@ -79,7 +109,12 @@ export class LogContainer extends Component {
   render() {
     const { stepName } = this.props;
     const { logs } = this.state;
-    return <Log logs={logs} stepName={stepName} />;
+    return (
+      <>
+        {this.getLazyLog()}
+        <Log logs={logs} stepName={stepName} />
+      </>
+    );
   }
 }
 
