@@ -37,6 +37,7 @@ import { fetchTaskRuns } from '../../actions/taskRuns';
 import RunHeader from '../../components/RunHeader';
 import StepDetails from '../../components/StepDetails';
 import TaskTree from '../../components/TaskTree';
+import createPipelineGraph from '../PipelineGraph';
 import {
   getErrorMessage,
   getStatus,
@@ -88,6 +89,18 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
 
   setShowRebuildNotification(value) {
     this.setState({ showRebuildNotification: value });
+  }
+
+  async getPipelineGraph() {
+    const { pipelineRun } = this.props;
+    if (!pipelineRun) {
+      return null;
+    }
+    console.log({ pipelineRun });
+    const graph = await createPipelineGraph(pipelineRun);
+    console.log({ graph });
+    this.pipelineGraphContainer.appendChild(graph.content);
+    return graph;
   }
 
   handleTaskSelected = (selectedTaskId, selectedStepId) => {
@@ -164,6 +177,7 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
         this.props.fetchTaskRuns()
       ]);
       this.setState({ loading: false });
+      this.getPipelineGraph();
     });
   }
 
@@ -308,6 +322,15 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
             />
           )}
         </div>
+        {this.props.pipelineRun && (
+          <div
+            id="pipelineGraph"
+            className="pipelineGraph"
+            ref={ref => {
+              this.pipelineGraphContainer = ref;
+            }}
+          />
+        )}
       </>
     );
   }
