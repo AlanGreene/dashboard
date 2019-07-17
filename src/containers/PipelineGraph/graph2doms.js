@@ -46,7 +46,7 @@ export default function graph2doms(
   const defaultFontSize =
     (JSONgraph.properties && JSONgraph.properties.fontSize) || '7px';
 
-  const zoom = d3.behavior.zoom().on('zoom', redraw); // eslint-disable-line
+  const zoom = d3.zoom().on('zoom', redraw); // eslint-disable-line
 
   const wskflowContainer = $('<div id="wskflowContainer"></div>');
   let enterClickMode = false;
@@ -183,8 +183,9 @@ export default function graph2doms(
     ssvg.attr('preserveAspectRatio', `xMidYMin ${meetOrSlice}`);
     container.attr('transform', '');
     $('#wskflowSVG').removeAttr('transform');
-    zoom.translate([0, 0]);
-    zoom.scale(1);
+    const selection = root.selectAll('.node');
+    zoom.translateTo(selection, 0, 0);
+    zoom.scaleTo(selection, 1);
   }
   const resizeToContain = () => resizeToFit('meet');
   const resizeToCover = () => {
@@ -701,11 +702,12 @@ export default function graph2doms(
       notify();
     }
     enterClickMode = false;
+
     container.attr(
       'transform',
-      `matrix(${d3.event.scale}, 0, 0, ${d3.event.scale}, ${
-        d3.event.translate[0]
-      }, ${d3.event.translate[1]})`
+      `matrix(${d3.event.transform.k}, 0, 0, ${d3.event.transform.k}, ${
+        d3.event.transform.x
+      }, ${d3.event.transform.y})`
     );
     $('#qtip').removeClass('visible');
   }

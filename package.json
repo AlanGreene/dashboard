@@ -21,7 +21,7 @@
     "carbon-components": "^10.3.2",
     "carbon-components-react": "^7.3.2",
     "core-js": "^3.0.1",
-    "d3": "^3.5.17",
+    "d3": "^5.9.7",
     "elkjs": "^0.3.0",
     "es6-promise": "^4.2.6",
     "history": "^4.9.0",
