@@ -7,8 +7,6 @@ import './flow.scss';
 
 const debug = console.log.bind(console);
 
-const tab = undefined; // kui layout - required by some of the libs
-
 const flowView = async (jsons, run) => {
   const [graph, graph2doms] = await Promise.all([
     tekton2graph(jsons, run), // generate the graph model
@@ -25,7 +23,7 @@ const flowView = async (jsons, run) => {
   content.style.flex = '1';
   content.style.display = 'flex';
 
-  await graph2doms.default(tab, graph, content, graph.runs, {
+  await graph2doms.default(graph, content, graph.runs, {
     layoutOptions: {
       'elk.separateConnectedComponents': false,
       'elk.spacing.nodeNode': 10,

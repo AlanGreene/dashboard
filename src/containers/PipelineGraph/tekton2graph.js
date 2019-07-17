@@ -1,7 +1,5 @@
 import { isPipeline } from './lib';
 
-const debug = console.log.bind(console);
-
 const defaultHeight = 13;
 const defaultCharWidth = 3.25;
 
@@ -54,7 +52,6 @@ const getPipeline = jsons => {
   }
   const tasks = jsons.filter(_ => _.kind === 'Task');
   if (tasks.length === 0) {
-    console.error('!!!', jsons);
     throw new Error('No pipeline defined, and no Tasks defined');
   } else {
     const pipeline = {
@@ -87,8 +84,6 @@ function addEdge(
   child,
   { singletonSource, singletonTarget, hasRuns }
 ) {
-  debug('addEdge', parent.id, child.id);
-
   if (!parent.ports) {
     parent.ports = []; // eslint-disable-line
   }
@@ -127,9 +122,7 @@ function addEdge(
  *
  */
 export default async function(jsons, run) {
-  // debug('jsons', jsons);
   const pipeline = getPipeline(jsons);
-  // debug('pipeline', pipeline);
 
   // map from Task.metadata.name to Task
   const taskName2Task = jsons
@@ -264,7 +257,6 @@ export default async function(jsons, run) {
 
   const symbolTable = pipeline.spec.tasks.reduce((symtab, taskRef) => {
     const task = taskName2Task[taskRef.taskRef.name];
-    debug('TaskRef', taskRef.name, task);
 
     let node;
     if (task && task.spec.steps && task.spec.steps.length > 0) {
@@ -455,8 +447,6 @@ export default async function(jsons, run) {
   // add the start and end nodes after we've done the linking
   graph.children.push(start);
   graph.children.push(end);
-
-  // console.log({ graph })
 
   return graph;
 }
