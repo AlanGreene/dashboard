@@ -1,409 +1,264 @@
 /* START THEME */
-/**
- * scheme: "Tomorrow Night"
- * author: "Chris Kempson (http://chriskempson.com)"
- */
-body[kui-theme="Dark"] {
-    --color-base00: #13171A; /* Default Background */
-    --color-base01: #202529; /* Lighter Background (Used for status bars) */
-    --color-base02: #373b41; /* Selection Background */
-    --color-base03: #373D42; /*dialed down opacity #969896*/; /* Comments, Invisibles, Line Highlighting */
-    --color-base04: #9FA5AD; /* Dark Foreground (Used for status bars) */
-    --color-base05: #9FA5AD; /* Default Foreground, Caret, Delimiters, Operators */
-    --color-base06: #FFFFFF; /* Light Foreground (Not often used) */
-    --color-base07: #ffffff; /* Light Background (Not often used) */
-    --color-base08: #FB4B53; /* RED: Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted */
-    --color-base09: #de935f; /* ORANGE: Integers, Boolean, Constants, XML Attributes, Markup Link Url */
-    --color-base0A: #FDD13A; /* YELLOW: Classes, Markup Bold, Search Text Background */
-    --color-base0B: #3DBB61; /* GREEN: Strings, Inherited Class, Markup Code, Diff Inserted */
-    --color-base0C: #1999b3; /* CYAN: Support, Regular Expressions, Escape Characters, Markup Quotes */
-    --color-base0D: #6CCAFF; /* BLUE: Functions, Methods, Attribute IDs, Headings */
-    --color-base0E: #b294bb; /* MAGENTA: Keywords, Storage, Selector, Markup Italic, Diff Changed */
-    --color-base0F: #a3685a; /* BROWN: Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?> */
-
-    --color-light-red: hsla(357, 96%, 64%, 50%);
-    --color-light-green: hsla(134, 43%, 52%, 50%);
-    --color-light-yellow: hsla(46, 98%, 61%, 50%);
-
-    --color-tag-beta-fill: #202529;
-    --color-tag-beta-text: var(--color-text-01);
-}
-/* END THEME */
-/* color variables */
 body[kui-theme="Light"] {
-    --color-base00: #152934;
-    --color-base01: #f5f7fa;
-    --color-base02: #8c9ba5;
-    --color-base03: #f0f3f6;
-    --color-base04: #dfe3e6;
-    --color-base05: var(--color-base00);
-    --color-base06: var(--color-base01);
-    --color-base07: #fff;
-    --color-base08: #e71d32;
-    --color-base09: #bf5b17;
-    --color-base0A: hsl(48, 100%, 38%);
-    --color-base0B: #5aa700;
-    --color-base0C: #00b4a0;
-    --color-base0D: #3d70b2;
-    --color-base0E: #beaed4;
-    --color-base0F: hsla(265, 31%, 50%, 1);
+  --color-base00: #152934;
+  --color-base01: #f5f7fa;
+  --color-base02: #8c9ba5;
+  --color-base03: #f0f3f6;
+  --color-base04: #dfe3e6;
+  --color-base05: var(--color-base00);
+  --color-base06: var(--color-base01);
+  --color-base07: #fff;
+  --color-base08: #e71d32;
+  --color-base09: #bf5b17;
+  --color-base0A: hsl(48, 100%, 38%);
+  --color-base0B: #5aa700;
+  --color-base0C: #00b4a0;
+  --color-base0D: #3d70b2;
+  --color-base0E: #beaed4;
+  --color-base0F: hsla(265, 31%, 50%, 1);
 
-    --color-text-01: var(--color-base00);
-    --color-text-02: #5a6872;
+  --color-text-01: var(--color-base00);
+  --color-text-02: #5a6872;
 
-    --color-light-red: rgba(231, 29, 50, 0.75);
-    --color-light-green: rgba(97, 164, 38, 0.75);
-    --color-light-yellow: #efc100;
+  --color-green: var(--color-base0B);
+  --color-red: var(--color-base08);
+  --color-light-red: rgba(231, 29, 50, 0.75);
+  --color-light-green: rgba(97, 164, 38, 0.75);
+  --color-light-yellow: #efc100;
 
-    --color-hover-primary-text: #294c86;
-    --color-content-divider: #0062ff;
-    --color-tag-beta-fill: #dfe3e6;
-    --color-tag-beta-text: #394b54;
-    --color-tag-ibm-fill: #c0e6ff;
-    --color-tag-ibm-text: #325c80;
-    --color-stripe-01: #152935; /* 202 60 21 */
-    --color-stripe-02: #0f212e; /* 205 67 18 */
-    --color-text-against-dark-bg: var(--color-ui-02);
-    --color-support-01: var(--color-red);
-    --color-support-01-lighter: var(--color-light-red);
-    --color-support-02: var(--color-green);
-    --color-support-03: var(--color-light-yellow);
-    --color-support-03-darker: var(--color-yellow);  /* dialed down from 47% lightness */
-    --color-support-04: #5aaafa;
-    --color-brand-01-10: hsla(214, 49%, 47%, 0.1); /* 10% opacity */
-    --color-brand-02: #5596e6;
-    --color-ui-01: var(--color-base07);
-    --color-ui-04: var(--color-light-gray); /* 206 3 90 */
-    --color-ui-05: var(--color-dark-gray); /* 204 15 65 */
+  --color-hover-primary-text: #294c86;
+  --color-content-divider: #0062ff;
+  --color-tag-beta-fill: #dfe3e6;
+  --color-tag-beta-text: #394b54;
+  --color-tag-ibm-fill: #c0e6ff;
+  --color-tag-ibm-text: #325c80;
+  --color-stripe-01: #152935; /* 202 60 21 */
+  --color-stripe-02: #0f212e; /* 205 67 18 */
+  --color-text-against-dark-bg: var(--color-ui-02);
+  --color-support-01: var(--color-red);
+  --color-support-01-lighter: var(--color-light-red);
+  --color-support-02: var(--color-green);
+  --color-support-03: var(--color-light-yellow);
+  --color-support-03-darker: var(--color-yellow);  /* dialed down from 47% lightness */
+  --color-support-04: #5aaafa;
+  --color-brand-01-10: hsla(214, 49%, 47%, 0.1); /* 10% opacity */
+  --color-brand-02: #5596e6;
+  --color-ui-01: var(--color-base07);
+  --color-ui-04: var(--color-light-gray); /* 206 3 90 */
+  --color-ui-05: var(--color-dark-gray); /* 204 15 65 */
 
-    --color-black: var(--color-base07);
-    --color-white: var(--color-base00);
+  --color-black: var(--color-base07);
+  --color-white: var(--color-base00);
 
-    --color-scrollbar-thumb: #7A7B7D;
-    --color-scrollbar-thumb-border: #A8AAAC;
-    --color-scrollbar-thumb-outline: #FEFFFF;
+  --color-scrollbar-thumb: #7A7B7D;
+  --color-scrollbar-thumb-border: #A8AAAC;
+  --color-scrollbar-thumb-outline: #FEFFFF;
 
-    --color-selection-background: rgba(140, 155, 165, 0.40); /* color-ui-05 at reduced alpha */
+  --color-selection-background: rgba(140, 155, 165, 0.40); /* color-ui-05 at reduced alpha */
 
-    --color-carbon-components-h3: #3057d5;
+  --color-carbon-components-h3: #3057d5;
 
-    --color-ui-06: #f4f7fb; /* nick made up this signifier, it's not from carbon-components */
-    --color-field-01: #f4f7fb;
+  --color-ui-06: #f4f7fb; /* nick made up this signifier, it's not from carbon-components */
+  --color-field-01: #f4f7fb;
 
-    --color-processing: var(--color-base02);
+  --color-processing: var(--color-base02);
+  --color-ok: var(--color-green);
 }
-
-body[kui-theme="Light"] badge.gray-background {
-    background-color: var(--color-scrollbar-thumb);
-}
-
 /* END THEME */
 
-
-break {
-    flex-basis: 100%;
-}
 #wskflowContainer {
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    flex: 1;
-    font-weight: 400;
-    position: relative;
-    overflow: hidden; /* we will do pan and zoom ourselves */
-    -webkit-app-region: no-drag;
-}
-#wskflowDiv {
-    display: flex;
-    flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  flex: 1;
+  font-weight: 400;
+  position: relative;
+  overflow: hidden; /* we will do pan and zoom ourselves */
+  -webkit-app-region: no-drag;
 }
 #wskflowSVG {
-    flex: 1;
-}
-#wskflowSVG .edge-label {
-    font-size: 5px;
-    font-weight: bold;
-}
-#wskflowSVG .node[data-deployed="not-deployed"]:hover,
-#wskflowSVG .node.clickable:hover .edge-label,
-#wskflowSVG .node[data-deployed="not-deployed"]:hover .atom:not(.has-onclick) {
+  flex: 1;
+
+  .node[data-deployed="not-deployed"]:hover,
+  .node[data-deployed="not-deployed"]:hover .atom:not(.has-onclick) {
     /* no hover effects for not-deployed actions */
     text-decoration: none;
     cursor: inherit !important;
-}
-#wskflowSVG[data-is-session-flow="true"] .node.leaf[data-status="not-run"] .atom {
+  }
+  &[data-is-session-flow="true"] .node.leaf[data-status="not-run"] .atom {
     /* not-run nodes in a session flow */
     mask: url(#mask-stripe);
-}
-#wskflowSVG[data-is-session-flow="true"] .edge-label:not(.edge-was-traversed) {
-    fill: var(--color-text-02) !important;
-    opacity: 0.8
-}
-#wskflowSVG[data-is-session-flow="true"] .node.leaf[data-status="not-run"] .atom,
-#wskflowSVG[data-is-session-flow="true"] .node.leaf[data-status="not-run"] text {
+  }
+  &[data-is-session-flow="true"] .node.leaf[data-status="not-run"] .atom,
+  &[data-is-session-flow="true"] .node.leaf[data-status="not-run"] text {
     /* deemphasize not-visited nodes in session flow */
     opacity: 0.8;
-}
-#wskflowSVG .node .atom.atom {
+  }
+  .node .atom.atom {
     /* wskflow node effect */
     transition: fill 150ms ease-in-out, opacity 150ms ease-in-out, stroke 150ms ease-in-out;
     /* vector-effect: non-scaling-stroke; not supported by IE or Edge */
-}
-#wskflowSVG path {
+  }
+  path {
     /* path effects */
     transition: fill 150ms ease-in-out, opacity 150ms ease-in-out, stroke 150ms ease-in-out;
     /*vector-effect: non-scaling-stroke; not supported by IE or Edge */
     stroke-width: 0.5; /* 1.5 with non-scaling stroke */
     stroke: var(--color-text-02) !important;
     stroke-opacity: 0.8;
-}
-#wskflowSVG path.link {
+  }
+  path.link {
     fill: transparent;
-}
-#wskflowSVG #retryIconNormal path {
+  }
+  #retryIconNormal path {
     /* the retry loop doesn't need a stroke */
     stroke: none !important;
     fill: var(--color-base09);
-}
-#wskflowSVG path.forwardingLink {
-    stroke: var(--color-base0D) !important;
-    stroke-width: 1; /* 2 with support for non-scaling stroke */
-    pointer-events: all;
-}
-#wskflowSVG marker#forwardingEnd {
-    fill: var(--color-base0D);
-}
-#wskflowSVG marker#greenEnd {
+  }
+  marker#greenEnd {
     fill: var(--color-green);
-}
-#wskflowSVG marker#trueEnd, #wskflowSVG .node .edge-label.true-branch {
-    fill: orange;
-}
-#wskflowSVG marker#falseEnd, #wskflowSVG .node .edge-label.false-branch {
-    fill: #DC7633;
-}
-#wskflowSVG marker > path {
+  }
+  marker > path {
     /* for marker paths, we want just a faint shadow */
     stroke: rgba(0,0,0,0.25) !important;
-}
+  }
 
-#wskflowSVG path.hover, #wskflowSVG path:hover {
+  path.hover, path:hover {
     stroke-width: 1;
-}
-#wskflowSVG path.true-branch.hover, #wskflowSVG path.true-branch:hover {
-    stroke: orange !important;
-    marker-end: url(#trueEnd);
-}
-#wskflowSVG path.false-branch.hover, #wskflowSVG path.false-branch:hover {
-    stroke: #DC7633 !important;
-    marker-end: url(#falseEnd);
-}
-#wskflowSVG path.forwarding-edge.hover {
-    marker-end: url(#forwardingEnd);
-}
+  }
 
-#wskflowSVG .node.leaf.Entry .atom, #wskflowSVG .node.leaf.Exit .atom {
+  .node.leaf.Entry .atom, .node.leaf.Exit .atom {
     fill: var(--color-text-01);
-}
-body[kui-theme-style="dark"] #wskflowSVG .node.leaf.Entry .atom, body[kui-theme-style="dark"] #wskflowSVG .node.leaf.Exit .atom {
+  }
+
+  body[kui-theme-style="dark"] & .node.leaf.Entry .atom, body[kui-theme-style="dark"] & .node.leaf.Exit .atom {
     fill: var(--color-ui-01);
     stroke: var(--color-ui-03) !important;
-}
-#wskflowSVG .node.leaf.Entry text, #wskflowSVG .node.leaf.Exit text {
+  }
+
+  .node.leaf.Entry text, .node.leaf.Exit text {
     fill: var(--color-ui-02) !important;
     font-weight: 300;
     font-variant: small-caps;
-}
-body[kui-theme-style="dark"] #wskflowSVG .node.leaf.Entry text, body[kui-theme-style="dark"] #wskflowSVG .node.leaf.Exit text {
-    fill: var(--color-text-02) !important;
-}
+  }
 
-#wskflowSVG .node .atom {
+  body[kui-theme-style="dark"] & .node.leaf.Entry text, body[kui-theme-style="dark"] & .node.leaf.Exit text {
+    fill: var(--color-text-02) !important;
+  }
+
+  .node .atom {
     fill: var(--color-base02);
-}
-body[kui-theme-style="dark"] #wskflowSVG .node .atom {
+  }
+  body[kui-theme-style="dark"] & .node .atom {
     fill: var(--color-base03);
-}
-body[kui-theme-style="dark"] #wskflowSVG .node.leaf .atom {
+  }
+  body[kui-theme-style="dark"] & .node.leaf .atom {
     stroke: var(--color-base02) !important;
-}
-body[kui-theme-style="dark"] #wskflowSVG .node[data-deployed="not-deployed"] .atom {
+  }
+  body[kui-theme-style="dark"] & .node[data-deployed="not-deployed"] .atom {
     opacity: 0.7;
-}
-#wskflowSVG .node .atom ~ text {
+  }
+  .node .atom ~ text {
     fill: var(--color-text-01);
-}
-#wskflowSVG path[data-visited="true"] {
+  }
+  path[data-visited="true"] {
     /* visited edges */
     stroke: var(--color-base0D) !important;
     stroke-width: 1.1;
     marker-end: url(#edgeTraversedEnd);
-}
-#wskflowSVG path[data-visited="false"] {
+  }
+  path[data-visited="false"] {
     /* not-visited edges */
     stroke-dasharray: 1;
     opacity: 0.8;
-}
+  }
 
-#wskflowSVG .node.leaf.function .atom {
-    /* function nodes are yellow in app graph*/
-    fill: var(--color-support-03);
-    stroke: var(--color-ui-05) !important;
-}
-
-#wskflowSVG .node.leaf.function .atom, #wskflowSVG .node.leaf.Dummy .atom, #wskflowSVG .node.leaf.retain .atom {
-    /* these are represented as smaller boxes, so use a lighter stroke */
-    stroke-width: 0.5; /* 1.25; with non-scaling stroke */
-}
-
-#wskflowSVG marker#end {
+  marker#end {
     fill: var(--color-text-02);
-}
+  }
 
-/* #wskflowSVG .node.compound:not(.root)[data-status="success"] .atom {
+  .node.compound:not(.root)[data-status="success"] .atom {
     stroke: var(--color-ok) !important;
-}
-#wskflowSVG .node.compound:not(.root)[data-status="failed"] .atom {
+  }
+  .node.compound:not(.root)[data-status="failed"] .atom {
     stroke: var(--color-support-01) !important;
-} */
-#wskflowSVG .node.leaf[data-status="success"] .atom {
+  }
+
+  .node.leaf[data-status="success"] .atom {
     /* visited nodes with success outcome */
     /* fill: var(--color-base0D) !important; */
     stroke: var(--color-text-01) !important;
-}
-body[kui-theme-style="dark"] #wskflowSVG .node.leaf[data-status="success"] .atom {
+  }
+  body[kui-theme-style="dark"] & .node.leaf[data-status="success"] .atom {
     mask: url(#mask-stripe-heavy);
-}
-#wskflowSVG marker#edgeTraversedEnd {
+  }
+  marker#edgeTraversedEnd {
     fill: var(--color-base0D);
-}
-#wskflowSVG .node.leaf[data-status="failed"] .atom {
+  }
+  .node.leaf[data-status="failed"] .atom {
     /* visited nodes with failure outcome */
     fill: var(--color-support-01) !important;
-}
-#wskflowSVG .node.leaf.Exit[data-status="failed"] text:not(.edge-label), #wskflowSVG .node.leaf[data-status="failed"] text:not(.edge-label) {
+  }
+  .node.leaf.Exit[data-status="failed"] text, .node.leaf[data-status="failed"] text {
     /* visited node text for session flow */
     fill: var(--color-ui-01) !important;
-}
-#wskflowSVG .node.leaf.function[data-status="success"] text,
-#wskflowSVG .node.leaf.function[data-status="failed"] text {
-    -webkit-font-smoothing: antialiased;
-}
-#wskflowSVG .node.leaf .atom {
+  }
+
+  .node.leaf .atom {
     stroke: var(--color-text-01) !important;
     stroke-width: 0.5; /* 2 with vector-effects: non-scaling stroke support */
-}
-#wskflowSVG .node.leaf .atom {
+  }
+  .node.leaf .atom {
     stroke: var(--color-text-01) !important;
-}
-#wskflowSVG .action[data-deployed="deployed"] .atom {
-    fill: var(--color-ui-03) !important;
-}
-#wskflowSVG .action[data-deployed="deployed"] text:not(.edge-label) {
-    fill: var(--color-text-01) !important;
-}
-#wskflowSVG .action[data-deployed="deployed"] rec.atom:hover, #wskflowSVG .action[data-deployed="deployed"] .atom.hover, #wskflowSVG .node .atom.has-onclick:hover, #wskflowSVG .node .atom.has-onclick.hover {
+  }
+  .node .atom.has-onclick:hover, .node .atom.has-onclick.hover {
     fill: var(--color-base0D) !important;
-}
-#wskflowSVG .node.leaf.function .atom:hover, #wskflowSVG .node.leaf.function .atom.hover {
-    fill-opacity: 0.75;
-}
-#wskflowSVG .node[data-deployed="not-deployed"] .atom {
+  }
+  .node[data-deployed="not-deployed"] .atom {
     mask: url(#mask-stripe);
     fill: var(--color-base04) !important;
-}
+  }
 
-#wskflowSVG .node.leaf.let .atom, #wskflowSVG .node.leaf.literal .atom {
-    /*fill: var(--color-brand-03);
-    stroke: var(--color-text-01) !important;*/
-    fill: transparent;
-    stroke: transparent !important;
-}
-#wskflowSVG .node.leaf.let text, #wskflowSVG .node.leaf.literal text {
-    /*fill: var(--color-ui-01) !important;*/
-    fill: var(--color-brand-03) !important;
-    font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 2px;
-}
-
-#wskflowSVG .node.leaf.function text:not(.edge-label) {
-    /* function nodes; use code font */
-    fill: var(--color-text-01) !important;
-    font-family: var(--font-monospace);
-    font-size: 5px;
-}
-body[kui-theme-style="dark"] #wskflowSVG .node.leaf.function text:not(.edge-label) {
-    fill: var(--color-ui-01) !important;
-}
-
-#wskflowSVG .node.compound:not(.root) .atom.has-onclick:hover, #wskflowSVG .node.compound:not(.root) .atom.has-onclick.hover {
+  .node.compound:not(.root) .atom.has-onclick:hover, .node.compound:not(.root) .atom.has-onclick.hover {
     /* stroke-dasharray: 0.5,1; */
     stroke: var(--color-base0D) !important;
-}
-#wskflowSVG .node.compound:not(.root) .atom {
+  }
+  .node.compound:not(.root) .atom {
     /* stroke-dasharray: 0.25,0.25; */
     stroke-width: 0.5;
     stroke: var(--color-ui-04) !important;
     fill: var(--color-base03) !important;
     fill-opacity: 0.05;
     rx: 4px;
-}
-#wskflowSVG .node.try .atom, #wskflowSVG .node.handler .atom {
-}
-#wskflowSVG .node.compound text {
-    /* e.g. Try and Catch labels */
+  }
+  .node.compound text {
     font-weight: 500;
     fill: var(--color-base09);
+  }
 }
-#wskflowSVG .node.compound.try_catch.no-parents .atom {
-    stroke: none !important;
-}
-#wskflowSVG .node.compound.try_catch .atom {
-    stroke: var(--color-ui-05) !important;
-    fill: var(--color-ui-04) !important;
-}
-#wskflowSVG .node.compound.try_catch text {
-    display: none;
-}
-
-/* render dummy nodes a bit specially */
-#wskflowSVG .node.Dummy[data-name="/_/Execute Tasks in Parallel"] .atom,
-#wskflowSVG .node.Dummy[data-name="/_/Map over Array"] .atom,
-#wskflowSVG .node.Dummy[data-name="/_/Wait for Completion"] .atom {
-    fill: var(--color-ui-05);
-    /*fill: var(--color-brand-01);*/
-}
-#wskflowSVG .node.Dummy text {
-    fill: var(--color-text-01) !important;
-    /*fill: var(--color-ui-02) !important;*/
-    font-size: 5px;
-    letter-spacing: 0.1px;
-}
-
 
 /* qtip rules */
 #qtip {
-    transition: opacity 150ms ease-in-out;
-    transition-delay: 100ms;
-    display: flex;
-    align-items: center;
-    opacity: 0;
-    z-index: 10;
-    position: absolute;
-    pointer-events: none;
+  transition: opacity 150ms ease-in-out;
+  transition-delay: 100ms;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  z-index: 10;
+  position: absolute;
+  pointer-events: none;
 
-    /* see shell issue #906 */
-    top: 0;
-    left: 0;
-}
-#qtipArrow {
+  /* see shell issue #906 */
+  top: 0;
+  left: 0;
+
+  #qtipArrow {
     position: relative;
     left: 3px;
     top: 1px;
     color: var(--color-stripe-02);
-}
-#qtipContent {
+  }
+  #qtipContent {
     background-color: var(--color-stripe-02);
     box-shadow: 0 0 0.5ex var(--color-base03);
     color: var(--color-text-against-dark-bg);
@@ -414,30 +269,22 @@ body[kui-theme-style="dark"] #wskflowSVG .node.leaf.function text:not(.edge-labe
     margin: 0px;
     margin-right: 1ex; /* don't get all squished up against the right-end edge of the window */
     word-wrap: break-word;
-}
-#qtip.visible {
+  }
+
+  &.visible {
     opacity: 0.975;
-}
-#qtip.qtip-pre #qtipContent {
+  }
+  &.qtip-pre #qtipContent {
     overflow: hidden;
     white-space: pre;
     text-overflow: ellipsis;
     display: initial !important; /* override display: flex */
-}
-#qtip .qtip-prefix {
+  }
+  .qtip-prefix {
     font-weight: bold;
-}
-#qtip .qtip-prefix.red-text {
+  }
+  .qtip-prefix.red-text {
     filter: brightness(1.5);          /* make it more legible against the qtip background */
     padding-right: 5px;
-}
-#qtip .qtip-prefix.action {
-    color: var(--color-support-04); /* match hover color of action nodes */
-}
-#qtip .qtip-prefix.function {
-    color: var(--color-base0C);
-}
-#qtip .qtip-prefix.let, #qtip .qtip-prefix.literal {
-    color: var(--color-brand-02);
-    filter: brightness(2); /* too dim against the qtip background */
+  }
 }
