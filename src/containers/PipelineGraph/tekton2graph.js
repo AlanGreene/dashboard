@@ -259,6 +259,7 @@ export default async function(jsons, run) {
     const task = taskName2Task[taskRef.taskRef.name];
 
     let node;
+    // TODO: can check taskRef.name here to determine if it's selected task (i.e. should expand / render sub graph)
     if (task && task.spec.steps && task.spec.steps.length > 0) {
       //
       // in this case, we do have a full Task definition, which

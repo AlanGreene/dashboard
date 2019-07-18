@@ -731,7 +731,7 @@ export default function graph2doms(
           height / 2 -
           (elkData.height * scale) / 2 +
           zoom.translate()[1] * scale;
-        zoom.translate([initTransX, initTransY]);
+        zoom.translate([initTransX, initTransY]); // TODO: fix these zoom functions
         zoom.scale(initScale);
         container.attr(
           'transform',
