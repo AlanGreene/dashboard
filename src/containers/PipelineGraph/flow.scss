@@ -1,3 +1,110 @@
+body {
+  --color-base00: #152934;
+  --color-base01: #f5f7fa;
+  --color-base02: #8c9ba5;
+  --color-base03: #f0f3f6;
+  --color-base04: #dfe3e6;
+  // --color-base05: var(--color-base00);
+  // --color-base06: var(--color-base01);
+  --color-base07: #fff;
+  --color-base08: #e71d32;
+  --color-base09: #bf5b17;
+  // --color-base0A: hsl(48, 100%, 38%);
+  --color-base0B: #5aa700;
+  // --color-base0C: #00b4a0;
+  --color-base0D: #3d70b2;
+  // --color-base0E: #beaed4;
+  // --color-base0F: hsla(265, 31%, 50%, 1);
+
+    --color-black: var(--color-base01);
+    --color-red: var(--color-base08);
+    --color-green: var(--color-base0B);
+    --color-yellow: var(--color-base0A);
+    --color-cyan: var(--color-base0C);
+    --color-blue: var(--color-base0D);
+    --color-magenta: var(--color-base0E);
+    --color-white: var(--color-base07);
+    --color-light-gray: var(--color-base04);
+    --color-dark-gray: var(--color-base03);
+    --color-ui-01: var(--color-base00);
+    --color-ui-02: var(--color-base01);
+    --color-ui-03: var(--color-base03);
+    --color-ui-04: var(--color-base02);
+    --color-ui-05: var(--color-base04);
+    --color-ui-06: var(--color-base02);
+
+    --color-brand-01: var(--color-blue);
+    --color-brand-02: var(--color-magenta);
+    --color-brand-03: var(--color-cyan);
+
+    --color-field-01: var(--color-base01);
+
+    --color-text-against-dark-bg: var(--color-text-01);
+    --color-support-01: var(--color-red);
+    --color-support-01-lighter: var(--color-light-red);
+    --color-support-02: var(--color-green);
+    --color-support-03: var(--color-light-yellow);
+    --color-support-03-darker: var(--color-yellow);
+    --color-support-04: var(--color-base0C);
+
+    --color-stripe-01: var(--color-base01);
+    --color-stripe-02: var(--color-base03);
+
+    --color-text-01: var(--color-base06);
+    --color-text-02: var(--color-base04);
+
+    --color-selection-background: var(--color-base04);
+
+    --color-tag-ibm-text: var(--color-text-01);
+    --color-ok: var(--color-green);
+    --color-error: var(--color-red);
+
+    --color-scrollbar-thumb: var(--color-base04);
+    --color-scrollbar-thumb-border: var(--color-base02);
+    --color-scrollbar-thumb-outline: transparent;
+    --color-scrollbar-track: transparent;
+
+    --font-sans-serif: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    --font-monospace: SFMono-Regular,"SF Mono",Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+
+    --color-hover-primary-text: var(--color-cyan);
+    --color-content-divider: var(--color-cyan);
+
+    --color-tag-beta-fill: var(--color-base05);
+    --color-tag-beta-text: var(--color-base01);
+    --color-tag-ibm-fill: var(--color-base0D);
+    --color-tag-ibm-text: var(--color-base01);
+
+    /* default latency color spectrum */
+    --color-latency-0: #2166ac;
+    --color-latency-1: #67a9cf;
+    --color-latency-2: hsla(201, 51%, 78%, 1); /* #d1e5f0 with lightness reduced from 88% to 78% */
+    --color-latency-3: #fddbc7;
+    --color-latency-4: #ef8a62;
+    --color-latency-5: #b2182b;
+
+    /* two-color charts; yellow versus cyan should be a pretty good default */
+    --color-chart-0: var(--color-yellow);
+    --color-chart-1: var(--color-cyan);
+
+    /* map keys and values */
+    --color-map-key: var(--color-base0C);
+    --color-map-value: var(--color-text-01);
+
+    /* "is processing" color */
+    --color-processing: var(--color-ui-05);
+
+    /* tab colors */
+    --color-tab-01: var(--color-base0D);
+    --color-tab-02: var(--color-base09);
+    --color-tab-03: var(--color-base0C);
+    --color-tab-04: var(--color-base0B);
+    --color-tab-05: var(--color-base0A);
+    --color-tab-06: var(--color-base0E);
+    --color-tab-07: var(--color-base08);
+    --color-tab-08: var(--color-base04);
+}
+
 /* START THEME */
 body[kui-theme="Light"] {
   --color-base00: #152934;
@@ -5,17 +112,17 @@ body[kui-theme="Light"] {
   --color-base02: #8c9ba5;
   --color-base03: #f0f3f6;
   --color-base04: #dfe3e6;
-  --color-base05: var(--color-base00);
-  --color-base06: var(--color-base01);
+  // --color-base05: var(--color-base00);
+  // --color-base06: var(--color-base01);
   --color-base07: #fff;
   --color-base08: #e71d32;
   --color-base09: #bf5b17;
-  --color-base0A: hsl(48, 100%, 38%);
+  // --color-base0A: hsl(48, 100%, 38%);
   --color-base0B: #5aa700;
-  --color-base0C: #00b4a0;
+  // --color-base0C: #00b4a0;
   --color-base0D: #3d70b2;
-  --color-base0E: #beaed4;
-  --color-base0F: hsla(265, 31%, 50%, 1);
+  // --color-base0E: #beaed4;
+  // --color-base0F: hsla(265, 31%, 50%, 1);
 
   --color-text-01: var(--color-base00);
   --color-text-02: #5a6872;
@@ -23,26 +130,28 @@ body[kui-theme="Light"] {
   --color-green: var(--color-base0B);
   --color-red: var(--color-base08);
   --color-light-red: rgba(231, 29, 50, 0.75);
-  --color-light-green: rgba(97, 164, 38, 0.75);
+  // --color-light-green: rgba(97, 164, 38, 0.75);
   --color-light-yellow: #efc100;
+  --color-light-gray: var(--color-base03);
+  --color-dark-gray: var(--color-base02);
 
-  --color-hover-primary-text: #294c86;
-  --color-content-divider: #0062ff;
-  --color-tag-beta-fill: #dfe3e6;
-  --color-tag-beta-text: #394b54;
-  --color-tag-ibm-fill: #c0e6ff;
-  --color-tag-ibm-text: #325c80;
-  --color-stripe-01: #152935; /* 202 60 21 */
+  // --color-hover-primary-text: #294c86;
+  // --color-content-divider: #0062ff;
+  // --color-tag-beta-fill: #dfe3e6;
+  // --color-tag-beta-text: #394b54;
+  // --color-tag-ibm-fill: #c0e6ff;
+  // --color-tag-ibm-text: #325c80;
+  // --color-stripe-01: #152935; /* 202 60 21 */
   --color-stripe-02: #0f212e; /* 205 67 18 */
   --color-text-against-dark-bg: var(--color-ui-02);
   --color-support-01: var(--color-red);
-  --color-support-01-lighter: var(--color-light-red);
-  --color-support-02: var(--color-green);
-  --color-support-03: var(--color-light-yellow);
-  --color-support-03-darker: var(--color-yellow);  /* dialed down from 47% lightness */
-  --color-support-04: #5aaafa;
-  --color-brand-01-10: hsla(214, 49%, 47%, 0.1); /* 10% opacity */
-  --color-brand-02: #5596e6;
+  // --color-support-01-lighter: var(--color-light-red);
+  // --color-support-02: var(--color-green);
+  // --color-support-03: var(--color-light-yellow);
+  // --color-support-03-darker: var(--color-yellow);  /* dialed down from 47% lightness */
+  // --color-support-04: #5aaafa;
+  // --color-brand-01-10: hsla(214, 49%, 47%, 0.1); /* 10% opacity */
+  // --color-brand-02: #5596e6;
   --color-ui-01: var(--color-base07);
   --color-ui-04: var(--color-light-gray); /* 206 3 90 */
   --color-ui-05: var(--color-dark-gray); /* 204 15 65 */
@@ -226,7 +335,8 @@ body[kui-theme="Light"] {
   .node.compound:not(.root) .atom {
     /* stroke-dasharray: 0.25,0.25; */
     stroke-width: 0.5;
-    stroke: var(--color-ui-04) !important;
+    // stroke: var(--color-ui-04) !important;
+    stroke: var(--color-base04) !important;
     fill: var(--color-base03) !important;
     fill-opacity: 0.05;
     rx: 4px;
