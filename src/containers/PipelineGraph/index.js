@@ -1,5 +1,3 @@
-import { getStore } from '../../store/index';
-import { getPipeline, getTasks } from '../../reducers';
 import tekton2graph from './tekton2graph';
 import { isPipeline, isPipelineRun } from './lib';
 
@@ -68,26 +66,18 @@ const flowView = async (jsons, run) => {
   };
 };
 
-export default async resource => {
-  const state = getStore().getState();
+export default (resource, { pipeline, tasks }) => {
   console.log({ FOO: 'BAR', resource });
   if (isPipelineRun(resource)) {
-    const pipeline = getPipeline(state, {
-      name: resource.spec.pipelineRef.name,
-      namespace: resource.metadata.namespace
-    });
     // TODO: API calls for pipeline + tasks if not already loaded
     console.log({ pipeline });
     if (!pipeline) {
       return null;
     }
-    const tasks = getTasks(state);
     return flowView([pipeline].concat(tasks), resource);
   }
 
   if (isPipeline(resource)) {
-    // fetch any accompanying Tasks
-    const tasks = getTasks(state);
     return flowView([resource].concat(tasks));
   }
 
