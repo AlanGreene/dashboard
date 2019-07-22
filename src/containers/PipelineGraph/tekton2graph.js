@@ -91,14 +91,12 @@ function addEdge(
     child.ports = []; // eslint-disable-line
   }
 
-  const targetPort =
-    `${child.id}-` + (singletonTarget ? 'pTargetSingleton' : `p${child.ports.length}`); // eslint-disable-line
+  const targetPort = `${child.id}-` + (singletonTarget ? 'pTargetSingleton' : `p${child.ports.length}`);  // eslint-disable-line
   if (!child.ports.find(_ => _.id === targetPort)) {
     child.ports.push({ id: targetPort });
   }
 
-  const sourcePort =
-    `${parent.id}-` + (singletonSource ? 'pSourceSingleton' : `p${parent.ports.length}`); // eslint-disable-line
+  const sourcePort = `${parent.id}-` + (singletonSource ? 'pSourceSingleton' : `p${parent.ports.length}`);  // eslint-disable-line
   if (!parent.ports.find(_ => _.id === sourcePort)) {
     parent.ports.push({ id: sourcePort });
   }
@@ -191,23 +189,30 @@ export default async function(jsons, run) {
           }
         });
 
-        taskRun.status.steps.forEach(stepRun => {
-          const start = new Date(stepRun.terminated.startedAt).getTime(); // eslint-disable-line
-          const end = new Date(stepRun.terminated.finishedAt).getTime();
-          const success = stepRun.terminated.reason !== 'Error'; // eslint-disable-line
+        if (taskRun.status.steps) {
+          taskRun.status.steps.forEach(stepRun => {
+            let start; // eslint-disable-line
+            let end;
+            let success; // eslint-disable-line
+            if (stepRun.terminated) {
+              start = new Date(stepRun.terminated.startedAt).getTime();
+              end = new Date(stepRun.terminated.finishedAt).getTime();
+              success = stepRun.terminated.reason !== 'Error';
+            }
 
-          const step = task.spec.steps.find(_ => _.name === stepRun.name); // eslint-disable-line
-          if (step) {
-            step.visitedIdx = M.length;
-            M.push({
-              start,
-              duration: end - start,
-              response: {
-                success
-              }
-            });
-          }
-        });
+            const step = task.spec.steps.find(_ => _.name === stepRun.name); // eslint-disable-line
+            if (step) {
+              step.visitedIdx = M.length;
+              M.push({
+                start,
+                duration: end - start,
+                response: {
+                  success
+                }
+              });
+            }
+          });
+        }
       }
       return M;
     }, startVisit.concat(endVisit));
@@ -259,7 +264,7 @@ export default async function(jsons, run) {
     const task = taskName2Task[taskRef.taskRef.name];
 
     let node;
-    // TODO: can check taskRef.name here to determine if it's selected task (i.e. should expand / render sub graph)
+    // TODO: can check taskRef.name (NOT taskRef.taskRef.name) here to determine if it's selected task (i.e. should expand / render sub graph)
     if (task && task.spec.steps && task.spec.steps.length > 0) {
       //
       // in this case, we do have a full Task definition, which

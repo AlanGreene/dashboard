@@ -549,7 +549,7 @@ export default function graph2doms(
       layoutOptions: Object.assign(
         {
           'elk.algorithm': 'org.eclipse.elk.layered',
-          'org.eclipse.elk.direction': 'DOWN',
+          'org.eclipse.elk.direction': 'DOWN', // RIGHT
           'org.eclipse.elk.edgeRouting': 'ORTHOGONAL',
           'org.eclipse.elk.layered.nodePlacement.bk.fixedAlignment': 'BALANCED',
           'elk.layered.spacing.nodeNodeBetweenLayers': 15, // org.eclipse. prefix doesn't work (elk bug???)

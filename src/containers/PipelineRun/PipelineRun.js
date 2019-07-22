@@ -23,6 +23,7 @@ import {
 
 import {
   getClusterTasks,
+  getPipeline,
   getPipelineRun,
   getPipelineRunsErrorMessage,
   getTaskRun,
@@ -92,12 +93,17 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
   }
 
   async getPipelineGraph() {
-    const { pipelineRun } = this.props;
-    if (!pipelineRun) {
+    const { clusterTasks, pipeline, pipelineRun, tasks } = this.props;
+    if (!pipelineRun || !pipeline) {
       return null;
     }
-    console.log({ pipelineRun });
-    const graph = await createPipelineGraph(pipelineRun);
+    console.log({ pipeline, pipelineRun });
+
+    const graph = await createPipelineGraph(pipelineRun, {
+      pipeline,
+      tasks,
+      clusterTasks
+    });
     console.log({ graph });
     this.pipelineGraphContainer.appendChild(graph.content);
     return graph;
@@ -350,16 +356,27 @@ function mapStateToProps(state, ownProps) {
   const { match } = ownProps;
   const { namespace } = match.params;
 
+  const pipelineRun = getPipelineRun(state, {
+    name: ownProps.match.params.pipelineRunName,
+    namespace
+  });
+
+  let pipeline;
+  if (pipelineRun) {
+    pipeline = getPipeline(state, {
+      name: pipelineRun.spec.pipelineRef.name,
+      namespace: pipelineRun.metadata.namespace
+    });
+  }
+
   return {
     error:
       getPipelineRunsErrorMessage(state) ||
       getTasksErrorMessage(state) ||
       getTaskRunsErrorMessage(state),
     namespace,
-    pipelineRun: getPipelineRun(state, {
-      name: ownProps.match.params.pipelineRunName,
-      namespace
-    }),
+    pipeline,
+    pipelineRun,
     tasks: getTasks(state, { namespace }),
     clusterTasks: getClusterTasks(state)
   };
