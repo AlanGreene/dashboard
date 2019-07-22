@@ -32,6 +32,7 @@ import {
   getTasksErrorMessage
 } from '../../reducers';
 
+import { fetchPipeline } from '../../actions/pipelines';
 import { fetchPipelineRun } from '../../actions/pipelineRuns';
 import { fetchClusterTasks, fetchTasks } from '../../actions/tasks';
 import { fetchTaskRuns } from '../../actions/taskRuns';
@@ -176,12 +177,16 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
     const { match } = this.props;
     const { namespace, pipelineRunName } = match.params;
     this.setState({ loading: true }, async () => {
-      await Promise.all([
+      const [pipelineRun] = await Promise.all([
         this.props.fetchPipelineRun({ name: pipelineRunName, namespace }),
         this.props.fetchTasks(),
         this.props.fetchClusterTasks(),
         this.props.fetchTaskRuns()
       ]);
+      this.props.fetchPipeline({
+        name: pipelineRun.spec.pipelineRef.name,
+        namespace
+      });
       this.setState({ loading: false });
       this.getPipelineGraph();
     });
@@ -384,6 +389,7 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = {
   fetchClusterTasks,
+  fetchPipeline,
   fetchPipelineRun,
   fetchTasks,
   fetchTaskRuns
