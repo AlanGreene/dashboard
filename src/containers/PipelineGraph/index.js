@@ -69,7 +69,6 @@ const flowView = async (jsons, run) => {
 export default (resource, { pipeline, tasks }) => {
   console.log({ FOO: 'BAR', resource });
   if (isPipelineRun(resource)) {
-    // TODO: API calls for pipeline + tasks if not already loaded
     console.log({ pipeline });
     if (!pipeline) {
       return null;
