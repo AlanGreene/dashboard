@@ -178,7 +178,7 @@ body[kui-theme="Light"] {
 .pipelineGraphContainer {
   // display: flex;
   // flex-direction: column;
-  margin: 0 auto;
+  // margin: 0 auto;
   // flex: 1;
   // font-weight: 400;
   // position: relative;
@@ -234,7 +234,7 @@ body[kui-theme="Light"] {
       stroke: rgba(0,0,0,0.25) !important;
     }
 
-    path.hover, path:hover {
+    path:hover {
       stroke-width: 1;
     }
 
@@ -322,7 +322,7 @@ body[kui-theme="Light"] {
     .node.leaf .atom {
       stroke: var(--color-text-01) !important;
     }
-    .node .atom.has-onclick:hover, .node .atom.has-onclick.hover {
+    .node .atom.has-onclick:hover {
       fill: var(--color-base0D) !important;
     }
     .node[data-deployed="not-deployed"] .atom {
@@ -330,7 +330,7 @@ body[kui-theme="Light"] {
       fill: var(--color-base04) !important;
     }
 
-    .node.compound:not(.root) .atom.has-onclick:hover, .node.compound:not(.root) .atom.has-onclick.hover {
+    .node.compound:not(.root) .atom.has-onclick:hover {
       /* stroke-dasharray: 0.5,1; */
       stroke: var(--color-base0D) !important;
     }

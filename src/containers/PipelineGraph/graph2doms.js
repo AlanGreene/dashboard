@@ -50,11 +50,7 @@ export default function graph2doms(
     .call(zoom);
 
   const container = ssvg.append('g').on('dblclick.zoom', null);
-
-  // const svg = container.append('g').attr('id', 'wskflowMainG');
-  const svg = container;
-
-  const defs = svg.append('svg:defs');
+  const defs = container.append('svg:defs');
 
   // a pattern mask for "not deployed"
   defs
@@ -141,7 +137,7 @@ export default function graph2doms(
   //   );
   // }
 
-  const root = svg.append('g');
+  const root = container.append('g');
   let elkData;
 
   //
@@ -229,9 +225,10 @@ export default function graph2doms(
       });
 
     // add representing boxes for nodes
-    const svgns = 'http://www.w3.org/2000/svg';
     node
-      .append(() => document.createElementNS(svgns, 'rect'))
+      .append(() =>
+        document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+      )
       .attr('class', d => {
         return (
           'atom' + // eslint-disable-line
@@ -340,7 +337,6 @@ export default function graph2doms(
         // }
       })
       .on('mouseout', () => {
-        $('.link').removeClass('hover');
         // $('#qtip').removeClass('visible');
       })
       .on('mousedown', () => {
