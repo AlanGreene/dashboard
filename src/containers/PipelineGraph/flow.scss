@@ -350,54 +350,53 @@ body[kui-theme="Light"] {
   }
 }
 
-/* qtip rules */
-#qtip {
-  transition: opacity 150ms ease-in-out;
-  transition-delay: 100ms;
-  display: flex;
-  align-items: center;
-  opacity: 0;
-  z-index: 10;
-  position: absolute;
-  pointer-events: none;
+// #qtip {
+//   transition: opacity 150ms ease-in-out;
+//   transition-delay: 100ms;
+//   display: flex;
+//   align-items: center;
+//   opacity: 0;
+//   z-index: 10;
+//   position: absolute;
+//   pointer-events: none;
 
-  /* see shell issue #906 */
-  top: 0;
-  left: 0;
+//   /* see shell issue #906 */
+//   top: 0;
+//   left: 0;
 
-  #qtipArrow {
-    position: relative;
-    left: 3px;
-    top: 1px;
-    color: var(--color-stripe-02);
-  }
-  #qtipContent {
-    background-color: var(--color-stripe-02);
-    box-shadow: 0 0 0.5ex var(--color-base03);
-    color: var(--color-text-against-dark-bg);
-    font-size: 0.75em;
-    padding: 1ex;
-    /*display: flex;
-    flex-wrap: wrap;*/
-    margin: 0px;
-    margin-right: 1ex; /* don't get all squished up against the right-end edge of the window */
-    word-wrap: break-word;
-  }
+//   #qtipArrow {
+//     position: relative;
+//     left: 3px;
+//     top: 1px;
+//     color: var(--color-stripe-02);
+//   }
+//   #qtipContent {
+//     background-color: var(--color-stripe-02);
+//     box-shadow: 0 0 0.5ex var(--color-base03);
+//     color: var(--color-text-against-dark-bg);
+//     font-size: 0.75em;
+//     padding: 1ex;
+//     /*display: flex;
+//     flex-wrap: wrap;*/
+//     margin: 0px;
+//     margin-right: 1ex; /* don't get all squished up against the right-end edge of the window */
+//     word-wrap: break-word;
+//   }
 
-  &.visible {
-    opacity: 0.975;
-  }
-  &.qtip-pre #qtipContent {
-    overflow: hidden;
-    white-space: pre;
-    text-overflow: ellipsis;
-    display: initial !important; /* override display: flex */
-  }
-  .qtip-prefix {
-    font-weight: bold;
-  }
-  .qtip-prefix.red-text {
-    filter: brightness(1.5);          /* make it more legible against the qtip background */
-    padding-right: 5px;
-  }
-}
+//   &.visible {
+//     opacity: 0.975;
+//   }
+//   &.qtip-pre #qtipContent {
+//     overflow: hidden;
+//     white-space: pre;
+//     text-overflow: ellipsis;
+//     display: initial !important; /* override display: flex */
+//   }
+//   .qtip-prefix {
+//     font-weight: bold;
+//   }
+//   .qtip-prefix.red-text {
+//     filter: brightness(1.5);          /* make it more legible against the qtip background */
+//     padding-right: 5px;
+//   }
+// }
