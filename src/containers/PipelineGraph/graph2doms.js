@@ -10,15 +10,15 @@ const pictureInPicture = (...args) => {
 
 const defaultMaxLabelLength = 10;
 
-const wfColorAct = {
-  active: '#81C784',
-  failed: '#EC7063',
-  activeHovered: '#33a02c',
-  failedHovered: 'red',
-  inactive: 'lightgrey',
-  edgeInactive: 'grey',
-  inactiveBorder: 'grey'
-};
+// const wfColorAct = {
+//   active: '#81C784',
+//   failed: '#EC7063',
+//   activeHovered: '#33a02c',
+//   failedHovered: 'red',
+//   inactive: 'lightgrey',
+//   edgeInactive: 'grey',
+//   inactiveBorder: 'grey'
+// };
 
 export const textualPropertiesOfCode = code => {
   const lines = code.split(/[\n\r]/);
@@ -146,11 +146,11 @@ export default function graph2doms(
       'M852.8,558.8c0,194.5-158.2,352.8-352.8,352.8c-194.5,0-352.8-158.3-352.8-352.8c0-190.8,152.4-346.7,341.8-352.5v117.4l176.4-156.9L489,10v118C256.3,133.8,68.8,324.8,68.8,558.8C68.8,796.6,262.2,990,500,990c237.8,0,431.2-193.4,431.2-431.2H852.8z'
     );
 
-  if (!$('#qtip')[0]) {
-    $(document.body).append(
-      "<div id='qtip'><span id='qtipArrow'>&#9668</span><div id='qtipContent'></div></div>"
-    );
-  }
+  // if (!$('#qtip')[0]) {
+  //   $(document.body).append(
+  //     "<div id='qtip'><span id='qtipArrow'>&#9668</span><div id='qtipContent'></div></div>"
+  //   );
+  // }
 
   const root = svg.append('g');
   let elkData;
@@ -268,91 +268,91 @@ export default function graph2doms(
       })
       .style('cursor', () => 'normal')
       .on('mouseover', function(d) { // eslint-disable-line
-        let qtipText = '';
-
-        if (activations) {
-          if (d.children === undefined && d.visited) {
-            if (d.type === 'Exit') {
-              const act = activations[d.visited[0]];
-              const start = new Date(act.start);
-              let timeString =
-                start.getMonth() + 1 + '/' + start.getDate() + ' '; // eslint-disable-line
-              timeString += start.toLocaleTimeString(undefined, {
-                hour12: false
-              });
-              let result = act.response.result
-                ? JSON.stringify(act.response.result, undefined, 4)
-                : '';
-              if (result.length > 200) {
-                result = result.substring(0, 200) + '\u2026'; // eslint-disable-line
-              } // horizontal ellipsis
-
-              qtipText += `<div style='padding-bottom:2px'><span class='qtip-prefix'>${
-                d.type
-              }</span> <span style='color:${
-                wfColorAct.active
-              }'>${timeString}</span></div>${result}`;
-            }
-          }
-        } else if (d.type === 'Entry' || d.type === 'Exit') {
-          qtipText = d.properties.title;
-        }
-
-        if (!qtipText && d.tooltip) {
-          //
-          // the above rules are pretty specific to Apache Composer
-          // (TODO refactor); this allows for a more modern custom
-          // tooltip to be driven by the graph model producer
-          //
-          qtipText = `<div class='qtip-prefix ${
-            d.tooltipColor ? 'color-base' + d.tooltipColor : 'function' // eslint-disable-line
-          }' style="margin-bottom:1ex; padding-right:5px; ">${d.tooltipHeader ||
-            d.type}</div>${d.tooltip}`;
-        }
-
-        if (qtipText && qtipText.length !== 0) {
-          $('#qtipContent').html(qtipText);
-
-          $('#qtip').addClass('visible');
-          $('#qtip').removeClass('qtip-pre');
-
-          const rect = $(this)[0].getBoundingClientRect();
-          let qtipX = rect.left + rect.width;
-          let qtipY = rect.top + rect.height / 2 - $('#qtip').height() / 2;
-
-          if ($(containerElement).hasClass('picture-in-picture')) {
-            // currentScale: 0.25
-            const scaleString = $(containerElement).css('transform');
-            let scale;
-            try {
-              scale = parseFloat(
-                scaleString.substring(
-                  'matrix('.length,
-                  scaleString.indexOf(',')
-                )
-              );
-            } catch (e) {
-              console.log({ e, scaleString });
-              scale = 0.25;
-            }
-
-            qtipX /= scale;
-            qtipY =
-              $(this).offset().top +
-              $(this)[0].getBoundingClientRect().height / 2 -
-              ($('#qtip').height() / 2) * scale -
-              $(containerElement).offset().top;
-            qtipY /= scale;
-          }
-          $('#qtip').css({
-            left: qtipX,
-            top: qtipY
-          });
-        }
+        // let qtipText = '';
+        //
+        // if (activations) {
+        //   if (d.children === undefined && d.visited) {
+        //     if (d.type === 'Exit') {
+        //       const act = activations[d.visited[0]];
+        //       const start = new Date(act.start);
+        //       let timeString =
+        //         start.getMonth() + 1 + '/' + start.getDate() + ' '; // eslint-disable-line
+        //       timeString += start.toLocaleTimeString(undefined, {
+        //         hour12: false
+        //       });
+        //       let result = act.response.result
+        //         ? JSON.stringify(act.response.result, undefined, 4)
+        //         : '';
+        //       if (result.length > 200) {
+        //         result = result.substring(0, 200) + '\u2026'; // eslint-disable-line
+        //       } // horizontal ellipsis
+        //
+        //       qtipText += `<div style='padding-bottom:2px'><span class='qtip-prefix'>${
+        //         d.type
+        //       }</span> <span style='color:${
+        //         wfColorAct.active
+        //       }'>${timeString}</span></div>${result}`;
+        //     }
+        //   }
+        // } else if (d.type === 'Entry' || d.type === 'Exit') {
+        //   qtipText = d.properties.title;
+        // }
+        //
+        // if (!qtipText && d.tooltip) {
+        //   //
+        //   // the above rules are pretty specific to Apache Composer
+        //   // (TODO refactor); this allows for a more modern custom
+        //   // tooltip to be driven by the graph model producer
+        //   //
+        //   qtipText = `<div class='qtip-prefix ${
+        //     d.tooltipColor ? 'color-base' + d.tooltipColor : 'function' // eslint-disable-line
+        //   }' style="margin-bottom:1ex; padding-right:5px; ">${d.tooltipHeader ||
+        //     d.type}</div>${d.tooltip}`;
+        // }
+        //
+        // if (qtipText && qtipText.length !== 0) {
+        //   $('#qtipContent').html(qtipText);
+        //
+        //   $('#qtip').addClass('visible');
+        //   $('#qtip').removeClass('qtip-pre');
+        //
+        //   const rect = $(this)[0].getBoundingClientRect();
+        //   let qtipX = rect.left + rect.width;
+        //   let qtipY = rect.top + rect.height / 2 - $('#qtip').height() / 2;
+        //
+        //   if ($(containerElement).hasClass('picture-in-picture')) {
+        //     // currentScale: 0.25
+        //     const scaleString = $(containerElement).css('transform');
+        //     let scale;
+        //     try {
+        //       scale = parseFloat(
+        //         scaleString.substring(
+        //           'matrix('.length,
+        //           scaleString.indexOf(',')
+        //         )
+        //       );
+        //     } catch (e) {
+        //       console.log({ e, scaleString });
+        //       scale = 0.25;
+        //     }
+        //
+        //     qtipX /= scale;
+        //     qtipY =
+        //       $(this).offset().top +
+        //       $(this)[0].getBoundingClientRect().height / 2 -
+        //       ($('#qtip').height() / 2) * scale -
+        //       $(containerElement).offset().top;
+        //     qtipY /= scale;
+        //   }
+        //   $('#qtip').css({
+        //     left: qtipX,
+        //     top: qtipY
+        //   });
+        // }
       })
       .on('mouseout', () => {
         $('.link').removeClass('hover');
-        $('#qtip').removeClass('visible');
+        // $('#qtip').removeClass('visible');
       })
       .on('mousedown', () => {
         enterClickMode = true;
@@ -363,7 +363,7 @@ export default function graph2doms(
         }
         enterClickMode = false;
 
-        $('#qtip').removeClass('visible');
+        // $('#qtip').removeClass('visible');
         if (d.onclick) {
           pictureInPicture(
             d.onclick,
@@ -469,7 +469,7 @@ export default function graph2doms(
       .attr('data-visited', d => d.visited) // edge was visited?
       .attr('source', d => d.sourcePort)
       .on('mouseout', () => {
-        $('#qtip').removeClass('visible');
+        // $('#qtip').removeClass('visible');
       })
       .attr('d', function(d) { // eslint-disable-line
         let path = '';
@@ -686,7 +686,7 @@ export default function graph2doms(
         d3.event.transform.x
       }, ${d3.event.transform.y})`
     );
-    $('#qtip').removeClass('visible');
+    // $('#qtip').removeClass('visible');
   }
 
   // when zoom-to-fit is active, the graph resizes as the window resizes. #422
