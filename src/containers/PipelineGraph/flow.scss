@@ -297,8 +297,7 @@ body[kui-theme="Light"] {
 
     .node.leaf[data-status="success"] .atom {
       /* visited nodes with success outcome */
-      /* fill: var(--color-base0D) !important; */
-      stroke: var(--color-text-01) !important;
+      // fill: var(--color-ok) !important;
     }
     body[kui-theme-style="dark"] & .node.leaf[data-status="success"] .atom {
       mask: url(#mask-stripe-heavy);
