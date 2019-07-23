@@ -20,17 +20,6 @@ const defaultMaxLabelLength = 10;
 //   inactiveBorder: 'grey'
 // };
 
-export const textualPropertiesOfCode = code => {
-  const lines = code.split(/[\n\r]/);
-  const nLines = lines.length;
-  const maxLineLength = lines.reduce(
-    (max, line) => Math.max(max, line.length),
-    0
-  );
-
-  return { nLines, maxLineLength };
-};
-
 export default function graph2doms(
   JSONgraph,
   containerElement,
