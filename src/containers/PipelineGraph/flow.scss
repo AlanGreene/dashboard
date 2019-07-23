@@ -175,175 +175,178 @@ body[kui-theme="Light"] {
 }
 /* END THEME */
 
-#wskflowContainer {
-  display: flex;
-  flex-direction: column;
+.pipelineGraphContainer {
+  // display: flex;
+  // flex-direction: column;
   margin: 0 auto;
-  flex: 1;
-  font-weight: 400;
-  position: relative;
+  // flex: 1;
+  // font-weight: 400;
+  // position: relative;
   overflow: hidden; /* we will do pan and zoom ourselves */
-  -webkit-app-region: no-drag;
-}
-#wskflowSVG {
-  flex: 1;
 
-  .node[data-deployed="not-deployed"]:hover,
-  .node[data-deployed="not-deployed"]:hover .atom:not(.has-onclick) {
-    /* no hover effects for not-deployed actions */
-    text-decoration: none;
-    cursor: inherit !important;
-  }
-  &[data-is-session-flow="true"] .node.leaf[data-status="not-run"] .atom {
-    /* not-run nodes in a session flow */
-    mask: url(#mask-stripe);
-  }
-  &[data-is-session-flow="true"] .node.leaf[data-status="not-run"] .atom,
-  &[data-is-session-flow="true"] .node.leaf[data-status="not-run"] text {
-    /* deemphasize not-visited nodes in session flow */
-    opacity: 0.8;
-  }
-  .node .atom.atom {
-    /* wskflow node effect */
-    transition: fill 150ms ease-in-out, opacity 150ms ease-in-out, stroke 150ms ease-in-out;
-    /* vector-effect: non-scaling-stroke; not supported by IE or Edge */
-  }
-  path {
-    /* path effects */
-    transition: fill 150ms ease-in-out, opacity 150ms ease-in-out, stroke 150ms ease-in-out;
-    /*vector-effect: non-scaling-stroke; not supported by IE or Edge */
-    stroke-width: 0.5; /* 1.5 with non-scaling stroke */
-    stroke: var(--color-text-02) !important;
-    stroke-opacity: 0.8;
-  }
-  path.link {
-    fill: transparent;
-  }
-  #retryIconNormal path {
-    /* the retry loop doesn't need a stroke */
-    stroke: none !important;
-    fill: var(--color-base09);
-  }
-  marker#greenEnd {
-    fill: var(--color-green);
-  }
-  marker > path {
-    /* for marker paths, we want just a faint shadow */
-    stroke: rgba(0,0,0,0.25) !important;
-  }
+  width: 600px;
+  height: 600px;
 
-  path.hover, path:hover {
-    stroke-width: 1;
-  }
+  svg {
+    // flex: 1;
 
-  .node.leaf.Entry .atom, .node.leaf.Exit .atom {
-    fill: var(--color-text-01);
-  }
+    .node[data-deployed="not-deployed"]:hover,
+    .node[data-deployed="not-deployed"]:hover .atom:not(.has-onclick) {
+      /* no hover effects for not-deployed actions */
+      text-decoration: none;
+      cursor: inherit !important;
+    }
+    &[data-is-session-flow="true"] .node.leaf[data-status="not-run"] .atom {
+      /* not-run nodes in a session flow */
+      mask: url(#mask-stripe);
+    }
+    &[data-is-session-flow="true"] .node.leaf[data-status="not-run"] .atom,
+    &[data-is-session-flow="true"] .node.leaf[data-status="not-run"] text {
+      /* deemphasize not-visited nodes in session flow */
+      opacity: 0.8;
+    }
+    .node .atom.atom {
+      /* wskflow node effect */
+      transition: fill 150ms ease-in-out, opacity 150ms ease-in-out, stroke 150ms ease-in-out;
+      /* vector-effect: non-scaling-stroke; not supported by IE or Edge */
+    }
+    path {
+      /* path effects */
+      transition: fill 150ms ease-in-out, opacity 150ms ease-in-out, stroke 150ms ease-in-out;
+      /*vector-effect: non-scaling-stroke; not supported by IE or Edge */
+      stroke-width: 0.5; /* 1.5 with non-scaling stroke */
+      stroke: var(--color-text-02) !important;
+      stroke-opacity: 0.8;
+    }
+    path.link {
+      fill: transparent;
+    }
+    #retryIconNormal path {
+      /* the retry loop doesn't need a stroke */
+      stroke: none !important;
+      fill: var(--color-base09);
+    }
+    marker#greenEnd {
+      fill: var(--color-green);
+    }
+    marker > path {
+      /* for marker paths, we want just a faint shadow */
+      stroke: rgba(0,0,0,0.25) !important;
+    }
 
-  body[kui-theme-style="dark"] & .node.leaf.Entry .atom, body[kui-theme-style="dark"] & .node.leaf.Exit .atom {
-    fill: var(--color-ui-01);
-    stroke: var(--color-ui-03) !important;
-  }
+    path.hover, path:hover {
+      stroke-width: 1;
+    }
 
-  .node.leaf.Entry text, .node.leaf.Exit text {
-    fill: var(--color-ui-02) !important;
-    font-weight: 300;
-    font-variant: small-caps;
-  }
+    .node.leaf.Entry .atom, .node.leaf.Exit .atom {
+      fill: var(--color-text-01);
+    }
 
-  body[kui-theme-style="dark"] & .node.leaf.Entry text, body[kui-theme-style="dark"] & .node.leaf.Exit text {
-    fill: var(--color-text-02) !important;
-  }
+    body[kui-theme-style="dark"] & .node.leaf.Entry .atom, body[kui-theme-style="dark"] & .node.leaf.Exit .atom {
+      fill: var(--color-ui-01);
+      stroke: var(--color-ui-03) !important;
+    }
 
-  .node .atom {
-    fill: var(--color-base02);
-  }
-  body[kui-theme-style="dark"] & .node .atom {
-    fill: var(--color-base03);
-  }
-  body[kui-theme-style="dark"] & .node.leaf .atom {
-    stroke: var(--color-base02) !important;
-  }
-  body[kui-theme-style="dark"] & .node[data-deployed="not-deployed"] .atom {
-    opacity: 0.7;
-  }
-  .node .atom ~ text {
-    fill: var(--color-text-01);
-  }
-  path[data-visited="true"] {
-    /* visited edges */
-    stroke: var(--color-base0D) !important;
-    stroke-width: 1.1;
-    marker-end: url(#edgeTraversedEnd);
-  }
-  path[data-visited="false"] {
-    /* not-visited edges */
-    stroke-dasharray: 1;
-    opacity: 0.8;
-  }
+    .node.leaf.Entry text, .node.leaf.Exit text {
+      fill: var(--color-ui-02) !important;
+      font-weight: 300;
+      font-variant: small-caps;
+    }
 
-  marker#end {
-    fill: var(--color-text-02);
-  }
+    body[kui-theme-style="dark"] & .node.leaf.Entry text, body[kui-theme-style="dark"] & .node.leaf.Exit text {
+      fill: var(--color-text-02) !important;
+    }
 
-  .node.compound:not(.root)[data-status="success"] .atom {
-    stroke: var(--color-ok) !important;
-  }
-  .node.compound:not(.root)[data-status="failed"] .atom {
-    stroke: var(--color-support-01) !important;
-  }
+    .node .atom {
+      fill: var(--color-base02);
+    }
+    body[kui-theme-style="dark"] & .node .atom {
+      fill: var(--color-base03);
+    }
+    body[kui-theme-style="dark"] & .node.leaf .atom {
+      stroke: var(--color-base02) !important;
+    }
+    body[kui-theme-style="dark"] & .node[data-deployed="not-deployed"] .atom {
+      opacity: 0.7;
+    }
+    .node .atom ~ text {
+      fill: var(--color-text-01);
+    }
+    path[data-visited="true"] {
+      /* visited edges */
+      stroke: var(--color-base0D) !important;
+      stroke-width: 1.1;
+      marker-end: url(#edgeTraversedEnd);
+    }
+    path[data-visited="false"] {
+      /* not-visited edges */
+      stroke-dasharray: 1;
+      opacity: 0.8;
+    }
 
-  .node.leaf[data-status="success"] .atom {
-    /* visited nodes with success outcome */
-    /* fill: var(--color-base0D) !important; */
-    stroke: var(--color-text-01) !important;
-  }
-  body[kui-theme-style="dark"] & .node.leaf[data-status="success"] .atom {
-    mask: url(#mask-stripe-heavy);
-  }
-  marker#edgeTraversedEnd {
-    fill: var(--color-base0D);
-  }
-  .node.leaf[data-status="failed"] .atom {
-    /* visited nodes with failure outcome */
-    fill: var(--color-support-01) !important;
-  }
-  .node.leaf.Exit[data-status="failed"] text, .node.leaf[data-status="failed"] text {
-    /* visited node text for session flow */
-    fill: var(--color-ui-01) !important;
-  }
+    marker#end {
+      fill: var(--color-text-02);
+    }
 
-  .node.leaf .atom {
-    stroke: var(--color-text-01) !important;
-    stroke-width: 0.5; /* 2 with vector-effects: non-scaling stroke support */
-  }
-  .node.leaf .atom {
-    stroke: var(--color-text-01) !important;
-  }
-  .node .atom.has-onclick:hover, .node .atom.has-onclick.hover {
-    fill: var(--color-base0D) !important;
-  }
-  .node[data-deployed="not-deployed"] .atom {
-    mask: url(#mask-stripe);
-    fill: var(--color-base04) !important;
-  }
+    .node.compound:not(.root)[data-status="success"] .atom {
+      stroke: var(--color-ok) !important;
+    }
+    .node.compound:not(.root)[data-status="failed"] .atom {
+      stroke: var(--color-support-01) !important;
+    }
 
-  .node.compound:not(.root) .atom.has-onclick:hover, .node.compound:not(.root) .atom.has-onclick.hover {
-    /* stroke-dasharray: 0.5,1; */
-    stroke: var(--color-base0D) !important;
-  }
-  .node.compound:not(.root) .atom {
-    /* stroke-dasharray: 0.25,0.25; */
-    stroke-width: 0.5;
-    // stroke: var(--color-ui-04) !important;
-    stroke: var(--color-base04) !important;
-    fill: var(--color-base03) !important;
-    fill-opacity: 0.05;
-    rx: 4px;
-  }
-  .node.compound text {
-    font-weight: 500;
-    fill: var(--color-base09);
+    .node.leaf[data-status="success"] .atom {
+      /* visited nodes with success outcome */
+      /* fill: var(--color-base0D) !important; */
+      stroke: var(--color-text-01) !important;
+    }
+    body[kui-theme-style="dark"] & .node.leaf[data-status="success"] .atom {
+      mask: url(#mask-stripe-heavy);
+    }
+    marker#edgeTraversedEnd {
+      fill: var(--color-base0D);
+    }
+    .node.leaf[data-status="failed"] .atom {
+      /* visited nodes with failure outcome */
+      fill: var(--color-support-01) !important;
+    }
+    .node.leaf.Exit[data-status="failed"] text, .node.leaf[data-status="failed"] text {
+      /* visited node text for session flow */
+      fill: var(--color-ui-01) !important;
+    }
+
+    .node.leaf .atom {
+      stroke: var(--color-text-01) !important;
+      stroke-width: 0.5; /* 2 with vector-effects: non-scaling stroke support */
+    }
+    .node.leaf .atom {
+      stroke: var(--color-text-01) !important;
+    }
+    .node .atom.has-onclick:hover, .node .atom.has-onclick.hover {
+      fill: var(--color-base0D) !important;
+    }
+    .node[data-deployed="not-deployed"] .atom {
+      mask: url(#mask-stripe);
+      fill: var(--color-base04) !important;
+    }
+
+    .node.compound:not(.root) .atom.has-onclick:hover, .node.compound:not(.root) .atom.has-onclick.hover {
+      /* stroke-dasharray: 0.5,1; */
+      stroke: var(--color-base0D) !important;
+    }
+    .node.compound:not(.root) .atom {
+      /* stroke-dasharray: 0.25,0.25; */
+      stroke-width: 0.5;
+      // stroke: var(--color-ui-04) !important;
+      stroke: var(--color-base04) !important;
+      fill: var(--color-base03) !important;
+      fill-opacity: 0.05;
+      rx: 4px;
+    }
+    .node.compound text {
+      font-weight: 500;
+      fill: var(--color-base09);
+    }
   }
 }
 
