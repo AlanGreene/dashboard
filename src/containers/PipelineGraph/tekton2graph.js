@@ -3,22 +3,14 @@ import { isPipeline } from './lib';
 const defaultHeight = 13;
 const defaultCharWidth = 3.25;
 
-/**
- * Determine the success bit of a run element
- *
- */
 function success(conditions) {
   const successCondition = conditions.find(_ => _.type === 'Succeeded');
   return successCondition && successCondition.status === 'True';
 }
 
-/**
- * @return a blank IGraph instance with optional "children" subgraphs
- *
- */
 const makeSubGraph = (
   label = 'root',
-  { visited, children, tooltip, tooltipColor, type, onclick } = { children: [] }
+  { children, onclick, tooltip, tooltipColor, type, visited } = { children: [] }
 ) => {
   return {
     id: label,
@@ -35,10 +27,8 @@ const makeSubGraph = (
   };
 };
 
-/** graph node id for a given Step located in a given Task */
 const stepId = (taskRef, step) => `__step__${taskRef.name}__${step.name}`;
 
-/** find the pipeline in a given set of resource definitions */
 const getPipeline = jsons => {
   const declaredPipeline = jsons.find(_ => _.kind === 'Pipeline');
 
@@ -69,10 +59,6 @@ const getPipeline = jsons => {
   }
 };
 
-/**
- * Add an edge between parent and child nodes
- *
- */
 function addEdge(
   graph,
   parent,
@@ -111,10 +97,9 @@ function addEdge(
   parent.nChildren++; // eslint-disable-line
 }
 
-/**
- * Turn a raw yaml form of a tekton pipeline into a graph model that
- * is compatible with the ELK graph layout toolkit.
- *
+/*
+ * Convert JSON form of Tekton resources into a graph model
+ * compatible wiht the ELK graph layout toolkit.
  */
 export default async function(jsons, run) {
   const pipeline = getPipeline(jsons);
@@ -122,22 +107,28 @@ export default async function(jsons, run) {
   // map from Task.metadata.name to Task
   const taskName2Task = jsons
     .filter(_ => _.kind === 'Task')
-    .reduce((symtab, task) => {
-      symtab[task.metadata.name] = task; // eslint-disable-line
-      return symtab;
+    .reduce((accumulator, task) => {
+      accumulator[task.metadata.name] = task; // eslint-disable-line
+      return accumulator;
     }, {});
 
   // map from Pipeline.Task.name to Task
-  const taskRefName2Task = pipeline.spec.tasks.reduce((symtab, taskRef) => {
-    symtab[taskRef.name] = taskName2Task[taskRef.taskRef.name]; // eslint-disable-line
-    return symtab;
-  }, {});
+  const taskRefName2Task = pipeline.spec.tasks.reduce(
+    (accumulator, taskRef) => {
+      accumulator[taskRef.name] = taskName2Task[taskRef.taskRef.name]; // eslint-disable-line
+      return accumulator;
+    },
+    {}
+  );
 
   // map from Pipeline.Task.name to Pipeline.Task
-  const taskRefName2TaskRef = pipeline.spec.tasks.reduce((symtab, taskRef) => {
-    symtab[taskRef.name] = taskRef; // eslint-disable-line
-    return symtab;
-  }, {});
+  const taskRefName2TaskRef = pipeline.spec.tasks.reduce(
+    (accumulator, taskRef) => {
+      accumulator[taskRef.name] = taskRef; // eslint-disable-line
+      return accumulator;
+    },
+    {}
+  );
 
   // do we have TaskRun information? if so, construct a map from
   // TaskName to an index into the taskRuns array
@@ -167,7 +158,7 @@ export default async function(jsons, run) {
     [];
   const runInfo =
     runs &&
-    Object.keys(runs).reduce((M, _) => {
+    Object.keys(runs).reduce((accumulator, _) => {
       const taskRun = runs[_];
       const taskRefName = taskRun.pipelineTaskName;
       const task = taskRefName2Task[taskRefName];
@@ -175,8 +166,8 @@ export default async function(jsons, run) {
       if (task) {
         const start = new Date(taskRun.status.startTime).getTime();
 
-        task.visitedIdx = M.length;
-        M.push({
+        task.visitedIdx = accumulator.length;
+        accumulator.push({
           start,
           duration: taskRun.status.completionTime
             ? new Date(taskRun.status.completionTime).getTime() - start
@@ -199,8 +190,8 @@ export default async function(jsons, run) {
 
             const step = task.spec.steps.find(_ => _.name === stepRun.name); // eslint-disable-line
             if (step) {
-              step.visitedIdx = M.length;
-              M.push({
+              step.visitedIdx = accumulator.length;
+              accumulator.push({
                 start,
                 duration: end - start,
                 response: {
@@ -211,7 +202,7 @@ export default async function(jsons, run) {
           });
         }
       }
-      return M;
+      return accumulator;
     }, startVisit.concat(endVisit));
 
   const graph = {
@@ -257,28 +248,25 @@ export default async function(jsons, run) {
     }
   };
 
-  const symbolTable = pipeline.spec.tasks.reduce((symtab, taskRef) => {
+  const symbolTable = pipeline.spec.tasks.reduce((accumulator, taskRef) => {
     const task = taskName2Task[taskRef.taskRef.name];
 
     let node;
-    // TODO: can check taskRef.name (NOT taskRef.taskRef.name) here to determine if it's selected task (i.e. should expand / render sub graph)
+    // TODO: can check taskRef.name (NOT taskRef.taskRef.name) here
+    // to determine if it's selected task (i.e. should expand / render sub graph)
     if (task && task.spec.steps && task.spec.steps.length > 0) {
-      //
-      // in this case, we do have a full Task definition, which
-      // includes Steps; we will make a subgraph for the steps
-      //
-      const resources = (task.spec.inputs && task.spec.inputs.resources) || [];
-      const resourceList = `${resources
-        .map(_ => `<span class='color-base0A'>${_.type}</span>:${_.name}`)
-        .join(', ')}`;
+      // const resources = (task.spec.inputs && task.spec.inputs.resources) || [];
+      // const resourceList = `${resources
+      //   .map(_ => `<span class='color-base0A'>${_.type}</span>:${_.name}`)
+      //   .join(', ')}`;
 
-      const params = (task.spec.inputs && task.spec.inputs.params) || [];
-      const paramList = `(${params.map(_ => _.name).join(', ')})`;
+      // const params = (task.spec.inputs && task.spec.inputs.params) || [];
+      // const paramList = `(${params.map(_ => _.name).join(', ')})`;
 
       const subgraph = makeSubGraph(taskRef.name, {
-        type: 'Tekton Task',
-        tooltip: `<table><tr><td><strong>Resources</strong></td><td>${resourceList}</td></tr><tr><td><strong>Params</strong></td><td>${paramList}</td></tr></table>`,
-        tooltipColor: '0C',
+        type: 'Task',
+        // tooltip: `<table><tr><td><strong>Resources</strong></td><td>${resourceList}</td></tr><tr><td><strong>Params</strong></td><td>${paramList}</td></tr></table>`,
+        // tooltipColor: '0C',
         onclick: ``,
         visited: task.visitedIdx !== undefined ? [task.visitedIdx] : undefined,
         children: task.spec.steps.map(step => {
@@ -292,13 +280,13 @@ export default async function(jsons, run) {
             deployed: false,
             visited:
               step.visitedIdx !== undefined ? [step.visitedIdx] : undefined,
-            type: 'Tekton Step',
-            tooltip: `<strong>Image</strong>: ${step.image}`,
-            tooltipColor: '0E',
+            type: 'Step',
+            // tooltip: `<strong>Image</strong>: ${step.image}`,
+            // tooltipColor: '0E',
             onclick: ``
           };
 
-          symtab[stepNode.id] = stepNode; // eslint-disable-line
+          accumulator[stepNode.id] = stepNode; // eslint-disable-line
           return stepNode;
         })
       });
@@ -310,11 +298,6 @@ export default async function(jsons, run) {
 
       node = subgraph;
     } else {
-      //
-      // we don't have a full Task definition for this pipeline
-      // task, or the Task definition for some reason does not
-      // specify Steps
-      //
       node = {
         id: taskRef.name,
         label: taskRef.name,
@@ -322,15 +305,17 @@ export default async function(jsons, run) {
         height: defaultHeight,
         nChildren: 0,
         nParents: 0,
-        type: 'Tekton Task',
-        tooltip: 'test'
+        type: 'Task',
+        // tooltip: 'test',
+        visited:
+          task && task.visitedIdx !== undefined ? [task.visitedIdx] : undefined
       };
     }
 
-    symtab[taskRef.name] = node; // eslint-disable-line
+    accumulator[taskRef.name] = node; // eslint-disable-line
     graph.children.push(node);
 
-    return symtab;
+    return accumulator;
   }, {});
 
   const lastStepOf = node => {

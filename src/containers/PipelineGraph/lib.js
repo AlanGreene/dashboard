@@ -1,4 +1,5 @@
 import tekton2graph from './tekton2graph';
+import graph2doms from './graph2doms';
 
 const tektonAPI = /tekton.dev/;
 
@@ -29,14 +30,11 @@ export function isPipelineRun(resource) {
 }
 
 const flowView = async (jsons, { container, run }) => {
-  const [graph, graph2doms] = await Promise.all([
-    tekton2graph(jsons, run), // generate the graph model
-    import('./graph2doms') // overlap that work with importing the graph renderer
-  ]);
+  const graph = await tekton2graph(jsons, run);
 
   console.log({ jsons, run, graph });
 
-  await graph2doms.default(graph, container, graph.runs, {
+  await graph2doms(graph, container, graph.runs, {
     layoutOptions: {
       'elk.separateConnectedComponents': false,
       'elk.spacing.nodeNode': 10,
@@ -56,8 +54,6 @@ const flowView = async (jsons, { container, run }) => {
     startTime && endTime && endTime.getTime() - startTime.getTime();
 
   return {
-    name: jsons[0].metadata.name,
-    prettyType: run ? 'PipelineRun' : 'Pipeline',
     duration,
     content: container,
     model: jsons
@@ -78,5 +74,6 @@ export default (resource, { container, pipeline, tasks }) => {
     return flowView([resource].concat(tasks), { container });
   }
 
+  // TODO: add support for TaskRun
   return flowView([resource], { container });
 };
