@@ -9,12 +9,7 @@ const defaultCharWidth = 3.25;
  */
 function success(conditions) {
   const successCondition = conditions.find(_ => _.type === 'Succeeded');
-  return (
-    successCondition &&
-    (successCondition.status === true ||
-      (successCondition.status !== false &&
-        /true/i.test(successCondition.status)))
-  );
+  return successCondition && successCondition.status === 'True';
 }
 
 /**
@@ -91,12 +86,14 @@ function addEdge(
     child.ports = []; // eslint-disable-line
   }
 
-  const targetPort = `${child.id}-` + (singletonTarget ? 'pTargetSingleton' : `p${child.ports.length}`);  // eslint-disable-line
+  const targetPort =
+    `${child.id}-` + (singletonTarget ? 'pTargetSingleton' : `p${child.ports.length}`); // eslint-disable-line
   if (!child.ports.find(_ => _.id === targetPort)) {
     child.ports.push({ id: targetPort });
   }
 
-  const sourcePort = `${parent.id}-` + (singletonSource ? 'pSourceSingleton' : `p${parent.ports.length}`);  // eslint-disable-line
+  const sourcePort =
+    `${parent.id}-` + (singletonSource ? 'pSourceSingleton' : `p${parent.ports.length}`); // eslint-disable-line
   if (!parent.ports.find(_ => _.id === sourcePort)) {
     parent.ports.push({ id: sourcePort });
   }
@@ -401,7 +398,7 @@ export default async function(jsons, run) {
     if (parent) {
       _addEdge(parent, child);
     } else {
-      console.error('parent not found', childTaskRef);
+      console.error('parent not found', childTaskRef); // eslint-disable-line no-console
     }
   };
 

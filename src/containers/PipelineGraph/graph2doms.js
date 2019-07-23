@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import * as $ from 'jquery';
 import * as ELK from 'elkjs/lib/elk.bundled';
 
-const debug = console.log.bind(console);
+const debug = console.log.bind(console); // eslint-disable-line
 const pictureInPicture = (...args) => {
   debug('pictureInPicture outer', ...args);
   return (...innerArgs) => debug('pictureInPicture inner', ...innerArgs);
@@ -48,23 +48,22 @@ export default function graph2doms(
 
   const zoom = d3.zoom().on('zoom', redraw); // eslint-disable-line
 
-  const wskflowContainer = $('<div id="wskflowContainer"></div>');
   let enterClickMode = false;
 
-  $(containerElement).append(wskflowContainer);
-
-  $(wskflowContainer).addClass('grabbable'); // we want to use grab/grabbing cursor
+  if (containerElement.firstChild) {
+    containerElement.removeChild(containerElement.firstChild);
+  }
 
   const ssvg = d3
-    .select($(wskflowContainer)[0])
+    .select(containerElement)
     .append('svg')
-    .attr('id', 'wskflowSVG')
     .attr('data-is-session-flow', !!activations)
     .call(zoom);
 
   const container = ssvg.append('g').on('dblclick.zoom', null);
 
-  const svg = container.append('g').attr('id', 'wskflowMainG');
+  // const svg = container.append('g').attr('id', 'wskflowMainG');
+  const svg = container;
 
   const defs = svg.append('svg:defs');
 
@@ -153,12 +152,6 @@ export default function graph2doms(
     );
   }
 
-  if (activations) {
-    $(wskflowContainer).append(
-      "<div id='actList' style='position: absolute; display:none; background-color: rgba(0, 0, 0, 0.8); color: white; font-size: 0.75em; padding: 1ex; width:225px; right: 5px; top: 5px;'></div>"
-    );
-  }
-
   const root = svg.append('g');
   let elkData;
 
@@ -182,7 +175,7 @@ export default function graph2doms(
     ssvg.attr('viewBox', `0 0 ${elkData.width} ${elkData.height}`);
     ssvg.attr('preserveAspectRatio', `xMidYMin ${meetOrSlice}`);
     container.attr('transform', '');
-    $('#wskflowSVG').removeAttr('transform');
+    containerElement.firstChild.removeAttribute('transform');
     const selection = root.selectAll('.node');
     zoom.translateTo(selection, 0, 0);
     zoom.scaleTo(selection, 1);
@@ -278,11 +271,7 @@ export default function graph2doms(
         let qtipText = '';
 
         if (activations) {
-          if (
-            d.children === undefined &&
-            d.visited &&
-            $('#actList').css('display') !== 'block'
-          ) {
+          if (d.children === undefined && d.visited) {
             if (d.type === 'Exit') {
               const act = activations[d.visited[0]];
               const start = new Date(act.start);
@@ -331,9 +320,9 @@ export default function graph2doms(
           let qtipX = rect.left + rect.width;
           let qtipY = rect.top + rect.height / 2 - $('#qtip').height() / 2;
 
-          if ($('#wskflowContainer').hasClass('picture-in-picture')) {
+          if ($(containerElement).hasClass('picture-in-picture')) {
             // currentScale: 0.25
-            const scaleString = $('#wskflowContainer').css('transform');
+            const scaleString = $(containerElement).css('transform');
             let scale;
             try {
               scale = parseFloat(
@@ -352,7 +341,7 @@ export default function graph2doms(
               $(this).offset().top +
               $(this)[0].getBoundingClientRect().height / 2 -
               ($('#qtip').height() / 2) * scale -
-              $('#wskflowContainer').offset().top;
+              $(containerElement).offset().top;
             qtipY /= scale;
           }
           $('#qtip').css({
@@ -379,30 +368,20 @@ export default function graph2doms(
           pictureInPicture(
             d.onclick,
             d3.event.currentTarget.parentNode, // highlight this node
-            $('#wskflowContainer')[0],
+            containerElement,
             d.viewName || 'Flow Visualization'
           )(d3.event);
         } else if (activations) {
           if (d.visited) {
-            if ($('#actList').css('display') !== 'block') {
-              $('#listClose').click();
-            }
-
             // if(d.type == "Exit" || d.type == 'Entry'){
             if (d.type === 'Exit') {
               // console.log(fsm.States[d.id].act[0]);
               pictureInPicture(
                 activations[d.visited[0]],
                 d3.event.currentTarget.parentNode, // highlight this node
-                $('#wskflowContainer')[0],
+                containerElement,
                 'App Visualization' // container to pip
               )(d3.event);
-              /* pictureInPicture(`wsk activation get ${id}`, {echo: true}),
-                                            d3.event.currentTarget.parentNode, // highlight this node
-                                            $("#wskflowContainer")[0],
-                                            'App Visualization'          // container to pip
-                                            )(d3.event)               // pass along the raw dom event
-                                */
             }
           }
         }
@@ -568,7 +547,7 @@ export default function graph2doms(
       // with tiny nodes on initial load; this check
       // introduces a heuristic to avoid tiny nodes on
       // initial display. This solves #582.
-      const sidecar = $('#graph-container'); // TODO: get actual container, this is just a placeholder
+      const sidecar = $(containerElement);
       if (
         $(sidecar).height() > 400 &&
         elkData.height * 2 > $(sidecar).height()
@@ -619,7 +598,6 @@ export default function graph2doms(
       };
       const nodes = getNodes(data);
       const links = getLinks(nodes);
-      console.log({ labels: links.map(link => link.labels) });
       const edges = [];
       links.forEach(link => {
         // convert new elk edge format into old klay edge format to work with the d3 drawing code
@@ -627,7 +605,6 @@ export default function graph2doms(
         // new format doc: http://www.eclipse.org/elk/documentation/tooldevelopers/graphdatastructure/jsonformat.html
         const o = {
           id: link.id,
-          labels: link.labels,
           visited: link.visited,
           source: link.source,
           sourcePort: link.sourcePort,
@@ -716,13 +693,17 @@ export default function graph2doms(
   $(window)
     .unbind('resize')
     .resize(() => {
-      if (customZoom && $('#wskflowSVG').attr('viewBox') !== undefined) {
+      const pipelineGraphSVG = containerElement.firstChild;
+      if (
+        customZoom &&
+        pipelineGraphSVG.getAttribute('viewBox') !== undefined
+      ) {
         // this code is called when the user is in custom zoom mode but the viewbox still exists
         // remove viewbox here to stop auto-resizing,
-        $('#wskflowSVG').removeAttr('viewBox');
+        pipelineGraphSVG.removeAttribute('viewBox');
         // adjust transform to let the graph be in the same size and location
-        const width = $('#wskflowSVG').width();
-        const height = $('#wskflowSVG').height();
+        const width = $(pipelineGraphSVG).width();
+        const height = $(pipelineGraphSVG).height();
         const scale = Math.min(width / elkData.width, height / elkData.height);
         const initScale = scale * zoom.scale();
         const initTransX =
