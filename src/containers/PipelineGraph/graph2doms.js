@@ -3,10 +3,6 @@ import * as $ from 'jquery';
 import * as ELK from 'elkjs/lib/elk.bundled';
 
 const debug = console.log.bind(console); // eslint-disable-line
-const pictureInPicture = (...args) => {
-  debug('pictureInPicture outer', ...args);
-  return (...innerArgs) => debug('pictureInPicture inner', ...innerArgs);
-};
 
 const defaultMaxLabelLength = 10;
 
@@ -25,8 +21,10 @@ export default function graph2doms(
   containerElement,
   activations,
   {
+    composites = { label: { fontSize: '4px', offset: { x: 0, y: -2 } } },
     layoutOptions = {},
-    composites = { label: { fontSize: '4px', offset: { x: 0, y: -2 } } }
+    // onClickTask,
+    onToggleTask
   } = {}
 ) {
   const maxLabelLength =
@@ -37,7 +35,7 @@ export default function graph2doms(
 
   const zoom = d3.zoom().on('zoom', redraw); // eslint-disable-line
 
-  let enterClickMode = false;
+  // let enterClickMode = false;
 
   if (containerElement.firstChild) {
     containerElement.removeChild(containerElement.firstChild);
@@ -140,7 +138,6 @@ export default function graph2doms(
   const root = container.append('g');
   let elkData;
 
-  //
   // After many tests, this is the right way to manually adjust values
   // for `transform` without introducing unwanted behavior when
   // zooming by mouse scrolling using d3's zoom feature.
@@ -149,7 +146,6 @@ export default function graph2doms(
   // values we'd like for `transform`. So when d3 calculates the
   // values for event.translate/scale, it takes our manual adjustments
   // into account.
-  //
   let applyAutoScale = true; // if resizing the window will resize the graph. true by default.
   let customZoom = false;
 
@@ -195,16 +191,16 @@ export default function graph2doms(
           d.type === 'Entry' || d.type === 'Exit' ? d.type : d.label;
         return label && (label.charAt(0) !== '/' ? `/_/${label}` : label);
       })
-      .attr('data-deployed', d => { // eslint-disable-line
-        if (activations) {
-          // empty
-        } else {
-          // only for preview graphs, not for session graphs
-          if (d.deployed === false) { // eslint-disable-line
-            return 'not-deployed';
-          }
-        }
-      })
+      // .attr('data-deployed', d => { // eslint-disable-line
+      //   if (activations) {
+      //     // empty
+      //   } else {
+      //     // only for preview graphs, not for session graphs
+      //     if (d.deployed === false) { // eslint-disable-line
+      //       return 'not-deployed';
+      //     }
+      //   }
+      // })
       .attr('data-status', function(d) { // eslint-disable-line
         if (activations) {
           if (d.visited) {
@@ -232,7 +228,8 @@ export default function graph2doms(
       .attr('class', d => {
         return (
           'atom' + // eslint-disable-line
-          (d.onclick ? ' clickable has-onlick' : '')
+          // (d.onClick ? ' clickable has-onlick' : '')
+          (['Task', 'Step'].includes(d.type) ? ' clickable has-onlick' : '')
         );
       })
       .attr('width', d => d.width)
@@ -241,10 +238,18 @@ export default function graph2doms(
         if (d.type === 'Entry' || d.type === 'Exit') {
           return '50%';
         }
+
+        if (d.type === 'Task') {
+          return '4px';
+        }
       })
       .attr('ry', d => { // eslint-disable-line
         if (d.type === 'Entry' || d.type === 'Exit') {
           return '50%';
+        }
+
+        if (d.type === 'Task') {
+          return '4px';
         }
       })
       .style('fill', d => { // eslint-disable-line
@@ -339,37 +344,29 @@ export default function graph2doms(
       .on('mouseout', () => {
         // $('#qtip').removeClass('visible');
       })
-      .on('mousedown', () => {
-        enterClickMode = true;
-      })
+      // .on('mousedown', () => {
+      //   enterClickMode = true;
+      // })
       .on('click', d => {
-        if (!enterClickMode) {
-          return;
-        }
-        enterClickMode = false;
+        // if (!enterClickMode) {
+        //   return;
+        // }
+        // enterClickMode = false;
 
         // $('#qtip').removeClass('visible');
-        if (d.onclick) {
-          pictureInPicture(
-            d.onclick,
-            d3.event.currentTarget.parentNode, // highlight this node
-            containerElement,
-            d.viewName || 'Flow Visualization'
-          )(d3.event);
-        } else if (activations) {
-          if (d.visited) {
-            // if(d.type == "Exit" || d.type == 'Entry'){
-            if (d.type === 'Exit') {
-              // console.log(fsm.States[d.id].act[0]);
-              pictureInPicture(
-                activations[d.visited[0]],
-                d3.event.currentTarget.parentNode, // highlight this node
-                containerElement,
-                'App Visualization' // container to pip
-              )(d3.event);
-            }
-          }
+
+        if (d.type === 'Task') {
+          // TODO: only toggle tasks with steps
+          console.log({ clickHandler: d });
+          onToggleTask(d.id);
         }
+
+        // TODO: handle Step
+
+        // if (d.onClick) {
+        //   console.log('calling onClick', d.onClick + ''); // eslint-disable-line
+        //   d.onClick();
+        // }
       });
 
     // add node labels
@@ -402,11 +399,7 @@ export default function graph2doms(
         }
         return defaultFontSize;
       })
-      .style('text-anchor', function(d) { // eslint-disable-line
-        if (!d.children) {
-          return 'middle';
-        }
-      })
+      .style('text-anchor', d => (d.children ? undefined : 'middle'))
       .style('pointer-events', 'none')
       .text(d => {
         if (d.id === 'root') {
@@ -416,11 +409,7 @@ export default function graph2doms(
           return d.label;
         }
 
-        let t = d.label;
-        if (t === undefined) {
-          t = d.id;
-        }
-
+        const t = d.label || d.id;
         if (t.length > maxLabelLength) {
           return t.substring(0, maxLabelLength - 1) + '...'; // eslint-disable-line
         }
@@ -477,38 +466,39 @@ export default function graph2doms(
         return path;
       });
 
-    const addMorePathAttr = () =>
-      root
-        .selectAll('path')
-        .attr('data-from-name', function(d) { // eslint-disable-line
-          const fromId = d.source;
-          const isName = $('#' + fromId).attr('data-name'); // eslint-disable-line
-          if (isName) {
-            return isName;
-          }
-        })
-        .attr('data-to-name', function(d) { // eslint-disable-line
-          const toId = d.target;
-          const isName = $('#' + toId).attr('data-name'); // eslint-disable-line
-          if (isName) {
-            return isName;
-          }
-        });
+    // const addMorePathAttr = () =>
+    //   root
+    //     .selectAll('path')
+    //     .attr('data-from-name', function(d) { // eslint-disable-line
+    //       const fromId = d.source;
+    //       const isName = $('#' + fromId).attr('data-name'); // eslint-disable-line
+    //       if (isName) {
+    //         return isName;
+    //       }
+    //     })
+    //     .attr('data-to-name', function(d) { // eslint-disable-line
+    //       const toId = d.target;
+    //       const isName = $('#' + toId).attr('data-name'); // eslint-disable-line
+    //       if (isName) {
+    //         return isName;
+    //       }
+    //     });
 
-    setTimeout(() => {
-      d3.select('.repeat')
-        .append('use')
-        .attr('xlink:href', '#retryIconNormal')
-        .attr('href', '#retryIconNormal')
-        .attr('x', 10)
-        .attr('y', -14);
-    }, 0);
+    // setTimeout(() => {
+    //   d3.select('.repeat')
+    //     .append('use')
+    //     .attr('xlink:href', '#retryIconNormal')
+    //     .attr('href', '#retryIconNormal')
+    //     .attr('x', 10)
+    //     .attr('y', -14);
+    // }, 0);
 
-    setTimeout(addMorePathAttr, 0); // we aren't properly using d3.select.enter... hacking a bit, for now
+    // setTimeout(addMorePathAttr, 0); // we aren't properly using d3.select.enter... hacking a bit, for now
   } /* drawGraph */
 
   const elk = new ELK();
-  const doneRendering = elk
+  // const doneRendering =
+  elk
     .layout(JSONgraph, {
       layoutOptions: Object.assign(
         {
@@ -559,16 +549,16 @@ export default function graph2doms(
                 c.edges[i].sections[0].endPoint.x += c.x; // eslint-disable-line
                 c.edges[i].sections[0].endPoint.y += c.y; // eslint-disable-line
 
-                if (c.edges[i].sections[0].bendPoints) {
-                  for (
-                    let j = 0;
-                    j < c.edges[i].sections[0].bendPoints.length;
-                    j++ // eslint-disable-line
-                  ) {
-                    c.edges[i].sections[0].bendPoints[j].x += c.x; // eslint-disable-line
-                    c.edges[i].sections[0].bendPoints[j].y += c.y; // eslint-disable-line
-                  }
-                }
+                // if (c.edges[i].sections[0].bendPoints) {
+                //   for (
+                //     let j = 0;
+                //     j < c.edges[i].sections[0].bendPoints.length;
+                //     j++ // eslint-disable-line
+                //   ) {
+                //     c.edges[i].sections[0].bendPoints[j].x += c.x; // eslint-disable-line
+                //     c.edges[i].sections[0].bendPoints[j].y += c.y; // eslint-disable-line
+                //   }
+                // }
               }
             }
 
@@ -617,7 +607,7 @@ export default function graph2doms(
       drawGraph(nodes, edges);
     })
     .catch(err => {
-      console.error('[wskflow] error: ', err);
+      console.error('error drawing graph:', err); // eslint-disable-line
     }); /* end of doneRendering */
 
   // any interested parties for zoom events
@@ -631,19 +621,19 @@ export default function graph2doms(
    * @param useThisValue set a value, otherwise toggle the current value
    *
    */
-  const zoomToFit = useThisValue => {
-    applyAutoScale =
-      useThisValue !== undefined ? useThisValue : !applyAutoScale; // toggle applyAutoScale
-    customZoom = false;
-    notify();
-    if (applyAutoScale) {
-      // when clicking to switch from inactive to active, it resizes the graph to fit the window. #422
-      resizeToContain();
-    } else {
-      // when clicking to switch from active to inactive, it resizes the graph to zoom in at graph entry by 2x.
-      resizeToCover();
-    }
-  };
+  // const zoomToFit = useThisValue => {
+  //   applyAutoScale =
+  //     useThisValue !== undefined ? useThisValue : !applyAutoScale; // toggle applyAutoScale
+  //   customZoom = false;
+  //   notify();
+  //   if (applyAutoScale) {
+  //     // when clicking to switch from inactive to active, it resizes the graph to fit the window. #422
+  //     resizeToContain();
+  //   } else {
+  //     // when clicking to switch from active to inactive, it resizes the graph to zoom in at graph entry by 2x.
+  //     resizeToCover();
+  //   }
+  // };
 
   /*
    * from https://github.com/OpenKieler/klayjs-d3/blob/master/examples/interactive/index.js
@@ -663,7 +653,7 @@ export default function graph2doms(
       customZoom = true;
       notify();
     }
-    enterClickMode = false;
+    // enterClickMode = false;
 
     container.attr(
       'transform',
@@ -675,45 +665,45 @@ export default function graph2doms(
   }
 
   // when zoom-to-fit is active, the graph resizes as the window resizes. #422
-  $(window)
-    .unbind('resize')
-    .resize(() => {
-      const pipelineGraphSVG = containerElement.firstChild;
-      if (
-        customZoom &&
-        pipelineGraphSVG.getAttribute('viewBox') !== undefined
-      ) {
-        // this code is called when the user is in custom zoom mode but the viewbox still exists
-        // remove viewbox here to stop auto-resizing,
-        pipelineGraphSVG.removeAttribute('viewBox');
-        // adjust transform to let the graph be in the same size and location
-        const width = $(pipelineGraphSVG).width();
-        const height = $(pipelineGraphSVG).height();
-        const scale = Math.min(width / elkData.width, height / elkData.height);
-        const initScale = scale * zoom.scale();
-        const initTransX =
-          width / 2 - (elkData.width * scale) / 2 + zoom.translate()[0] * scale;
-        const initTransY =
-          height / 2 -
-          (elkData.height * scale) / 2 +
-          zoom.translate()[1] * scale;
-        zoom.translate([initTransX, initTransY]); // TODO: fix these zoom functions
-        zoom.scale(initScale);
-        container.attr(
-          'transform',
-          `matrix(${initScale}, 0, 0, ${initScale}, ${initTransX}, ${initTransY})`
-        );
-      }
-    });
+  // $(window)
+  //   .unbind('resize')
+  //   .resize(() => {
+  //     const pipelineGraphSVG = containerElement.firstChild;
+  //     if (
+  //       customZoom &&
+  //       pipelineGraphSVG.getAttribute('viewBox') !== undefined
+  //     ) {
+  //       // this code is called when the user is in custom zoom mode but the viewbox still exists
+  //       // remove viewbox here to stop auto-resizing,
+  //       pipelineGraphSVG.removeAttribute('viewBox');
+  //       // adjust transform to let the graph be in the same size and location
+  //       const width = $(pipelineGraphSVG).width();
+  //       const height = $(pipelineGraphSVG).height();
+  //       const scale = Math.min(width / elkData.width, height / elkData.height);
+  //       const initScale = scale * zoom.scale();
+  //       const initTransX =
+  //         width / 2 - (elkData.width * scale) / 2 + zoom.translate()[0] * scale;
+  //       const initTransY =
+  //         height / 2 -
+  //         (elkData.height * scale) / 2 +
+  //         zoom.translate()[1] * scale;
+  //       zoom.translate([initTransX, initTransY]); // TODO: fix these zoom functions
+  //       zoom.scale(initScale);
+  //       container.attr(
+  //         'transform',
+  //         `matrix(${initScale}, 0, 0, ${initScale}, ${initTransX}, ${initTransY})`
+  //       );
+  //     }
+  //   });
 
-  // exported API
-  return doneRendering.then(() => ({
-    view: $(containerElement)[0],
-    controller: {
-      register: callback => handlers.push(callback),
-      zoomToFit: () => zoomToFit(true),
-      zoom1to1: () => zoomToFit(false),
-      is1to1: () => !applyAutoScale
-    }
-  }));
+  // // exported API
+  // return doneRendering.then(() => ({
+  //   view: $(containerElement)[0],
+  //   controller: {
+  //     register: callback => handlers.push(callback),
+  //     zoomToFit: () => zoomToFit(true),
+  //     zoom1to1: () => zoomToFit(false),
+  //     is1to1: () => !applyAutoScale
+  //   }
+  // }));
 }

@@ -184,18 +184,18 @@ body[kui-theme="Light"] {
   // position: relative;
   overflow: hidden; /* we will do pan and zoom ourselves */
 
-  width: 600px;
+  width: 300px;
   height: 600px;
 
   svg {
     // flex: 1;
 
-    .node[data-deployed="not-deployed"]:hover,
-    .node[data-deployed="not-deployed"]:hover .atom:not(.has-onclick) {
-      /* no hover effects for not-deployed actions */
-      text-decoration: none;
-      cursor: inherit !important;
-    }
+    // .node[data-deployed="not-deployed"]:hover,
+    // .node[data-deployed="not-deployed"]:hover .atom:not(.has-onclick) {
+    //   /* no hover effects for not-deployed actions */
+    //   text-decoration: none;
+    //   cursor: inherit !important;
+    // }
     &[data-is-session-flow="true"] .node.leaf[data-status="not-run"] .atom {
       /* not-run nodes in a session flow */
       mask: url(#mask-stripe);
@@ -266,9 +266,9 @@ body[kui-theme="Light"] {
     body[kui-theme-style="dark"] & .node.leaf .atom {
       stroke: var(--color-base02) !important;
     }
-    body[kui-theme-style="dark"] & .node[data-deployed="not-deployed"] .atom {
-      opacity: 0.7;
-    }
+    // body[kui-theme-style="dark"] & .node[data-deployed="not-deployed"] .atom {
+    //   opacity: 0.7;
+    // }
     .node .atom ~ text {
       fill: var(--color-text-01);
     }
@@ -324,10 +324,10 @@ body[kui-theme="Light"] {
     .node .atom.has-onclick:hover {
       fill: var(--color-base0D) !important;
     }
-    .node[data-deployed="not-deployed"] .atom {
-      mask: url(#mask-stripe);
-      fill: var(--color-base04) !important;
-    }
+    // .node[data-deployed="not-deployed"] .atom {
+    //   mask: url(#mask-stripe);
+    //   fill: var(--color-base04) !important;
+    // }
 
     .node.compound:not(.root) .atom.has-onclick:hover {
       /* stroke-dasharray: 0.5,1; */

@@ -29,8 +29,15 @@ export function isPipelineRun(resource) {
   );
 }
 
-const flowView = async (jsons, { container, run }) => {
-  const graph = await tekton2graph(jsons, run);
+const flowView = async (
+  jsons,
+  { container, expandedTasks, onClickTask, onToggleTask, run }
+) => {
+  const graph = await tekton2graph({
+    jsons,
+    run,
+    expandedTasks
+  });
 
   console.log({ jsons, run, graph });
 
@@ -40,7 +47,9 @@ const flowView = async (jsons, { container, run }) => {
       'elk.spacing.nodeNode': 10,
       'elk.padding': '[top=7.5,left=5,bottom=7.5,right=5]',
       hierarchyHandling: 'INCLUDE_CHILDREN' // since we have hierarhical edges, i.e. that cross-cut subgraphs
-    }
+    },
+    onClickTask,
+    onToggleTask
   });
 
   const startTime =
@@ -60,18 +69,32 @@ const flowView = async (jsons, { container, run }) => {
   };
 };
 
-export default (resource, { container, pipeline, tasks }) => {
+export default (
+  resource,
+  { container, expandedTasks, onClickTask, onToggleTask, pipeline, tasks }
+) => {
   console.log({ resource });
   if (isPipelineRun(resource)) {
     console.log({ pipeline });
     if (!pipeline) {
       return null;
     }
-    return flowView([pipeline].concat(tasks), { container, run: resource });
+    return flowView([pipeline].concat(tasks), {
+      container,
+      expandedTasks,
+      onClickTask,
+      onToggleTask,
+      run: resource
+    });
   }
 
   if (isPipeline(resource)) {
-    return flowView([resource].concat(tasks), { container });
+    return flowView([resource].concat(tasks), {
+      container,
+      expandedTasks,
+      onClickTask,
+      onToggleTask
+    });
   }
 
   // TODO: add support for TaskRun
