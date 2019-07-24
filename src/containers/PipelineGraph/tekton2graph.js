@@ -10,20 +10,17 @@ function success(conditions) {
 
 const makeSubGraph = (
   label = 'root',
-  { children, onclick, tooltip, tooltipColor, type, visited } = { children: [] }
+  { children, type, visited } = { children: [] }
 ) => {
   return {
     id: label,
     label,
-    onclick,
     children,
     visited,
     edges: [],
     nParents: 0,
     nChildren: 0,
-    type,
-    tooltip,
-    tooltipColor
+    type
   };
 };
 
@@ -101,7 +98,7 @@ function addEdge(
  * Convert JSON form of Tekton resources into a graph model
  * compatible wiht the ELK graph layout toolkit.
  */
-export default async function(jsons, run) {
+export default async function({ expandedTasks, jsons, run }) {
   const pipeline = getPipeline(jsons);
 
   // map from Task.metadata.name to Task
@@ -136,8 +133,6 @@ export default async function(jsons, run) {
   const startVisit =
     (run && [
       {
-        start: new Date(run.status.startTime).getTime(),
-        duration: 0,
         response: {
           success: true
         }
@@ -148,8 +143,6 @@ export default async function(jsons, run) {
     (run &&
       run.status.completionTime && [
         {
-          start: new Date(run.status.completionTime).getTime(),
-          duration: 0,
           response: {
             success: success(run.status.conditions)
           }
@@ -164,14 +157,8 @@ export default async function(jsons, run) {
       const task = taskRefName2Task[taskRefName];
 
       if (task) {
-        const start = new Date(taskRun.status.startTime).getTime();
-
         task.visitedIdx = accumulator.length;
         accumulator.push({
-          start,
-          duration: taskRun.status.completionTime
-            ? new Date(taskRun.status.completionTime).getTime() - start
-            : 0,
           response: {
             success: success(taskRun.status.conditions)
           }
@@ -179,12 +166,8 @@ export default async function(jsons, run) {
 
         if (taskRun.status.steps) {
           taskRun.status.steps.forEach(stepRun => {
-            let start; // eslint-disable-line
-            let end;
             let success; // eslint-disable-line
             if (stepRun.terminated) {
-              start = new Date(stepRun.terminated.startedAt).getTime();
-              end = new Date(stepRun.terminated.finishedAt).getTime();
               success = stepRun.terminated.reason !== 'Error';
             }
 
@@ -192,8 +175,6 @@ export default async function(jsons, run) {
             if (step) {
               step.visitedIdx = accumulator.length;
               accumulator.push({
-                start,
-                duration: end - start,
                 response: {
                   success
                 }
@@ -252,22 +233,14 @@ export default async function(jsons, run) {
     const task = taskName2Task[taskRef.taskRef.name];
 
     let node;
-    // TODO: can check taskRef.name (NOT taskRef.taskRef.name) here
-    // to determine if it's selected task (i.e. should expand / render sub graph)
-    if (task && task.spec.steps && task.spec.steps.length > 0) {
-      // const resources = (task.spec.inputs && task.spec.inputs.resources) || [];
-      // const resourceList = `${resources
-      //   .map(_ => `<span class='color-base0A'>${_.type}</span>:${_.name}`)
-      //   .join(', ')}`;
-
-      // const params = (task.spec.inputs && task.spec.inputs.params) || [];
-      // const paramList = `(${params.map(_ => _.name).join(', ')})`;
-
+    if (
+      task &&
+      expandedTasks[taskRef.name] &&
+      task.spec.steps &&
+      task.spec.steps.length > 0
+    ) {
       const subgraph = makeSubGraph(taskRef.name, {
         type: 'Task',
-        // tooltip: `<table><tr><td><strong>Resources</strong></td><td>${resourceList}</td></tr><tr><td><strong>Params</strong></td><td>${paramList}</td></tr></table>`,
-        // tooltipColor: '0C',
-        onclick: ``,
         visited: task.visitedIdx !== undefined ? [task.visitedIdx] : undefined,
         children: task.spec.steps.map(step => {
           const stepNode = {
@@ -277,13 +250,9 @@ export default async function(jsons, run) {
             height: defaultHeight,
             nChildren: 0,
             nParents: 0,
-            deployed: false,
             visited:
               step.visitedIdx !== undefined ? [step.visitedIdx] : undefined,
-            type: 'Step',
-            // tooltip: `<strong>Image</strong>: ${step.image}`,
-            // tooltipColor: '0E',
-            onclick: ``
+            type: 'Step'
           };
 
           accumulator[stepNode.id] = stepNode; // eslint-disable-line
@@ -306,7 +275,6 @@ export default async function(jsons, run) {
         nChildren: 0,
         nParents: 0,
         type: 'Task',
-        // tooltip: 'test',
         visited:
           task && task.visitedIdx !== undefined ? [task.visitedIdx] : undefined
       };
@@ -374,7 +342,6 @@ export default async function(jsons, run) {
   /**
    * Simple wrapper around addEdge that interfaces with the symbol
    * table to turn names into tasks
-   *
    */
   const wire = (parentTaskRefName, childTaskRef) => {
     const parent = symbolTable[parentTaskRefName];
