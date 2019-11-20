@@ -99,7 +99,21 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
     const { error, intl, match, pipelineRun, tasks, taskRuns } = this.props;
 
     if (!pipelineRun) {
-      return <PipelineRun error="PipelineRun not found" loading={false} />;
+      return (
+        <InlineNotification
+          kind="error"
+          hideCloseButton
+          lowContrast
+          title={intl.formatMessage({
+            id: 'dashboard.pipelineRun.error',
+            defaultMessage: 'Error loading PipelineRun'
+          })}
+          subtitle={intl.formatMessage({
+            id: 'dashboard.pipelineRun.notFound',
+            defaultMessage: 'PipelineRun not found'
+          })}
+        />
+      );
     }
 
     if (!pipelineRun.status) {

@@ -18,7 +18,6 @@ import {
 } from 'carbon-components-react';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import {
-  getErrorMessage,
   getStatus,
   selectedTask,
   selectedTaskRun,
@@ -27,7 +26,7 @@ import {
   updateUnexecutedSteps
 } from '@tektoncd/dashboard-utils';
 
-import { Log, RunHeader, StepDetails, TaskTree } from '..';
+import { Log, PipelineGraph, RunHeader, StepDetails, TaskTree } from '..';
 
 import './Run.scss';
 
@@ -144,7 +143,6 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
   render() {
     const {
       customNotification,
-      error,
       fetchLogs,
       intl,
       loading,
@@ -158,45 +156,6 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
 
     if (loading) {
       return <StructuredListSkeleton border />;
-    }
-
-    if (error) {
-      return (
-        <>
-          {customNotification}
-          <InlineNotification
-            kind="error"
-            hideCloseButton
-            lowContrast
-            title={intl.formatMessage({
-              id: 'dashboard.pipelineRun.error',
-              defaultMessage: 'Error loading PipelineRun'
-            })}
-            subtitle={getErrorMessage(error)}
-          />
-        </>
-      );
-    }
-
-    if (!this.props.pipelineRun) {
-      return (
-        <>
-          {customNotification}
-          <InlineNotification
-            kind="info"
-            hideCloseButton
-            lowContrast
-            title={intl.formatMessage({
-              id: 'dashboard.pipelineRun.failed',
-              defaultMessage: 'Cannot load PipelineRun'
-            })}
-            subtitle={intl.formatMessage({
-              id: 'dashboard.pipelineRun.notFound',
-              defaultMessage: 'PipelineRun not found'
-            })}
-          />
-        </>
-      );
     }
 
     const {
@@ -302,6 +261,13 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
               taskRun={taskRun}
             />
           )}
+          <PipelineGraph
+            onClickStep={(...args) => console.log('onClickStep', { ...args })}
+            onClickTask={(...args) => console.log('onClickTask', { ...args })}
+            pipeline={{ spec: { tasks: [] }, metadata: {} } /* TODO */}
+            pipelineRun={this.props.pipelineRun}
+            tasks={this.props.tasks}
+          />
         </div>
       </>
     );
