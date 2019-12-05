@@ -1,0 +1,95 @@
+{
+  "id": "root",
+  "label": "root",
+  "edges": [
+    {
+      "id": "Start-skaffold-unit-tests",
+      "source": "Start",
+      "sourcePort": "Start-pSourceSingleton",
+      "target": "skaffold-unit-tests",
+      "targetPort": "skaffold-unit-tests-p0"
+    },
+    {
+      "id": "skaffold-unit-tests-End",
+      "source": "skaffold-unit-tests",
+      "sourcePort": "skaffold-unit-tests-p1",
+      "target": "End",
+      "targetPort": "End-pTargetSingleton"
+    }
+  ],
+  "children": [
+    {
+      "id": "skaffold-unit-tests",
+      "label": "build-frontend",
+      "children": [
+        {
+          "id": "__step__skaffold-unit-tests__run-tests",
+          "label": "build-app",
+          "width": 181,
+          "height": 26,
+          "nChildren": 2,
+          "nParents": 1,
+          "type": "Step"
+        },
+        {
+          "id": "__step__skaffold-unit-tests__push",
+          "label": "push",
+          "width": 181,
+          "height": 26,
+          "nChildren": 2,
+          "nParents": 1,
+          "type": "Step"
+        }
+      ],
+      "edges": [{
+        "id": "a-b",
+        "source": "__step__skaffold-unit-tests__run-tests",
+        "sourcePort": "__step__skaffold-unit-tests__run-tests",
+        "target": "__step__skaffold-unit-tests__push",
+        "targetPort": "__step__skaffold-unit-tests__push"
+      }],
+      "nParents": 1,
+      "nChildren": 2,
+      "status": "success",
+      "type": "Task",
+      "ports": [
+        {
+          "id": "skaffold-unit-tests-p0"
+        },
+        {
+          "id": "skaffold-unit-tests-p1"
+        }
+      ]
+    },
+    {
+      "id": "Start",
+      "label": "Start",
+      "type": "Start",
+      "width": 60,
+      "height": 60,
+      "nChildren": 1,
+      "nParents": 0,
+      "ports": [
+        {
+          "id": "Start-pSourceSingleton"
+        }
+      ]
+    },
+    {
+      "id": "End",
+      "label": "End",
+      "type": "End",
+      "width": 60,
+      "height": 60,
+      "nChildren": 0,
+      "nParents": 2,
+      "ports": [
+        {
+          "id": "End-pTargetSingleton"
+        }
+      ]
+    }
+  ],
+  "nChildren": 0,
+  "nParents": 0
+}
