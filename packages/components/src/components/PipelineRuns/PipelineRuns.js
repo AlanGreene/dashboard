@@ -54,7 +54,11 @@ const PipelineRuns = ({
   loading,
   selectedNamespace,
   pipelineRuns,
-  pipelineRunActions
+  pipelineRunActions,
+  showStatus = pipelineRun => {
+    const { reason } = getStatus(pipelineRun);
+    return reason !== 'Succeeded';
+  }
 }) => {
   const headers = [
     {
@@ -158,16 +162,19 @@ const PipelineRuns = ({
         )),
       namespace: !hideNamespace && <span title={namespace}>{namespace}</span>,
       status: (
-        <div className="definition">
-          <div
+        <span className="definition">
+          <span
             className="status"
             data-status={status}
             data-reason={reason}
             title={getPipelineRunStatusTooltip(pipelineRun, intl)}
           >
             {statusIcon}
-          </div>
-        </div>
+            {showStatus(pipelineRun) && (
+              <span>{getPipelineRunStatus(pipelineRun, intl)}</span>
+            )}
+          </span>
+        </span>
       ),
       createdTime: <FormattedDate date={creationTimestamp} relative />,
       duration,

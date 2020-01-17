@@ -13,13 +13,13 @@ limitations under the License.
 
 @import '../../scss/vars';
 
-.definition .status {
-  display: flex;
+.bx--data-table .status {
+  // display: flex;
 
   .status-icon {
     margin-right: 0.5em;
     vertical-align: sub;
-    flex-shrink: 0;
+    // flex-shrink: 0;
   }
 
   &:not([data-status]) {

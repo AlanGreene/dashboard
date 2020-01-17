@@ -33,7 +33,7 @@ limitations under the License.
   }
 
   .bx--data-table td {
-    &:not(.cell-actions):not(.cell-status) {
+    &:not(.cell-actions) {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -41,11 +41,15 @@ limitations under the License.
       vertical-align: middle;
     }
 
-    &.cell-status {
-      vertical-align: middle;
-    }
+    // &.cell-status {
+    //   vertical-align: middle;
+    // }
 
-    &.cell-status, &.cell-actions {
+    // &.cell-status, &.cell-actions {
+    //   width: 40px;
+    // }
+
+    &.cell-actions {
       width: 40px;
     }
   }
