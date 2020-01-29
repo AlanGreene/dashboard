@@ -120,6 +120,104 @@ storiesOf('PipelineRuns', module)
               }
             ]
           }
+        },
+        {
+          metadata: {
+            name: 'pipeline-run-20190816124709',
+            namespace: 'cb4552a6-b2d7-45e2-9773-3d4ca33909ff',
+            uid: '98788f4b-c84b-47c1-98c9-a85f35e8475e',
+            creationTimestamp: '2019-08-16T12:48:00Z'
+          },
+          spec: {
+            pipelineRef: {
+              name: 'pipeline'
+            }
+          },
+          status: {
+            conditions: [
+              {
+                lastTransitionTime: '2019-08-16T12:49:28Z',
+                message:
+                  'PipelineRun "pipeline-run-20190816124709" was cancelled',
+                reason: 'PipelineRunCancelled',
+                status: 'False',
+                type: 'Succeeded'
+              }
+            ]
+          }
+        },
+        {
+          metadata: {
+            name: 'pipeline-run-20190816124712',
+            namespace: 'cb4552a6-b2d7-45e2-9773-3d4ca33909ff',
+            uid: 'e391b785-d8e0-4a2a-b2ad-1cf55f11c7fe',
+            creationTimestamp: '2019-08-16T12:48:00Z'
+          },
+          spec: {
+            pipelineRef: {
+              name: 'pipeline'
+            }
+          },
+          status: {
+            conditions: [
+              {
+                lastTransitionTime: '2019-08-16T12:49:28Z',
+                message:
+                  'TaskRun demo-pipeline-run-1578419051569-build-skaffold-app-g6xmg has failed',
+                reason: 'Failed',
+                status: 'False',
+                type: 'Succeeded'
+              }
+            ]
+          }
+        },
+        {
+          metadata: {
+            name: 'pipeline-run-20190816124710',
+            namespace: 'cb4552a6-b2d7-45e2-9773-3d4ca33909ff',
+            uid: 'a6caa82d-619c-477c-b0ba-2038a1629147',
+            creationTimestamp: '2019-08-16T12:48:00Z'
+          },
+          spec: {
+            pipelineRef: {
+              name: 'pipeline'
+            }
+          },
+          status: {
+            conditions: [
+              {
+                lastTransitionTime: '2019-08-16T12:49:28Z',
+                message: 'detailed status message goes here',
+                reason: 'PipelineRunTimeout',
+                status: 'False',
+                type: 'Succeeded'
+              }
+            ]
+          }
+        },
+        {
+          metadata: {
+            name: 'pipeline-run-20190816124711',
+            namespace: 'cb4552a6-b2d7-45e2-9773-3d4ca33909ff',
+            uid: '20e99721-ccd8-473f-a992-2964a7282b45',
+            creationTimestamp: '2019-08-16T12:48:00Z'
+          },
+          spec: {
+            pipelineRef: {
+              name: 'pipeline'
+            }
+          },
+          status: {
+            conditions: [
+              {
+                lastTransitionTime: '2019-08-16T12:49:28Z',
+                message: 'detailed status message goes here',
+                reason: 'ExceededResourceQuota',
+                status: 'False',
+                type: 'Succeeded'
+              }
+            ]
+          }
         }
       ]}
       cancelPipelineRun={() => {}}

@@ -21,6 +21,7 @@ import PipelineGraph from './PipelineGraph';
 import ZoomablePipelineGraph from './ZoomablePipelineGraph';
 
 import graph from './examples/graph.json';
+import graphNoStatus from './examples/graph_nostatus.json';
 import pipeline from './examples/pipeline.json';
 import pipelineRun from './examples/pipelineRun.json';
 import tasks from './examples/tasks.json';
@@ -83,7 +84,9 @@ storiesOf('Graph/Node', module)
     <Node {...taskProps} status="success" {...expandedProps} isSelected />
   ));
 
-storiesOf('Graph/Graph', module).add('default', () => <Graph graph={graph} />);
+storiesOf('Graph/Graph', module)
+  .add('default', () => <Graph graph={graph} />)
+  .add('no status', () => <Graph graph={graphNoStatus} isRun={false} />);
 
 storiesOf('Graph/PipelineGraph', module).add('default', () => (
   <PipelineGraph

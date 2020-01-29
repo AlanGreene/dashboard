@@ -39,6 +39,7 @@ export default class Node extends Component {
       edges,
       height,
       id,
+      isRun,
       isSelected,
       status,
       type,
@@ -49,7 +50,7 @@ export default class Node extends Component {
     let StatusIcon;
     // Steps should only display status icon on error
     // Tasks will always show an icon
-    if (type === 'Task' || status === 'error') {
+    if (isRun && (type === 'Task' || status === 'error')) {
       switch (status) {
         case 'error':
           StatusIcon = CloseFilled;

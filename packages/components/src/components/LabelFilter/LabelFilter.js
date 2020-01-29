@@ -187,10 +187,10 @@ class LabelFilter extends Component {
           </div>
           {filters.map(filter => (
             <Tag
-              type="blue"
               filter
-              onClick={() => this.props.handleDeleteFilter(filter)}
               key={filter}
+              onClick={() => this.props.handleDeleteFilter(filter)}
+              type="blue"
             >
               {filter.replace(/=/g, ':')}
             </Tag>

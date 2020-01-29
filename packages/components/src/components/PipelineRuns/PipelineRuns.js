@@ -54,7 +54,21 @@ const PipelineRuns = ({
   loading,
   selectedNamespace,
   pipelineRuns,
-  pipelineRunActions
+  pipelineRunActions,
+  shouldShowReason = (pipelineRun, intlLib) => {
+    // return true;
+
+    // const status = getPipelineRunStatus(pipelineRun, intlLib);
+    // switch (status) {
+    //   case 'Failed':
+    //   case 'Pending':
+    //   case 'Running':
+    //   case 'Succeeded':
+    //     return false;
+    //   default:
+    //     return true;
+    // }
+  }
 }) => {
   const headers = [
     {
@@ -166,6 +180,8 @@ const PipelineRuns = ({
             title={getPipelineRunStatusTooltip(pipelineRun, intl)}
           >
             {statusIcon}
+            {shouldShowReason(pipelineRun, intl) &&
+              getPipelineRunStatus(pipelineRun, intl)}
           </div>
         </div>
       ),

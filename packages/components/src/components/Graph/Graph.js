@@ -69,7 +69,7 @@ export default class Graph extends Component {
   };
 
   render() {
-    const { isSubGraph, onClickStep, onClickTask } = this.props;
+    const { isRun, isSubGraph, onClickStep, onClickTask } = this.props;
     const { height, links, margin, nodes, width } = this.state;
 
     if (!nodes) {
@@ -105,6 +105,7 @@ export default class Graph extends Component {
           graph={{ links, nodes }}
           nodeComponent={c => (
             <Node
+              isRun={isRun}
               onClick={isSubGraph ? onClickStep : onClickTask}
               onClickStep={isSubGraph ? undefined : onClickStep}
               {...c.node}
@@ -118,6 +119,7 @@ export default class Graph extends Component {
 }
 
 Graph.defaultProps = {
+  isRun: true,
   isSubGraph: false,
   onClickStep: () => {},
   onClickTask: () => {}
