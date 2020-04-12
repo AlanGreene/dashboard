@@ -49,12 +49,20 @@ export function getAPI(type, { name = '', namespace } = {}, queryParams) {
 
 export function getKubeAPI(
   type,
-  { name = '', namespace, subResource } = {},
+  { name = '', namespace, subResource, isWebSocket } = {},
   queryParams
 ) {
+  const queryParamsToUse = {
+    ...queryParams,
+    ...(isWebSocket
+      ? { [subResource === 'log' ? 'follow' : 'watch']: true }
+      : null)
+  };
   return [
-    apiRoot,
-    '/proxy/api/v1/',
+    isWebSocket ? apiRoot.replace('http', 'ws') : apiRoot,
+    '/proxy/',
+    isWebSocket ? 'ws/' : '',
+    'api/v1/',
     namespace && namespace !== ALL_NAMESPACES
       ? `namespaces/${encodeURIComponent(namespace)}/`
       : '',
@@ -62,7 +70,7 @@ export function getKubeAPI(
     '/',
     encodeURIComponent(name),
     subResource ? `/${subResource}` : '',
-    queryParams ? `?${new URLSearchParams(queryParams).toString()}` : ''
+    `?${new URLSearchParams(queryParamsToUse).toString()}`
   ].join('');
 }
 
@@ -304,14 +312,14 @@ export function getCondition({ name, namespace }) {
   return get(uri);
 }
 
-export function getPodLogURL({ container, name, namespace }) {
+export function getPodLogURL({ container, name, namespace, isWebSocket }) {
   let queryParams;
   if (container) {
     queryParams = { container };
   }
   const uri = `${getKubeAPI(
     'pods',
-    { name, namespace, subResource: 'log' },
+    { name, namespace, subResource: 'log', isWebSocket },
     queryParams
   )}`;
   return uri;

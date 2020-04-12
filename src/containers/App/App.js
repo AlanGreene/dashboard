@@ -20,6 +20,7 @@ import {
   HashRouter as Router,
   Switch
 } from 'react-router-dom';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
 import { injectIntl, IntlProvider } from 'react-intl';
 import { Content, InlineNotification } from 'carbon-components-react';
@@ -67,6 +68,7 @@ import {
   TriggerTemplates
 } from '..';
 
+import { getKubeAPI } from '../../api';
 import { fetchExtensions } from '../../actions/extensions';
 import { fetchNamespaces, selectNamespace } from '../../actions/namespaces';
 import { fetchInstallProperties } from '../../actions/properties';
@@ -137,6 +139,18 @@ export /* istanbul ignore next */ class App extends Component {
 
   componentDidMount() {
     this.fetchConfig();
+
+    const namespacesWebSocketURL = getKubeAPI('namespaces', {
+      isWebSocket: true
+    });
+
+    console.log({ namespacesWebSocketURL });
+    this.webSocket = new ReconnectingWebSocket(namespacesWebSocketURL);
+
+    this.webSocket.addEventListener('message', async event => {
+      // console.log({ socketData: await event.data.text() });
+      console.log({ socketData: JSON.parse(event.data) });
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -166,6 +180,7 @@ export /* istanbul ignore next */ class App extends Component {
   }
 
   componentWillUnmount() {
+    this.webSocket.close();
     this.props.onUnload();
   }
 
