@@ -319,6 +319,7 @@ class CreatePipelineRun extends React.Component {
         this.props.onSuccess(response);
       })
       .catch(error => {
+        console.log('CreatePipelineRun', { error });
         error.response.text().then(text => {
           const statusCode = error.response.status;
           let errorMessage = `error code ${statusCode}`;

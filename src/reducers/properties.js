@@ -11,7 +11,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-const defaultState = { ReadOnly: true };
+const defaultState = { ReadOnly: false };
 function properties(state = defaultState, action) {
   switch (action.type) {
     case 'INSTALL_PROPERTIES_SUCCESS':

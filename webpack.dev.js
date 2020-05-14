@@ -45,6 +45,11 @@ module.exports = merge(common({ mode }), {
       '/proxy': {
         target: process.env.API_DOMAIN || API_DOMAIN,
         ws: true
+      },
+      '/ws/proxy': {
+        target: 'ws://localhost:9097',
+        ws: true,
+        pathRewrite: { '^/ws': '' }
       }
     },
     stats: 'minimal'

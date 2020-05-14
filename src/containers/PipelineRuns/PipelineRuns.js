@@ -16,9 +16,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import isEqual from 'lodash.isequal';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 import { InlineNotification } from 'carbon-components-react';
 import { PipelineRuns as PipelineRunsList } from '@tektoncd/dashboard-components';
 import {
+  ALL_NAMESPACES,
   getErrorMessage,
   getFilters,
   getStatus,
@@ -45,6 +47,7 @@ import {
   deletePipelineRun,
   rerunPipelineRun
 } from '../../api';
+import { getAPIRoot } from '../../api/comms';
 
 const initialState = {
   showCreatePipelineRunModal: false,
@@ -66,6 +69,7 @@ export /* istanbul ignore next */ class PipelineRuns extends Component {
   componentDidMount() {
     document.title = getTitle({ page: 'PipelineRuns' });
     this.fetchPipelineRuns();
+    this.connectWebsocket();
   }
 
   componentDidUpdate(prevProps) {
@@ -81,6 +85,10 @@ export /* istanbul ignore next */ class PipelineRuns extends Component {
       this.fetchPipelineRuns();
     } else if (webSocketConnected && prevWebSocketConnected === false) {
       this.fetchPipelineRuns();
+    }
+
+    if (namespace !== prevNamespace) {
+      this.connectWebsocket();
     }
   }
 
@@ -203,7 +211,54 @@ export /* istanbul ignore next */ class PipelineRuns extends Component {
     ];
   };
 
+  connectWebsocket() {
+    const { namespace } = this.props;
+    const types = {
+      ADDED: 'PipelineRunCreated',
+      MODIFIED: 'PipelineRunUpdated',
+      DELETED: 'PipelineRunDeleted'
+    };
+
+    if (this.socket) {
+      this.socket.close();
+      this.socket = null;
+    }
+
+    const url = `${getAPIRoot().replace(
+      /^http/,
+      'ws'
+    )}/ws/proxy/apis/tekton.dev/v1beta1${
+      namespace === ALL_NAMESPACES ? '' : `/namespaces/${namespace}`
+    }/pipelineruns?watch=true`;
+
+    this.socket = new ReconnectingWebSocket(
+      // 'ws://localhost:8000/ws/proxy/apis/tekton.dev/v1beta1/pipelineruns?watch=true'
+      url
+    );
+
+    this.socket.addEventListener('close', () => {
+      this.props.dispatchWebsocketEvent({ type: 'WEBSOCKET_DISCONNECTED' });
+    });
+
+    this.socket.addEventListener('open', () => {
+      console.log('websocket connected', new Date());
+      this.props.dispatchWebsocketEvent({ type: 'WEBSOCKET_CONNECTED' });
+    });
+
+    this.socket.addEventListener('message', event => {
+      if (event.type !== 'message') {
+        return;
+      }
+      const message = JSON.parse(event.data);
+      this.props.dispatchWebsocketEvent({
+        type: types[message.type],
+        payload: message.object
+      });
+    });
+  }
+
   handleCreatePipelineRunSuccess(newPipelineRun) {
+    console.log('handleCreatePipelineRunSuccess', { newPipelineRun });
     const {
       metadata: { namespace, name }
     } = newPipelineRun;
@@ -353,8 +408,13 @@ function mapStateToProps(state, props) {
   };
 }
 
+function dispatchWebsocketEvent(payload) {
+  return payload;
+}
+
 const mapDispatchToProps = {
-  fetchPipelineRuns
+  fetchPipelineRuns,
+  dispatchWebsocketEvent
 };
 
 export default connect(

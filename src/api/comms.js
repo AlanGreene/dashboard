@@ -11,8 +11,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-const CSRF_HEADER = 'X-CSRF-Token';
-const CSRF_SAFE_METHODS = ['GET', 'HEAD', 'OPTIONS'];
+// const CSRF_HEADER = 'X-CSRF-Token';
+// const CSRF_SAFE_METHODS = ['GET', 'HEAD', 'OPTIONS'];
 
 const defaultOptions = {
   method: 'GET',
@@ -34,6 +34,7 @@ export function getHeaders(headers = {}) {
   return {
     Accept: 'application/json',
     'Content-Type': 'application/json',
+    Origin: apiRoot,
     ...headers
   };
 }
@@ -67,24 +68,24 @@ export function checkStatus(response = {}) {
   throw error;
 }
 
-function getToken() {
-  return fetch(`${apiRoot}/v1/token`, {
-    ...defaultOptions,
-    headers: {
-      Accept: 'text/plain'
-    }
-  }).then(response => response.headers.get(CSRF_HEADER));
-}
+// function getToken() {
+//   return fetch(`${apiRoot}/v1/token`, {
+//     ...defaultOptions,
+//     headers: {
+//       Accept: 'text/plain'
+//     }
+//   }).then(response => response.headers.get(CSRF_HEADER));
+// }
 
 export async function request(uri, options = defaultOptions) {
-  let token;
-  if (!CSRF_SAFE_METHODS.includes(options.method)) {
-    token = await getToken();
-  }
+  // let token;
+  // if (!CSRF_SAFE_METHODS.includes(options.method)) {
+  //   token = await getToken();
+  // }
 
   const headers = {
-    ...options.headers,
-    ...(token && { [CSRF_HEADER]: token })
+    ...options.headers
+    // ...(token && { [CSRF_HEADER]: token })
   };
 
   return fetch(uri, {
