@@ -60,7 +60,12 @@ func (r Resource) ProxyRequest(request *restful.Request, response *restful.Respo
 
 	uri := request.PathParameter("subpath") + "?" + parsedURL.RawQuery
 	forwardRequest := r.K8sClient.CoreV1().RESTClient().Verb(request.Request.Method).RequestURI(uri).Body(request.Request.Body)
-	forwardRequest.SetHeader("Content-Type", request.HeaderParameter("Content-Type"))
+	for h, val := range request.Request.Header {
+		// if h != "Accept" {
+		forwardRequest.SetHeader(h, val...)
+		// }
+	}
+	// forwardRequest.SetHeader("Content-Type", request.HeaderParameter("Content-Type"))
 	forwardResponse := forwardRequest.Do()
 
 	if secretsURIPattern.Match([]byte(uri)) {
