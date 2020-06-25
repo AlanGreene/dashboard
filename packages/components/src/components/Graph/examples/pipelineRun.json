@@ -1,239 +1,1479 @@
 {
-  "apiVersion": "tekton.dev/v1alpha1",
-  "kind": "PipelineRun",
-  "metadata": {
-    "annotations": {
-      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"tekton.dev/v1alpha1\",\"kind\":\"Pipeline\",\"metadata\":{\"annotations\":{},\"name\":\"demo-pipeline\",\"namespace\":\"default\"},\"spec\":{\"resources\":[{\"name\":\"source-repo\",\"type\":\"git\"},{\"name\":\"web-image\",\"type\":\"image\"},{\"name\":\"app-image\",\"type\":\"image\"}],\"tasks\":[{\"name\":\"skaffold-unit-tests\",\"resources\":{\"inputs\":[{\"name\":\"workspace\",\"resource\":\"source-repo\"}]},\"taskRef\":{\"name\":\"unit-tests\"}},{\"name\":\"build-skaffold-web\",\"params\":[{\"name\":\"pathToDockerFile\",\"value\":\"Dockerfile\"},{\"name\":\"pathToContext\",\"value\":\"/workspace/workspace/examples/microservices/leeroy-web\"}],\"resources\":{\"inputs\":[{\"name\":\"workspace\",\"resource\":\"source-repo\"}],\"outputs\":[{\"name\":\"builtImage\",\"resource\":\"web-image\"}]},\"runAfter\":[\"skaffold-unit-tests\"],\"taskRef\":{\"name\":\"build-push\"}},{\"name\":\"build-skaffold-app\",\"params\":[{\"name\":\"pathToDockerFile\",\"value\":\"Dockerfile\"},{\"name\":\"pathToContext\",\"value\":\"/workspace/workspace/examples/microservices/leeroy-app\"}],\"resources\":{\"inputs\":[{\"name\":\"workspace\",\"resource\":\"source-repo\"}],\"outputs\":[{\"name\":\"builtImage\",\"resource\":\"app-image\"}]},\"runAfter\":[\"skaffold-unit-tests\"],\"taskRef\":{\"name\":\"build-push\"}},{\"name\":\"deploy-app\",\"params\":[{\"name\":\"path\",\"value\":\"/workspace/workspace/examples/microservices/leeroy-app/kubernetes/deployment.yaml\"},{\"name\":\"yqArg\",\"value\":\"-d1\"},{\"name\":\"yamlPathToImage\",\"value\":\"spec.template.spec.containers[0].image\"}],\"resources\":{\"inputs\":[{\"name\":\"workspace\",\"resource\":\"source-repo\"},{\"from\":[\"build-skaffold-app\"],\"name\":\"image\",\"resource\":\"app-image\"}]},\"taskRef\":{\"name\":\"demo-deploy-kubectl\"}},{\"name\":\"deploy-web\",\"params\":[{\"name\":\"path\",\"value\":\"/workspace/workspace/examples/microservices/leeroy-web/kubernetes/deployment.yaml\"},{\"name\":\"yqArg\",\"value\":\"-d1\"},{\"name\":\"yamlPathToImage\",\"value\":\"spec.template.spec.containers[0].image\"}],\"resources\":{\"inputs\":[{\"name\":\"workspace\",\"resource\":\"source-repo\"},{\"from\":[\"build-skaffold-web\"],\"name\":\"image\",\"resource\":\"web-image\"}]},\"taskRef\":{\"name\":\"demo-deploy-kubectl\"}}]}}\n"
+    "apiVersion": "tekton.dev/v1beta1",
+    "kind": "PipelineRun",
+    "metadata": {
+        "annotations": {
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"tekton.dev/v1beta1\",\"kind\":\"Pipeline\",\"metadata\":{\"annotations\":{},\"name\":\"relay-pipeline\",\"namespace\":\"test\"},\"spec\":{\"tasks\":[{\"name\":\"nebula-helm-prometheus\",\"runAfter\":[\"nebula-helm-metrics-certs\",\"nebula-deploy-app\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-helm-metrics-certs\",\"runAfter\":[\"nebula-helm-redis-operator\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-helm-redis-operator\",\"runAfter\":[\"tekton-pipeline\",\"nebula-helm-cert-issuer-le\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"tekton-pipeline\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-terraform\",\"runAfter\":[\"nebula-terraform-persistent\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-terraform-persistent\",\"runAfter\":[\"nebula-terraform-key-ring\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"conditions\":[{\"conditionRef\":\"when-deploy\"}],\"name\":\"nebula-terraform-key-ring\",\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-deploy-app\",\"runAfter\":[\"nebula-helm-redis-operator\",\"nebula-helm-nebula-security\",\"nebula-helm-nebula-firewall\",\"nebula-deploy-system\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-helm-nebula-security\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-helm-ambassador\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-helm-nebula-firewall\",\"runAfter\":[\"nebula-vault-initialize\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-vault-initialize\",\"runAfter\":[\"nebula-helm-vault\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-helm-vault\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-deploy-system\",\"runAfter\":[\"nebula-helm-cert-issuer-le\",\"nebula-vault-initialize\",\"nebula-helm-cert-issuer-initialize\",\"nebula-deploy-initialize\",\"nebula-deploy-system-crds\",\"knative-config\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-helm-cert-issuer-le\",\"runAfter\":[\"k8s-node-termination-handler\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"k8s-node-termination-handler\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-helm-cert-issuer-initialize\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-deploy-initialize\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-deploy-system-crds\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"knative-config\",\"runAfter\":[\"knative-serving-core\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"knative-serving-core\",\"runAfter\":[\"knative-serving-crds\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"knative-serving-crds\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"is-empty-nebula-terraform-3\",\"runAfter\":[\"nebula-terraform-key-ring-2\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-terraform-key-ring-2\",\"runAfter\":[\"is-empty-nebula-terraform-2\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"is-empty-nebula-terraform-2\",\"runAfter\":[\"nebula-terraform-persistent-2\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-terraform-persistent-2\",\"runAfter\":[\"is-empty-nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"is-empty-nebula-terraform\",\"runAfter\":[\"nebula-terraform-destroy\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"conditions\":[{\"conditionRef\":\"when-destroy\"}],\"name\":\"nebula-terraform-destroy\",\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}}]}}\n"
+        },
+        "creationTimestamp": "2020-06-24T21:05:14Z",
+        "generation": 1,
+        "labels": {
+            "tekton.dev/pipeline": "relay-pipeline"
+        },
+        "name": "relay-pipelinerun",
+        "namespace": "test",
+        "resourceVersion": "1245143",
+        "selfLink": "/apis/tekton.dev/v1beta1/namespaces/test/pipelineruns/relay-pipelinerun",
+        "uid": "1e2f78a8-18cb-4b71-8368-5953811870b0"
     },
-    "creationTimestamp": "2019-09-06T13:50:58Z",
-    "generation": 1,
-    "labels": {
-      "tekton.dev/pipeline": "demo-pipeline"
+    "spec": {
+        "pipelineRef": {
+            "name": "relay-pipeline"
+        },
+        "timeout": "1h0m0s"
     },
-    "name": "demo-pipeline-run-6",
-    "namespace": "default",
-    "resourceVersion": "9140",
-    "selfLink": "/apis/tekton.dev/v1alpha1/namespaces/default/pipelineruns/demo-pipeline-run-6",
-    "uid": "5ad9682e-d0ad-11e9-b992-025000000001"
-  },
-  "spec": {
-    "pipelineRef": {
-      "name": "demo-pipeline"
-    },
-    "podTemplate": {},
-    "resources": [
-      {
-        "name": "source-repo",
-        "resourceRef": {
-          "name": "skaffold-git"
-        }
-      },
-      {
-        "name": "web-image",
-        "resourceRef": {
-          "name": "skaffold-image-leeroy-web"
-        }
-      },
-      {
-        "name": "app-image",
-        "resourceRef": {
-          "name": "skaffold-image-leeroy-app"
-        }
-      }
-    ],
-    "serviceAccountName": "default",
-    "timeout": "1h0m0s"
-  },
-  "status": {
-    "completionTime": "2019-09-06T13:53:50Z",
-    "conditions": [
-      {
-        "lastTransitionTime": "2019-09-06T13:53:35Z",
-        "message": "TaskRun demo-pipeline-run-6-build-skaffold-app-k4wxt has failed",
-        "reason": "Failed",
-        "status": "False",
-        "type": "Succeeded"
-      }
-    ],
-    "startTime": "2019-09-06T13:50:58Z",
-    "taskRuns": {
-      "demo-pipeline-run-6-build-skaffold-app-k4wxt": {
-        "pipelineTaskName": "build-skaffold-app",
-        "status": {
-          "completionTime": "2019-09-06T13:53:35Z",
-          "conditions": [
+    "status": {
+        "completionTime": "2020-06-24T21:07:09Z",
+        "conditions": [
             {
-              "lastTransitionTime": "2019-09-06T13:53:35Z",
-              "message": "\"step-build-and-push\" exited with code 1 (image: \"docker-pullable://gcr.io/kaniko-project/executor@sha256:d9fe474f80b73808dc12b54f45f5fc90f7856d9fc699d4a5e79d968a1aef1a72\"); for logs run: kubectl -n default logs demo-pipeline-run-6-build-skaffold-app-k4wxt-pod-7727d4 -c step-build-and-push",
-              "reason": "Failed",
-              "status": "False",
-              "type": "Succeeded"
+                "lastTransitionTime": "2020-06-24T21:07:09Z",
+                "message": "Tasks Completed: 22, Skipped: 6",
+                "reason": "Completed",
+                "status": "True",
+                "type": "Succeeded"
             }
-          ],
-          "podName": "demo-pipeline-run-6-build-skaffold-app-k4wxt-pod-7727d4",
-          "startTime": "2019-09-06T13:51:11Z",
-          "steps": [
-            {
-              "container": "step-build-and-push",
-              "imageID": "docker-pullable://gcr.io/kaniko-project/executor@sha256:d9fe474f80b73808dc12b54f45f5fc90f7856d9fc699d4a5e79d968a1aef1a72",
-              "name": "build-and-push",
-              "terminated": {
-                "containerID": "docker://6f0e5962bb90ce667a0ed119a46e1092baf14d7f1914c74e75c8b3234a7c4f0f",
-                "exitCode": 1,
-                "finishedAt": "2019-09-06T13:53:34Z",
-                "reason": "Error",
-                "startedAt": "2019-09-06T13:51:15Z"
-              }
+        ],
+        "pipelineSpec": {
+            "tasks": [
+                {
+                    "name": "nebula-helm-prometheus",
+                    "runAfter": [
+                        "nebula-helm-metrics-certs",
+                        "nebula-deploy-app"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-helm-metrics-certs",
+                    "runAfter": [
+                        "nebula-helm-redis-operator"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-helm-redis-operator",
+                    "runAfter": [
+                        "tekton-pipeline",
+                        "nebula-helm-cert-issuer-le"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "tekton-pipeline",
+                    "runAfter": [
+                        "nebula-terraform"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-terraform",
+                    "runAfter": [
+                        "nebula-terraform-persistent"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-terraform-persistent",
+                    "runAfter": [
+                        "nebula-terraform-key-ring"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionRef": "when-deploy"
+                        }
+                    ],
+                    "name": "nebula-terraform-key-ring",
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-deploy-app",
+                    "runAfter": [
+                        "nebula-helm-redis-operator",
+                        "nebula-helm-nebula-security",
+                        "nebula-helm-nebula-firewall",
+                        "nebula-deploy-system"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-helm-nebula-security",
+                    "runAfter": [
+                        "nebula-terraform"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-helm-ambassador",
+                    "runAfter": [
+                        "nebula-terraform"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-helm-nebula-firewall",
+                    "runAfter": [
+                        "nebula-vault-initialize"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-vault-initialize",
+                    "runAfter": [
+                        "nebula-helm-vault"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-helm-vault",
+                    "runAfter": [
+                        "nebula-terraform"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-deploy-system",
+                    "runAfter": [
+                        "nebula-helm-cert-issuer-le",
+                        "nebula-vault-initialize",
+                        "nebula-helm-cert-issuer-initialize",
+                        "nebula-deploy-initialize",
+                        "nebula-deploy-system-crds",
+                        "knative-config"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-helm-cert-issuer-le",
+                    "runAfter": [
+                        "k8s-node-termination-handler"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "k8s-node-termination-handler",
+                    "runAfter": [
+                        "nebula-terraform"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-helm-cert-issuer-initialize",
+                    "runAfter": [
+                        "nebula-terraform"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-deploy-initialize",
+                    "runAfter": [
+                        "nebula-terraform"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-deploy-system-crds",
+                    "runAfter": [
+                        "nebula-terraform"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "knative-config",
+                    "runAfter": [
+                        "knative-serving-core"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "knative-serving-core",
+                    "runAfter": [
+                        "knative-serving-crds"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "knative-serving-crds",
+                    "runAfter": [
+                        "nebula-terraform"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "is-empty-nebula-terraform-3",
+                    "runAfter": [
+                        "nebula-terraform-key-ring-2"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-terraform-key-ring-2",
+                    "runAfter": [
+                        "is-empty-nebula-terraform-2"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "is-empty-nebula-terraform-2",
+                    "runAfter": [
+                        "nebula-terraform-persistent-2"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "nebula-terraform-persistent-2",
+                    "runAfter": [
+                        "is-empty-nebula-terraform"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "is-empty-nebula-terraform",
+                    "runAfter": [
+                        "nebula-terraform-destroy"
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionRef": "when-destroy"
+                        }
+                    ],
+                    "name": "nebula-terraform-destroy",
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "startTime": "2020-06-24T21:05:14Z",
+        "taskRuns": {
+            "relay-pipelinerun-k8s-node-termination-handler-w892h": {
+                "pipelineTaskName": "k8s-node-termination-handler",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:08Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:08Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-k8s-node-termination-handler-w892h-pod-hfql9",
+                    "startTime": "2020-06-24T21:05:51Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://b18017064aa01c1cebda90158bdff511614124bac934700e55744a73b896c04f",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:07Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:07Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
             },
-            {
-              "container": "step-create-dir-builtimage-wjkl9",
-              "imageID": "docker-pullable://gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/bash@sha256:b183305a486aafbf207cf4dd969b38645b04e6fd18470f32fc7927d0a8035581",
-              "name": "create-dir-builtimage-wjkl9",
-              "terminated": {
-                "containerID": "docker://d1fbb5ddcd0de28ddb3ed117a3497a888de5bd2ffe1d345bfef983730522c32a",
-                "exitCode": 0,
-                "finishedAt": "2019-09-06T13:51:19Z",
-                "reason": "Completed",
-                "startedAt": "2019-09-06T13:51:15Z"
-              }
+            "relay-pipelinerun-knative-config-5qd2c": {
+                "pipelineTaskName": "knative-config",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:39Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:39Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-knative-config-5qd2c-pod-kr8hc",
+                    "startTime": "2020-06-24T21:06:29Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://dfc26ababbb33120689a5b7030c74497e87fba0208d4d1c6c31ec69ec4b31e76",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:38Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:38Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
             },
-            {
-              "container": "step-git-source-skaffold-git-7vl6v",
-              "imageID": "docker-pullable://gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init@sha256:2aaaecd06986c7705f68f19435b8a913ef6701ac6b961df16d1535f45503cea5",
-              "name": "git-source-skaffold-git-7vl6v",
-              "terminated": {
-                "containerID": "docker://dd633d2adc5d9591515d70a71b83f7aded0bd2940590d27f7f446b0373352dda",
-                "exitCode": 0,
-                "finishedAt": "2019-09-06T13:51:24Z",
-                "reason": "Completed",
-                "startedAt": "2019-09-06T13:51:15Z"
-              }
+            "relay-pipelinerun-knative-serving-core-bzv6g": {
+                "pipelineTaskName": "knative-serving-core",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:29Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:29Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-knative-serving-core-bzv6g-pod-52mfr",
+                    "startTime": "2020-06-24T21:06:19Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://ec7398ac5705818ca9e5c3a5ded2c6acd994d903f07067879819120d8c4501f4",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:28Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:28Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
             },
-            {
-              "container": "step-image-digest-exporter-z5xdt",
-              "imageID": "docker-pullable://gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter@sha256:b86cfca770c60d6965dced6c36745f04cdfea2680b517fb067828e68292f13be",
-              "name": "image-digest-exporter-z5xdt",
-              "terminated": {
-                "containerID": "docker://699eb9aa653f8a7f1a6f8e58c70f41301a8c6630187a8551f176b15ec093c762",
-                "exitCode": 0,
-                "finishedAt": "2019-09-06T13:53:34Z",
-                "reason": "Completed",
-                "startedAt": "2019-09-06T13:51:15Z"
-              }
+            "relay-pipelinerun-knative-serving-crds-rjwrn": {
+                "pipelineTaskName": "knative-serving-crds",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:18Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:18Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-knative-serving-crds-rjwrn-pod-2dtfk",
+                    "startTime": "2020-06-24T21:05:56Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://3bfb6ba9f1e653c5d410b69f2190c8cf87aa90d30dd4e2ecdbfd4f0c3ff2edb9",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:18Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:18Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-deploy-app-lz8sz": {
+                "pipelineTaskName": "nebula-deploy-app",
+                "status": {
+                    "completionTime": "2020-06-24T21:07:00Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:07:00Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-deploy-app-lz8sz-pod-lkgm2",
+                    "startTime": "2020-06-24T21:06:50Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://c3894d713c9704134adc630cc7e318a600e3f0e42872ca087df5e17071a888ba",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:59Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:59Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-deploy-initialize-g5z98": {
+                "pipelineTaskName": "nebula-deploy-initialize",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:15Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:15Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-deploy-initialize-g5z98-pod-8v4fk",
+                    "startTime": "2020-06-24T21:05:54Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://29a94e8c2aa8e3567c5a2b3600a40b3baf2955cb951daf316c973b9a975360bb",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:14Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:14Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-deploy-system-crds-jhb7b": {
+                "pipelineTaskName": "nebula-deploy-system-crds",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:14Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:14Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-deploy-system-crds-jhb7b-pod-wqv67",
+                    "startTime": "2020-06-24T21:05:55Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://1e0a21f5458c2270d3d2a6d6cba6cd29d0b1a2571f5592401834baafc45a598d",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:12Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:12Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-deploy-system-ln59f": {
+                "pipelineTaskName": "nebula-deploy-system",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:50Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:50Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-deploy-system-ln59f-pod-2lszw",
+                    "startTime": "2020-06-24T21:06:40Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://508e8792a9f524baec3e6b37d8bb8ed7bbc2e4731f6702891efe316b921fd401",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:49Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:49Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-helm-ambassador-gcfnr": {
+                "pipelineTaskName": "nebula-helm-ambassador",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:04Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:04Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-helm-ambassador-gcfnr-pod-22qnj",
+                    "startTime": "2020-06-24T21:05:49Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://69afa6f2af1862c1c79a7deae1d01f36ec50f70186cb0b1e31109dd361ff34bc",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:03Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:03Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-helm-cert-issuer-initialize-gzg2v": {
+                "pipelineTaskName": "nebula-helm-cert-issuer-initialize",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:12Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:12Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-helm-cert-issuer-initialize-gzg2-chs78",
+                    "startTime": "2020-06-24T21:05:52Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://98d251a2fe12b3f273c458541b7858b2ffd7d03c987735813fa30a17a185c222",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:10Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:10Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-helm-cert-issuer-le-rcxmm": {
+                "pipelineTaskName": "nebula-helm-cert-issuer-le",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:25Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:25Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-helm-cert-issuer-le-rcxmm-pod-7mzlf",
+                    "startTime": "2020-06-24T21:06:09Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://2d08acc6165c4b047e2a04d4c975662fe6e4a7dd95f1d7ab1a30bbcc69cbc975",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:24Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:24Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-helm-metrics-certs-69md8": {
+                "pipelineTaskName": "nebula-helm-metrics-certs",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:43Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:43Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-helm-metrics-certs-69md8-pod-z65g6",
+                    "startTime": "2020-06-24T21:06:34Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://8135e9d5b4905dbf926258021f6460fb7c4a8cdbeb9a0c13785e9ff199ac6597",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:43Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:43Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-helm-nebula-firewall-c79kl": {
+                "pipelineTaskName": "nebula-helm-nebula-firewall",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:33Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:33Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-helm-nebula-firewall-c79kl-pod-55ncz",
+                    "startTime": "2020-06-24T21:06:20Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://fd479ef461da7735f87bc3a5af7bdb6835861b45bb0bf1ee9907fee0290ccb24",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:31Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:31Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-helm-nebula-security-hmxz9": {
+                "pipelineTaskName": "nebula-helm-nebula-security",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:03Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:03Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-helm-nebula-security-hmxz9-pod-ssljx",
+                    "startTime": "2020-06-24T21:05:48Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://e2c7c10020f2c77cac913bcbe29ace541d7786f93658ef0d54c44a28d5edd170",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:02Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:02Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-helm-prometheus-zrrzw": {
+                "pipelineTaskName": "nebula-helm-prometheus",
+                "status": {
+                    "completionTime": "2020-06-24T21:07:09Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:07:09Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-helm-prometheus-zrrzw-pod-nhlqx",
+                    "startTime": "2020-06-24T21:07:00Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://3ea99c6d9a8e30dccef8499219ebcdcfd0beaa8722e952ebfff28642016a08e1",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:07:08Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:07:08Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-helm-redis-operator-8tx8d": {
+                "pipelineTaskName": "nebula-helm-redis-operator",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:34Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:34Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-helm-redis-operator-8tx8d-pod-cxmn2",
+                    "startTime": "2020-06-24T21:06:25Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://02ed7cdda0cd34c224606e018801986f126ca8d73a21e0f7583eb8a5f277609f",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:33Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:33Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-helm-vault-vlgn2": {
+                "pipelineTaskName": "nebula-helm-vault",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:05Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:05Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-helm-vault-vlgn2-pod-ccn75",
+                    "startTime": "2020-06-24T21:05:50Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://8a8a7eb15742781cb8d95c26c3e01ce3aaca0db6402a3d3a5195e655c7688740",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:05Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:04Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-terraform-d6kf7": {
+                "pipelineTaskName": "nebula-terraform",
+                "status": {
+                    "completionTime": "2020-06-24T21:05:48Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:05:48Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-terraform-d6kf7-pod-9j66d",
+                    "startTime": "2020-06-24T21:05:41Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://19085f6d28da4aad4ffff54c32c3ca51133c2d4555fb174a387677ed6163cec7",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:05:47Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:05:47Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-terraform-destroy-khmhx": {
+                "conditionChecks": {
+                    "relay-pipelinerun-nebula-terraform-destroy-khmhx-when-des-pckhx": {
+                        "conditionName": "when-destroy-0",
+                        "status": {
+                            "check": {
+                                "terminated": {
+                                    "containerID": "docker://9eb2a2347ac74eae86a1e380d427cb6044ca7fefcc47c9e3258cb781c5ec98ba",
+                                    "exitCode": 1,
+                                    "finishedAt": "2020-06-24T21:05:26Z",
+                                    "reason": "Error",
+                                    "startedAt": "2020-06-24T21:05:26Z"
+                                }
+                            },
+                            "completionTime": "2020-06-24T21:05:27Z",
+                            "conditions": [
+                                {
+                                    "lastTransitionTime": "2020-06-24T21:05:27Z",
+                                    "message": "\"step-condition-check-when-destroy\" exited with code 1 (image: \"docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321\"); for logs run: kubectl -n test logs relay-pipelinerun-nebula-terraform-destroy-khmhx-when-des-75xz4 -c step-condition-check-when-destroy\n",
+                                    "reason": "Failed",
+                                    "status": "False",
+                                    "type": "Succeeded"
+                                }
+                            ],
+                            "podName": "relay-pipelinerun-nebula-terraform-destroy-khmhx-when-des-75xz4",
+                            "startTime": "2020-06-24T21:05:14Z"
+                        }
+                    }
+                },
+                "pipelineTaskName": "nebula-terraform-destroy",
+                "status": {
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:07:09Z",
+                            "message": "ConditionChecks failed for Task relay-pipelinerun-nebula-terraform-destroy-khmhx in PipelineRun relay-pipelinerun",
+                            "reason": "ConditionCheckFailed",
+                            "status": "False",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": ""
+                }
+            },
+            "relay-pipelinerun-nebula-terraform-key-ring-h6szx": {
+                "conditionChecks": {
+                    "relay-pipelinerun-nebula-terraform-key-ring-h6szx-when-de-lllq8": {
+                        "conditionName": "when-deploy-0",
+                        "status": {
+                            "check": {
+                                "terminated": {
+                                    "containerID": "docker://da28e39d935217a984e6746d7f1c7ad0a001b6b80eb5e0eb5c7b8de4f651fd16",
+                                    "exitCode": 0,
+                                    "finishedAt": "2020-06-24T21:05:22Z",
+                                    "reason": "Completed",
+                                    "startedAt": "2020-06-24T21:05:22Z"
+                                }
+                            },
+                            "completionTime": "2020-06-24T21:05:23Z",
+                            "conditions": [
+                                {
+                                    "lastTransitionTime": "2020-06-24T21:05:23Z",
+                                    "message": "All Steps have completed executing",
+                                    "reason": "Succeeded",
+                                    "status": "True",
+                                    "type": "Succeeded"
+                                }
+                            ],
+                            "podName": "relay-pipelinerun-nebula-terraform-key-ring-h6szx-when-de-mtbgh",
+                            "startTime": "2020-06-24T21:05:14Z"
+                        }
+                    }
+                },
+                "pipelineTaskName": "nebula-terraform-key-ring",
+                "status": {
+                    "completionTime": "2020-06-24T21:05:33Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:05:33Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-terraform-key-ring-h6szx-pod-r54rr",
+                    "startTime": "2020-06-24T21:05:23Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://28c52b8721aeadaaa8ceadf76d524f8122b0072c8fd0de6a9ad010f645d6bbb4",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:05:32Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:05:32Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-terraform-persistent-j9fqm": {
+                "pipelineTaskName": "nebula-terraform-persistent",
+                "status": {
+                    "completionTime": "2020-06-24T21:05:40Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:05:40Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-terraform-persistent-j9fqm-pod-fgdfz",
+                    "startTime": "2020-06-24T21:05:33Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://2bc7758b2952f943fd2a4867e43c89cc19ddaa28bf48277021f3898f025170f1",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:05:40Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:05:40Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-nebula-vault-initialize-46xzz": {
+                "pipelineTaskName": "nebula-vault-initialize",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:20Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:20Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-nebula-vault-initialize-46xzz-pod-4qfsj",
+                    "startTime": "2020-06-24T21:06:06Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://999f4a65c8ed759a38b4e891648253388dbfc3715141790f223638218db0d248",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:19Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:19Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
+            },
+            "relay-pipelinerun-tekton-pipeline-zbbb2": {
+                "pipelineTaskName": "tekton-pipeline",
+                "status": {
+                    "completionTime": "2020-06-24T21:06:02Z",
+                    "conditions": [
+                        {
+                            "lastTransitionTime": "2020-06-24T21:06:02Z",
+                            "message": "All Steps have completed executing",
+                            "reason": "Succeeded",
+                            "status": "True",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "podName": "relay-pipelinerun-tekton-pipeline-zbbb2-pod-wdwhc",
+                    "startTime": "2020-06-24T21:05:48Z",
+                    "steps": [
+                        {
+                            "container": "step-test",
+                            "imageID": "docker-pullable://alpine@sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321",
+                            "name": "test",
+                            "terminated": {
+                                "containerID": "docker://a615638afd96e119d4f75edba7ea2e89531cab787f870946ed24e17072e837c7",
+                                "exitCode": 0,
+                                "finishedAt": "2020-06-24T21:06:00Z",
+                                "reason": "Completed",
+                                "startedAt": "2020-06-24T21:06:00Z"
+                            }
+                        }
+                    ],
+                    "taskSpec": {
+                        "steps": [
+                            {
+                                "image": "alpine",
+                                "name": "test",
+                                "resources": {},
+                                "script": "echo test\n"
+                            }
+                        ]
+                    }
+                }
             }
-          ]
         }
-      },
-      "demo-pipeline-run-6-build-skaffold-web-pttsw": {
-        "pipelineTaskName": "build-skaffold-web",
-        "status": {
-          "completionTime": "2019-09-06T13:53:50Z",
-          "conditions": [
-            {
-              "lastTransitionTime": "2019-09-06T13:53:50Z",
-              "message": "\"step-build-and-push\" exited with code 1 (image: \"docker-pullable://gcr.io/kaniko-project/executor@sha256:d9fe474f80b73808dc12b54f45f5fc90f7856d9fc699d4a5e79d968a1aef1a72\"); for logs run: kubectl -n default logs demo-pipeline-run-6-build-skaffold-web-pttsw-pod-87a900 -c step-build-and-push",
-              "reason": "Failed",
-              "status": "False",
-              "type": "Succeeded"
-            }
-          ],
-          "podName": "demo-pipeline-run-6-build-skaffold-web-pttsw-pod-87a900",
-          "startTime": "2019-09-06T13:51:11Z",
-          "steps": [
-            {
-              "container": "step-build-and-push",
-              "imageID": "docker-pullable://gcr.io/kaniko-project/executor@sha256:d9fe474f80b73808dc12b54f45f5fc90f7856d9fc699d4a5e79d968a1aef1a72",
-              "name": "build-and-push",
-              "terminated": {
-                "containerID": "docker://28a0348990a8a10f97850f0dad18327fdbba4ab9aeb49fb7c0de490c746ed97a",
-                "exitCode": 1,
-                "finishedAt": "2019-09-06T13:53:50Z",
-                "reason": "Error",
-                "startedAt": "2019-09-06T13:51:15Z"
-              }
-            },
-            {
-              "container": "step-create-dir-builtimage-5trjz",
-              "imageID": "docker-pullable://gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/bash@sha256:b183305a486aafbf207cf4dd969b38645b04e6fd18470f32fc7927d0a8035581",
-              "name": "create-dir-builtimage-5trjz",
-              "terminated": {
-                "containerID": "docker://32d6ef980a0cba095616668a26b3e935957511334fbb544f603db50c37c769ad",
-                "exitCode": 0,
-                "finishedAt": "2019-09-06T13:51:19Z",
-                "reason": "Completed",
-                "startedAt": "2019-09-06T13:51:15Z"
-              }
-            },
-            {
-              "container": "step-git-source-skaffold-git-gtn7g",
-              "imageID": "docker-pullable://gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init@sha256:2aaaecd06986c7705f68f19435b8a913ef6701ac6b961df16d1535f45503cea5",
-              "name": "git-source-skaffold-git-gtn7g",
-              "terminated": {
-                "containerID": "docker://222ab8cb8eead79e50c1bff7eb970d61e32c81153af56d30b35cf3ea59a0a0d0",
-                "exitCode": 0,
-                "finishedAt": "2019-09-06T13:51:24Z",
-                "reason": "Completed",
-                "startedAt": "2019-09-06T13:51:15Z"
-              }
-            },
-            {
-              "container": "step-image-digest-exporter-qsn2q",
-              "imageID": "docker-pullable://gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter@sha256:b86cfca770c60d6965dced6c36745f04cdfea2680b517fb067828e68292f13be",
-              "name": "image-digest-exporter-qsn2q",
-              "terminated": {
-                "containerID": "docker://ab7371576ec769193aaf825057e7bcce82b30c9cb607f1478b01c46459ab737e",
-                "exitCode": 0,
-                "finishedAt": "2019-09-06T13:53:50Z",
-                "reason": "Completed",
-                "startedAt": "2019-09-06T13:51:15Z"
-              }
-            }
-          ]
-        }
-      },
-      "demo-pipeline-run-6-skaffold-unit-tests-jgt8z": {
-        "pipelineTaskName": "skaffold-unit-tests",
-        "status": {
-          "completionTime": "2019-09-06T13:51:11Z",
-          "conditions": [
-            {
-              "lastTransitionTime": "2019-09-06T13:51:11Z",
-              "message": "All Steps have completed executing",
-              "reason": "Succeeded",
-              "status": "True",
-              "type": "Succeeded"
-            }
-          ],
-          "podName": "demo-pipeline-run-6-skaffold-unit-tests-jgt8z-pod-a6ca01",
-          "startTime": "2019-09-06T13:50:58Z",
-          "steps": [
-            {
-              "container": "step-run-tests",
-              "imageID": "docker-pullable://golang@sha256:30101c5d45c7b68c2233962251da3d599417055e5ad73b84b7c4323b11caf57e",
-              "name": "run-tests",
-              "terminated": {
-                "containerID": "docker://a5f026f401e09f36fb90906cb9e420cd643d8c0fd016bc11bdec1299dd25ffaf",
-                "exitCode": 0,
-                "finishedAt": "2019-09-06T13:51:10Z",
-                "reason": "Completed",
-                "startedAt": "2019-09-06T13:51:04Z"
-              }
-            },
-            {
-              "container": "step-git-source-skaffold-git-lq4cr",
-              "imageID": "docker-pullable://gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init@sha256:2aaaecd06986c7705f68f19435b8a913ef6701ac6b961df16d1535f45503cea5",
-              "name": "git-source-skaffold-git-lq4cr",
-              "terminated": {
-                "containerID": "docker://9409bee805ca26b59997c5b17636f5327fd095416979e4689a26f79165da1b03",
-                "exitCode": 0,
-                "finishedAt": "2019-09-06T13:51:10Z",
-                "reason": "Completed",
-                "startedAt": "2019-09-06T13:51:02Z"
-              }
-            }
-          ]
-        }
-      }
     }
-  }
 }

@@ -1,184 +1,482 @@
 {
-  "apiVersion": "tekton.dev/v1alpha1",
-  "kind": "Pipeline",
-  "metadata": {
-    "annotations": {
-      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"tekton.dev/v1alpha1\",\"kind\":\"Pipeline\",\"metadata\":{\"annotations\":{},\"name\":\"demo-pipeline\",\"namespace\":\"default\"},\"spec\":{\"resources\":[{\"name\":\"source-repo\",\"type\":\"git\"},{\"name\":\"web-image\",\"type\":\"image\"},{\"name\":\"app-image\",\"type\":\"image\"}],\"tasks\":[{\"name\":\"skaffold-unit-tests\",\"resources\":{\"inputs\":[{\"name\":\"workspace\",\"resource\":\"source-repo\"}]},\"taskRef\":{\"name\":\"unit-tests\"}},{\"name\":\"build-skaffold-web\",\"params\":[{\"name\":\"pathToDockerFile\",\"value\":\"Dockerfile\"},{\"name\":\"pathToContext\",\"value\":\"/workspace/workspace/examples/microservices/leeroy-web\"}],\"resources\":{\"inputs\":[{\"name\":\"workspace\",\"resource\":\"source-repo\"}],\"outputs\":[{\"name\":\"builtImage\",\"resource\":\"web-image\"}]},\"runAfter\":[\"skaffold-unit-tests\"],\"taskRef\":{\"name\":\"build-push\"}},{\"name\":\"build-skaffold-app\",\"params\":[{\"name\":\"pathToDockerFile\",\"value\":\"Dockerfile\"},{\"name\":\"pathToContext\",\"value\":\"/workspace/workspace/examples/microservices/leeroy-app\"}],\"resources\":{\"inputs\":[{\"name\":\"workspace\",\"resource\":\"source-repo\"}],\"outputs\":[{\"name\":\"builtImage\",\"resource\":\"app-image\"}]},\"runAfter\":[\"skaffold-unit-tests\"],\"taskRef\":{\"name\":\"build-push\"}},{\"name\":\"deploy-app\",\"params\":[{\"name\":\"path\",\"value\":\"/workspace/workspace/examples/microservices/leeroy-app/kubernetes/deployment.yaml\"},{\"name\":\"yqArg\",\"value\":\"-d1\"},{\"name\":\"yamlPathToImage\",\"value\":\"spec.template.spec.containers[0].image\"}],\"resources\":{\"inputs\":[{\"name\":\"workspace\",\"resource\":\"source-repo\"},{\"from\":[\"build-skaffold-app\"],\"name\":\"image\",\"resource\":\"app-image\"}]},\"taskRef\":{\"name\":\"demo-deploy-kubectl\"}},{\"name\":\"deploy-web\",\"params\":[{\"name\":\"path\",\"value\":\"/workspace/workspace/examples/microservices/leeroy-web/kubernetes/deployment.yaml\"},{\"name\":\"yqArg\",\"value\":\"-d1\"},{\"name\":\"yamlPathToImage\",\"value\":\"spec.template.spec.containers[0].image\"}],\"resources\":{\"inputs\":[{\"name\":\"workspace\",\"resource\":\"source-repo\"},{\"from\":[\"build-skaffold-web\"],\"name\":\"image\",\"resource\":\"web-image\"}]},\"taskRef\":{\"name\":\"demo-deploy-kubectl\"}}]}}\n"
+    "apiVersion": "tekton.dev/v1beta1",
+    "kind": "Pipeline",
+    "metadata": {
+        "annotations": {
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"tekton.dev/v1beta1\",\"kind\":\"Pipeline\",\"metadata\":{\"annotations\":{},\"name\":\"relay-pipeline\",\"namespace\":\"test\"},\"spec\":{\"tasks\":[{\"name\":\"nebula-helm-prometheus\",\"runAfter\":[\"nebula-helm-metrics-certs\",\"nebula-deploy-app\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-helm-metrics-certs\",\"runAfter\":[\"nebula-helm-redis-operator\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-helm-redis-operator\",\"runAfter\":[\"tekton-pipeline\",\"nebula-helm-cert-issuer-le\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"tekton-pipeline\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-terraform\",\"runAfter\":[\"nebula-terraform-persistent\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-terraform-persistent\",\"runAfter\":[\"nebula-terraform-key-ring\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"conditions\":[{\"conditionRef\":\"when-deploy\"}],\"name\":\"nebula-terraform-key-ring\",\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-deploy-app\",\"runAfter\":[\"nebula-helm-redis-operator\",\"nebula-helm-nebula-security\",\"nebula-helm-nebula-firewall\",\"nebula-deploy-system\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-helm-nebula-security\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-helm-ambassador\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-helm-nebula-firewall\",\"runAfter\":[\"nebula-vault-initialize\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-vault-initialize\",\"runAfter\":[\"nebula-helm-vault\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-helm-vault\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-deploy-system\",\"runAfter\":[\"nebula-helm-cert-issuer-le\",\"nebula-vault-initialize\",\"nebula-helm-cert-issuer-initialize\",\"nebula-deploy-initialize\",\"nebula-deploy-system-crds\",\"knative-config\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-helm-cert-issuer-le\",\"runAfter\":[\"k8s-node-termination-handler\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"k8s-node-termination-handler\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-helm-cert-issuer-initialize\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-deploy-initialize\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-deploy-system-crds\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"knative-config\",\"runAfter\":[\"knative-serving-core\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"knative-serving-core\",\"runAfter\":[\"knative-serving-crds\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"knative-serving-crds\",\"runAfter\":[\"nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"is-empty-nebula-terraform-3\",\"runAfter\":[\"nebula-terraform-key-ring-2\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-terraform-key-ring-2\",\"runAfter\":[\"is-empty-nebula-terraform-2\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"is-empty-nebula-terraform-2\",\"runAfter\":[\"nebula-terraform-persistent-2\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"nebula-terraform-persistent-2\",\"runAfter\":[\"is-empty-nebula-terraform\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"name\":\"is-empty-nebula-terraform\",\"runAfter\":[\"nebula-terraform-destroy\"],\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}},{\"conditions\":[{\"conditionRef\":\"when-destroy\"}],\"name\":\"nebula-terraform-destroy\",\"taskSpec\":{\"steps\":[{\"image\":\"alpine\",\"name\":\"test\",\"script\":\"echo test\\n\"}]}}]}}\n"
+        },
+        "creationTimestamp": "2020-06-24T21:03:05Z",
+        "generation": 1,
+        "name": "relay-pipeline",
+        "namespace": "test",
+        "resourceVersion": "1243734",
+        "selfLink": "/apis/tekton.dev/v1beta1/namespaces/test/pipelines/relay-pipeline",
+        "uid": "7e382660-f6e3-451e-b3f4-79fd7fb61256"
     },
-    "creationTimestamp": "2019-09-06T13:50:58Z",
-    "generation": 1,
-    "name": "demo-pipeline",
-    "namespace": "default",
-    "resourceVersion": "8757",
-    "selfLink": "/apis/tekton.dev/v1alpha1/namespaces/default/pipelines/demo-pipeline",
-    "uid": "5ad77b29-d0ad-11e9-b992-025000000001"
-  },
-  "spec": {
-    "resources": [
-      {
-        "name": "source-repo",
-        "type": "git"
-      },
-      {
-        "name": "web-image",
-        "type": "image"
-      },
-      {
-        "name": "app-image",
-        "type": "image"
-      }
-    ],
-    "tasks": [
-      {
-        "name": "skaffold-unit-tests",
-        "resources": {
-          "inputs": [
+    "spec": {
+        "tasks": [
             {
-              "name": "workspace",
-              "resource": "source-repo"
-            }
-          ]
-        },
-        "taskRef": {
-          "name": "unit-tests"
-        }
-      },
-      {
-        "name": "build-skaffold-web",
-        "params": [
-          {
-            "name": "pathToDockerFile",
-            "value": "Dockerfile"
-          },
-          {
-            "name": "pathToContext",
-            "value": "/workspace/workspace/examples/microservices/leeroy-web"
-          }
-        ],
-        "resources": {
-          "inputs": [
-            {
-              "name": "workspace",
-              "resource": "source-repo"
-            }
-          ],
-          "outputs": [
-            {
-              "name": "builtImage",
-              "resource": "web-image"
-            }
-          ]
-        },
-        "runAfter": [
-          "skaffold-unit-tests"
-        ],
-        "taskRef": {
-          "name": "build-push"
-        }
-      },
-      {
-        "name": "build-skaffold-app",
-        "params": [
-          {
-            "name": "pathToDockerFile",
-            "value": "Dockerfile"
-          },
-          {
-            "name": "pathToContext",
-            "value": "/workspace/workspace/examples/microservices/leeroy-app"
-          }
-        ],
-        "resources": {
-          "inputs": [
-            {
-              "name": "workspace",
-              "resource": "source-repo"
-            }
-          ],
-          "outputs": [
-            {
-              "name": "builtImage",
-              "resource": "app-image"
-            }
-          ]
-        },
-        "runAfter": [
-          "skaffold-unit-tests"
-        ],
-        "taskRef": {
-          "name": "build-push"
-        }
-      },
-      {
-        "name": "deploy-app",
-        "params": [
-          {
-            "name": "path",
-            "value": "/workspace/workspace/examples/microservices/leeroy-app/kubernetes/deployment.yaml"
-          },
-          {
-            "name": "yqArg",
-            "value": "-d1"
-          },
-          {
-            "name": "yamlPathToImage",
-            "value": "spec.template.spec.containers[0].image"
-          }
-        ],
-        "resources": {
-          "inputs": [
-            {
-              "name": "workspace",
-              "resource": "source-repo"
+                "name": "nebula-helm-prometheus",
+                "runAfter": [
+                    "nebula-helm-metrics-certs",
+                    "nebula-deploy-app"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
             },
             {
-              "from": [
-                "build-skaffold-app"
-              ],
-              "name": "image",
-              "resource": "app-image"
-            }
-          ]
-        },
-        "taskRef": {
-          "name": "demo-deploy-kubectl"
-        }
-      },
-      {
-        "name": "deploy-web",
-        "params": [
-          {
-            "name": "path",
-            "value": "/workspace/workspace/examples/microservices/leeroy-web/kubernetes/deployment.yaml"
-          },
-          {
-            "name": "yqArg",
-            "value": "-d1"
-          },
-          {
-            "name": "yamlPathToImage",
-            "value": "spec.template.spec.containers[0].image"
-          }
-        ],
-        "resources": {
-          "inputs": [
-            {
-              "name": "workspace",
-              "resource": "source-repo"
+                "name": "nebula-helm-metrics-certs",
+                "runAfter": [
+                    "nebula-helm-redis-operator"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
             },
             {
-              "from": [
-                "build-skaffold-web"
-              ],
-              "name": "image",
-              "resource": "web-image"
+                "name": "nebula-helm-redis-operator",
+                "runAfter": [
+                    "tekton-pipeline",
+                    "nebula-helm-cert-issuer-le"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "tekton-pipeline",
+                "runAfter": [
+                    "nebula-terraform"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "nebula-terraform",
+                "runAfter": [
+                    "nebula-terraform-persistent"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "nebula-terraform-persistent",
+                "runAfter": [
+                    "nebula-terraform-key-ring"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "conditions": [
+                    {
+                        "conditionRef": "when-deploy"
+                    }
+                ],
+                "name": "nebula-terraform-key-ring",
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "nebula-deploy-app",
+                "runAfter": [
+                    "nebula-helm-redis-operator",
+                    "nebula-helm-nebula-security",
+                    "nebula-helm-nebula-firewall",
+                    "nebula-deploy-system"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "nebula-helm-nebula-security",
+                "runAfter": [
+                    "nebula-terraform"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "nebula-helm-ambassador",
+                "runAfter": [
+                    "nebula-terraform"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "nebula-helm-nebula-firewall",
+                "runAfter": [
+                    "nebula-vault-initialize"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "nebula-vault-initialize",
+                "runAfter": [
+                    "nebula-helm-vault"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "nebula-helm-vault",
+                "runAfter": [
+                    "nebula-terraform"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "nebula-deploy-system",
+                "runAfter": [
+                    "nebula-helm-cert-issuer-le",
+                    "nebula-vault-initialize",
+                    "nebula-helm-cert-issuer-initialize",
+                    "nebula-deploy-initialize",
+                    "nebula-deploy-system-crds",
+                    "knative-config"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "nebula-helm-cert-issuer-le",
+                "runAfter": [
+                    "k8s-node-termination-handler"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "k8s-node-termination-handler",
+                "runAfter": [
+                    "nebula-terraform"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "nebula-helm-cert-issuer-initialize",
+                "runAfter": [
+                    "nebula-terraform"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "nebula-deploy-initialize",
+                "runAfter": [
+                    "nebula-terraform"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "nebula-deploy-system-crds",
+                "runAfter": [
+                    "nebula-terraform"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "knative-config",
+                "runAfter": [
+                    "knative-serving-core"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "knative-serving-core",
+                "runAfter": [
+                    "knative-serving-crds"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "knative-serving-crds",
+                "runAfter": [
+                    "nebula-terraform"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "is-empty-nebula-terraform-3",
+                "runAfter": [
+                    "nebula-terraform-key-ring-2"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "nebula-terraform-key-ring-2",
+                "runAfter": [
+                    "is-empty-nebula-terraform-2"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "is-empty-nebula-terraform-2",
+                "runAfter": [
+                    "nebula-terraform-persistent-2"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "nebula-terraform-persistent-2",
+                "runAfter": [
+                    "is-empty-nebula-terraform"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "is-empty-nebula-terraform",
+                "runAfter": [
+                    "nebula-terraform-destroy"
+                ],
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
+            },
+            {
+                "conditions": [
+                    {
+                        "conditionRef": "when-destroy"
+                    }
+                ],
+                "name": "nebula-terraform-destroy",
+                "taskSpec": {
+                    "steps": [
+                        {
+                            "image": "alpine",
+                            "name": "test",
+                            "resources": {},
+                            "script": "echo test\n"
+                        }
+                    ]
+                }
             }
-          ]
-        },
-        "taskRef": {
-          "name": "demo-deploy-kubectl"
-        }
-      }
-    ]
-  }
+        ]
+    }
 }

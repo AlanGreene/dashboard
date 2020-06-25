@@ -93,7 +93,13 @@ function getTaskRunStatus(taskRun) {
   return status;
 }
 
-function addEdge({ child, graph, parent, singletonSource, singletonTarget }) {
+function addEdge({
+  child,
+  graph,
+  parent,
+  singletonSource = true,
+  singletonTarget = true
+}) {
   if (!parent.ports) {
     parent.ports = []; // eslint-disable-line
   }
@@ -101,12 +107,14 @@ function addEdge({ child, graph, parent, singletonSource, singletonTarget }) {
     child.ports = []; // eslint-disable-line
   }
 
-  const sourcePort = `${parent.id}-` + (singletonSource ? 'pSourceSingleton' : `p${parent.ports.length}`); // eslint-disable-line
+  const sourcePort =
+    `${parent.id}-` + (singletonSource ? 'pSourceSingleton' : `p${parent.ports.length}`); // eslint-disable-line
   if (!parent.ports.find(_ => _.id === sourcePort)) {
     parent.ports.push({ id: sourcePort });
   }
 
-  const targetPort = `${child.id}-` + (singletonTarget ? 'pTargetSingleton' : `p${child.ports.length}`); // eslint-disable-line
+  const targetPort =
+    `${child.id}-` + (singletonTarget ? 'pTargetSingleton' : `p${child.ports.length}`); // eslint-disable-line
   if (!child.ports.find(_ => _.id === targetPort)) {
     child.ports.push({ id: targetPort });
   }
@@ -138,21 +146,18 @@ function addNodes({ expanded, graph, pipeline, pipelineRun, tasks }) {
   }, {});
 
   const nodes = pipeline.spec.tasks.reduce((accumulator, taskRef) => {
-    const task = taskByTaskName[taskRef.taskRef.name];
     const taskRun = taskRunByPipelineTaskName[taskRef.name];
     const status = getTaskRunStatus(taskRun);
+    const steps = taskRef.taskSpec
+      ? taskRef.taskSpec.steps
+      : taskByTaskName[taskRef.taskRef.name].spec.steps;
 
     let node;
-    if (
-      task &&
-      expanded[taskRef.name] &&
-      task.spec.steps &&
-      task.spec.steps.length > 0
-    ) {
+    if (expanded[taskRef.name] && steps?.length > 0) {
       const subgraph = {
         id: taskRef.name,
         label: taskRef.name,
-        children: task.spec.steps.map(step => {
+        children: steps.map(step => {
           const stepNode = {
             id: `__step__${taskRef.name}__${step.name}`,
             label: step.name,
