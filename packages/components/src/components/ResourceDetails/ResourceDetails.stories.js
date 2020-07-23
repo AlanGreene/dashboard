@@ -39,6 +39,18 @@ const resource = {
 };
 
 storiesOf('Components/ResourceDetails', module)
+  .addDecorator(story => (
+    <div
+      style={{
+        backgroundColor: '#f4f4f4',
+        padding: '2rem',
+        position: 'relative',
+        width: '100%'
+      }}
+    >
+      {story()}
+    </div>
+  ))
   .add('error', () => <ResourceDetails error="A helpful error message" />)
   .add('loading', () => <ResourceDetails loading />)
   .add('default', () => <ResourceDetails resource={resource} />)

@@ -13,6 +13,7 @@ limitations under the License.
 
 import React from 'react';
 import { storiesOf } from '@storybook/react';
+import { boolean } from '@storybook/addon-knobs';
 
 import ViewYAML from './ViewYAML';
 
@@ -36,5 +37,5 @@ storiesOf('Components/ViewYAML', module).add('default', () => {
     }
   };
 
-  return <ViewYAML resource={resource} />;
+  return <ViewYAML resource={resource} dark={boolean('dark', true)} />;
 });
