@@ -16,10 +16,32 @@ import PropTypes from 'prop-types';
 import jsYaml from 'js-yaml';
 import classNames from 'classnames';
 
+import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
+import yaml from 'react-syntax-highlighter/dist/esm/languages/prism/yaml';
+
+// import style from 'react-syntax-highlighter/dist/esm/styles/prism/atom-dark';
+// import style from 'react-syntax-highlighter/dist/esm/styles/prism/cb';
+// import style from 'react-syntax-highlighter/dist/esm/styles/prism/darcula';
+// import style from 'react-syntax-highlighter/dist/esm/styles/prism/funky';
+// import style from 'react-syntax-highlighter/dist/esm/styles/prism/hopscotch';
+// import style from 'react-syntax-highlighter/dist/esm/styles/prism/okaidia';
+// import style from 'react-syntax-highlighter/dist/esm/styles/prism/pojoaque';
+// import style from 'react-syntax-highlighter/dist/esm/styles/prism/tomorrow';
+// import style from 'react-syntax-highlighter/dist/esm/styles/prism/twilight';
+// import style from 'react-syntax-highlighter/dist/esm/styles/prism/vs-dark';
+// import style from 'react-syntax-highlighter/dist/esm/styles/prism/xonokai';
+
+import darkStyle from './tkn-dark';
+import lightStyle from './tkn-light';
+
 import './ViewYAML.scss';
+
+SyntaxHighlighter.registerLanguage('yaml', yaml);
 
 const ViewYAML = props => {
   const { className, dark, resource } = props;
+  const activeStyle = dark ? darkStyle : lightStyle;
+  // const activeStyle = style;
 
   return (
     <div
@@ -27,6 +49,9 @@ const ViewYAML = props => {
         'tkn--view-yaml--dark': dark
       })}
     >
+      <SyntaxHighlighter language="yaml" style={activeStyle}>
+        {jsYaml.dump(resource)}
+      </SyntaxHighlighter>
       <code>
         <pre>{jsYaml.dump(resource)}</pre>
       </code>
