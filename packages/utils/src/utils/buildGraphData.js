@@ -1,5 +1,5 @@
 /*
-Copyright 2019 The Tekton Authors
+Copyright 2019-2020 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -28,22 +28,22 @@ function getBaseNodes() {
 
   const start = {
     id: 'Start',
-    height: 60,
+    height: 30,
     label: 'Start',
     nChildren: 0,
     nParents: 0,
     type: 'Start',
-    width: 60
+    width: 30
   };
 
   const end = {
     id: 'End',
-    height: 60,
+    height: 30,
     label: 'End',
     nChildren: 0,
     nParents: 0,
     type: 'End',
-    width: 60
+    width: 30
   };
 
   return { graph, start, end };
@@ -93,7 +93,7 @@ function getTaskRunStatus(taskRun) {
   return status;
 }
 
-function addEdge({ child, graph, parent, singletonSource, singletonTarget }) {
+function addEdge({ child, graph, parent }) {
   if (!parent.ports) {
     parent.ports = []; // eslint-disable-line
   }
@@ -101,12 +101,12 @@ function addEdge({ child, graph, parent, singletonSource, singletonTarget }) {
     child.ports = []; // eslint-disable-line
   }
 
-  const sourcePort = `${parent.id}-` + (singletonSource ? 'pSourceSingleton' : `p${parent.ports.length}`); // eslint-disable-line
+  const sourcePort = `${parent.id}-pSourceSingleton`;
   if (!parent.ports.find(_ => _.id === sourcePort)) {
     parent.ports.push({ id: sourcePort });
   }
 
-  const targetPort = `${child.id}-` + (singletonTarget ? 'pTargetSingleton' : `p${child.ports.length}`); // eslint-disable-line
+  const targetPort = `${child.id}-pTargetSingleton`;
   if (!child.ports.find(_ => _.id === targetPort)) {
     child.ports.push({ id: targetPort });
   }
@@ -254,15 +254,11 @@ export default function buildGraphData({
   // Wire up the start and end nodes after everything else
   graph.children
     .filter(child => child.nParents === 0)
-    .forEach(child =>
-      addEdge({ graph, parent: start, child, singletonSource: true })
-    );
+    .forEach(child => addEdge({ graph, parent: start, child }));
 
   graph.children
     .filter(parent => parent.nChildren === 0)
-    .forEach(parent =>
-      addEdge({ graph, parent, child: end, singletonTarget: true })
-    );
+    .forEach(parent => addEdge({ graph, parent, child: end }));
 
   graph.children.push(start);
   graph.children.push(end);

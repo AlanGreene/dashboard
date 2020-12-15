@@ -38,6 +38,7 @@
     "carbon-icons": "^7.0.7",
     "classnames": "^2.2.6",
     "core-js": "^3.6.5",
+    "dagre": "^0.8.5",
     "git-url-parse": "^11.3.0",
     "history": "^4.10.1",
     "js-yaml": "^3.14.0",

@@ -1,5 +1,5 @@
 /*
-Copyright 2019 The Tekton Authors
+Copyright 2019-2020 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -27,8 +27,8 @@ import PipelineGraph from './PipelineGraph';
 
 import './ZoomablePipelineGraph.scss';
 
-const width = 300;
-const height = 600;
+const width = 600;
+const height = 300;
 
 const minZoom = 0.1;
 const maxZoom = 10;

@@ -13,6 +13,7 @@ limitations under the License.
 
 import React from 'react';
 import { action } from '@storybook/addon-actions';
+import dagre from 'dagre';
 
 import PipelineGraph from './PipelineGraph';
 
@@ -38,3 +39,88 @@ export const Base = () => (
     tasks={tasks}
   />
 );
+
+function getPipelineRunDAG() {
+  const g = new dagre.graphlib.Graph({
+    directed: true,
+    compound: true
+  });
+
+  g.setGraph({
+    rankdir: 'lr',
+    align: 'dl',
+    nodesep: 50,
+    edgesep: 10,
+    ranksep: 50,
+    marginx: 0,
+    marginy: 0
+  });
+
+  g.setDefaultNodeLabel(id => ({ label: id, width: 180, height: 30 }));
+  g.setDefaultEdgeLabel((v, w, name) => ({
+    label: `${v}-${w}${name || ''}`
+    // width: 50,
+    // height: 20
+  }));
+
+  // Add nodes to the graph. The first argument is the node id. The second is
+  // metadata about the node. Use the default above if no value provided for the
+  // second argument.
+  g.setNode('skaffold-unit-tests');
+  g.setNode('build-skaffold-app');
+  g.setNode('build-skaffold-web');
+  g.setNode('deploy-app');
+  g.setNode('deploy-web');
+
+  g.setEdge('skaffold-unit-tests', 'build-skaffold-app');
+  g.setEdge('skaffold-unit-tests', 'build-skaffold-web');
+  g.setEdge('build-skaffold-app', 'deploy-app');
+  g.setEdge('build-skaffold-web', 'deploy-web');
+
+  const sources = g.sources();
+  const sinks = g.sinks();
+
+  g.setNode('start');
+  g.setNode('end');
+
+  sources.forEach(source => {
+    g.setEdge('start', source);
+  });
+  sinks.forEach(sink => {
+    g.setEdge(sink, 'end');
+  });
+
+  dagre.layout(g);
+  return g;
+}
+
+export const Dagre = () => {
+  const dag = getPipelineRunDAG();
+  const { width: graphWidth, height: graphHeight } = dag.graph();
+  console.log({ dag, graphWidth, graphHeight });
+  const nodes = dag.nodes().map(v => {
+    // x,y is the center of the node
+    // for labels it's the center of the edge label (label must have width/height)
+    const { label, width, height, x, y } = dag.node(v);
+    return (
+      <div
+        key={v}
+        style={{
+          width: `${width}px`,
+          height: `${height}px`,
+          position: 'absolute',
+          top: y - height / 2,
+          left: x - width / 2,
+          outline: '1px solid gray'
+        }}
+      >
+        {label}
+      </div>
+    );
+  });
+  dag.edges().forEach(e => {
+    console.log(`Edge ${e.v} -> ${e.w}: ${JSON.stringify(dag.edge(e))}`);
+  });
+
+  return <div style={{ position: 'relative' }}>{nodes}</div>;
+};

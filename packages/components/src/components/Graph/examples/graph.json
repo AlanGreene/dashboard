@@ -1,57 +1,4 @@
 {
-  "id": "root",
-  "label": "root",
-  "edges": [
-    {
-      "id": "skaffold-unit-tests-build-skaffold-web",
-      "source": "skaffold-unit-tests",
-      "sourcePort": "skaffold-unit-tests-p0",
-      "target": "build-skaffold-web",
-      "targetPort": "build-skaffold-web-p0"
-    },
-    {
-      "id": "skaffold-unit-tests-build-skaffold-app",
-      "source": "skaffold-unit-tests",
-      "sourcePort": "skaffold-unit-tests-p1",
-      "target": "build-skaffold-app",
-      "targetPort": "build-skaffold-app-p0"
-    },
-    {
-      "id": "build-skaffold-app-deploy-app",
-      "source": "build-skaffold-app",
-      "sourcePort": "build-skaffold-app-p1",
-      "target": "deploy-app",
-      "targetPort": "deploy-app-p0"
-    },
-    {
-      "id": "build-skaffold-web-deploy-web",
-      "source": "build-skaffold-web",
-      "sourcePort": "build-skaffold-web-p1",
-      "target": "deploy-web",
-      "targetPort": "deploy-web-p0"
-    },
-    {
-      "id": "Start-skaffold-unit-tests",
-      "source": "Start",
-      "sourcePort": "Start-pSourceSingleton",
-      "target": "skaffold-unit-tests",
-      "targetPort": "skaffold-unit-tests-p2"
-    },
-    {
-      "id": "deploy-app-End",
-      "source": "deploy-app",
-      "sourcePort": "deploy-app-p1",
-      "target": "End",
-      "targetPort": "End-pTargetSingleton"
-    },
-    {
-      "id": "deploy-web-End",
-      "source": "deploy-web",
-      "sourcePort": "deploy-web-p1",
-      "target": "End",
-      "targetPort": "End-pTargetSingleton"
-    }
-  ],
   "children": [
     {
       "id": "skaffold-unit-tests",
@@ -62,8 +9,9 @@
           "label": "run-tests",
           "width": 200,
           "height": 30,
-          "nChildren": 2,
-          "nParents": 1,
+          "nChildren": 0,
+          "nParents": 0,
+          "status": "success",
           "type": "Step"
         }
       ],
@@ -74,13 +22,10 @@
       "type": "Task",
       "ports": [
         {
-          "id": "skaffold-unit-tests-p0"
+          "id": "skaffold-unit-tests-pSourceSingleton"
         },
         {
-          "id": "skaffold-unit-tests-p1"
-        },
-        {
-          "id": "skaffold-unit-tests-p2"
+          "id": "skaffold-unit-tests-pTargetSingleton"
         }
       ]
     },
@@ -93,8 +38,8 @@
           "label": "build-and-push",
           "width": 200,
           "height": 30,
-          "nChildren": 1,
-          "nParents": 1,
+          "nChildren": 0,
+          "nParents": 0,
           "type": "Step"
         }
       ],
@@ -105,10 +50,10 @@
       "type": "Task",
       "ports": [
         {
-          "id": "build-skaffold-web-p0"
+          "id": "build-skaffold-web-pTargetSingleton"
         },
         {
-          "id": "build-skaffold-web-p1"
+          "id": "build-skaffold-web-pSourceSingleton"
         }
       ]
     },
@@ -121,8 +66,9 @@
           "label": "build-and-push",
           "width": 200,
           "height": 30,
-          "nChildren": 1,
-          "nParents": 1,
+          "nChildren": 0,
+          "nParents": 0,
+          "status": "error",
           "type": "Step"
         }
       ],
@@ -133,10 +79,10 @@
       "type": "Task",
       "ports": [
         {
-          "id": "build-skaffold-app-p0"
+          "id": "build-skaffold-app-pTargetSingleton"
         },
         {
-          "id": "build-skaffold-app-p1"
+          "id": "build-skaffold-app-pSourceSingleton"
         }
       ]
     },
@@ -150,37 +96,50 @@
           "width": 200,
           "height": 30,
           "nChildren": 1,
-          "nParents": 1,
-          "type": "Step"
+          "nParents": 0,
+          "status": null,
+          "type": "Step",
+          "ports": [
+            {
+              "id": "__step__deploy-app__replace-image-pSourceSingleton"
+            }
+          ]
         },
         {
           "id": "__step__deploy-app__run-kubectl",
           "label": "run-kubectl",
           "width": 200,
           "height": 30,
-          "nChildren": 1,
+          "nChildren": 0,
           "nParents": 1,
-          "type": "Step"
+          "status": null,
+          "type": "Step",
+          "ports": [
+            {
+              "id": "__step__deploy-app__run-kubectl-pTargetSingleton"
+            }
+          ]
         }
       ],
       "edges": [
         {
           "id": "__step__deploy-app__replace-image-__step__deploy-app__run-kubectl",
           "source": "__step__deploy-app__replace-image",
-          "sourcePort": "__step__deploy-app__replace-image-p0",
+          "sourcePort": "__step__deploy-app__replace-image-pSourceSingleton",
           "target": "__step__deploy-app__run-kubectl",
-          "targetPort": "__step__deploy-app__run-kubectl-p0"
+          "targetPort": "__step__deploy-app__run-kubectl-pTargetSingleton"
         }
       ],
       "nParents": 1,
       "nChildren": 1,
+      "status": null,
       "type": "Task",
       "ports": [
         {
-          "id": "deploy-app-p0"
+          "id": "deploy-app-pTargetSingleton"
         },
         {
-          "id": "deploy-app-p1"
+          "id": "deploy-app-pSourceSingleton"
         }
       ]
     },
@@ -194,48 +153,61 @@
           "width": 200,
           "height": 30,
           "nChildren": 1,
-          "nParents": 1,
-          "type": "Step"
+          "nParents": 0,
+          "status": null,
+          "type": "Step",
+          "ports": [
+            {
+              "id": "__step__deploy-web__replace-image-pSourceSingleton"
+            }
+          ]
         },
         {
           "id": "__step__deploy-web__run-kubectl",
           "label": "run-kubectl",
           "width": 200,
           "height": 30,
-          "nChildren": 1,
+          "nChildren": 0,
           "nParents": 1,
-          "type": "Step"
+          "status": null,
+          "type": "Step",
+          "ports": [
+            {
+              "id": "__step__deploy-web__run-kubectl-pTargetSingleton"
+            }
+          ]
         }
       ],
       "edges": [
         {
           "id": "__step__deploy-web__replace-image-__step__deploy-web__run-kubectl",
           "source": "__step__deploy-web__replace-image",
-          "sourcePort": "__step__deploy-web__replace-image-p0",
+          "sourcePort": "__step__deploy-web__replace-image-pSourceSingleton",
           "target": "__step__deploy-web__run-kubectl",
-          "targetPort": "__step__deploy-web__run-kubectl-p0"
+          "targetPort": "__step__deploy-web__run-kubectl-pTargetSingleton"
         }
       ],
       "nParents": 1,
       "nChildren": 1,
+      "status": null,
       "type": "Task",
       "ports": [
         {
-          "id": "deploy-web-p0"
+          "id": "deploy-web-pTargetSingleton"
         },
         {
-          "id": "deploy-web-p1"
+          "id": "deploy-web-pSourceSingleton"
         }
       ]
     },
     {
       "id": "Start",
+      "height": 30,
       "label": "Start",
-      "type": "Start",
-      "width": 60,
-      "height": 60,
       "nChildren": 1,
       "nParents": 0,
+      "type": "Start",
+      "width": 30,
       "ports": [
         {
           "id": "Start-pSourceSingleton"
@@ -244,12 +216,12 @@
     },
     {
       "id": "End",
+      "height": 30,
       "label": "End",
-      "type": "End",
-      "width": 60,
-      "height": 60,
       "nChildren": 0,
       "nParents": 2,
+      "type": "End",
+      "width": 30,
       "ports": [
         {
           "id": "End-pTargetSingleton"
@@ -257,6 +229,59 @@
       ]
     }
   ],
+  "edges": [
+    {
+      "id": "skaffold-unit-tests-build-skaffold-web",
+      "source": "skaffold-unit-tests",
+      "sourcePort": "skaffold-unit-tests-pSourceSingleton",
+      "target": "build-skaffold-web",
+      "targetPort": "build-skaffold-web-pTargetSingleton"
+    },
+    {
+      "id": "skaffold-unit-tests-build-skaffold-app",
+      "source": "skaffold-unit-tests",
+      "sourcePort": "skaffold-unit-tests-pSourceSingleton",
+      "target": "build-skaffold-app",
+      "targetPort": "build-skaffold-app-pTargetSingleton"
+    },
+    {
+      "id": "build-skaffold-app-deploy-app",
+      "source": "build-skaffold-app",
+      "sourcePort": "build-skaffold-app-pSourceSingleton",
+      "target": "deploy-app",
+      "targetPort": "deploy-app-pTargetSingleton"
+    },
+    {
+      "id": "build-skaffold-web-deploy-web",
+      "source": "build-skaffold-web",
+      "sourcePort": "build-skaffold-web-pSourceSingleton",
+      "target": "deploy-web",
+      "targetPort": "deploy-web-pTargetSingleton"
+    },
+    {
+      "id": "Start-skaffold-unit-tests",
+      "source": "Start",
+      "sourcePort": "Start-pSourceSingleton",
+      "target": "skaffold-unit-tests",
+      "targetPort": "skaffold-unit-tests-pTargetSingleton"
+    },
+    {
+      "id": "deploy-app-End",
+      "source": "deploy-app",
+      "sourcePort": "deploy-app-pSourceSingleton",
+      "target": "End",
+      "targetPort": "End-pTargetSingleton"
+    },
+    {
+      "id": "deploy-web-End",
+      "source": "deploy-web",
+      "sourcePort": "deploy-web-pSourceSingleton",
+      "target": "End",
+      "targetPort": "End-pTargetSingleton"
+    }
+  ],
+  "id": "root",
+  "label": "root",
   "nChildren": 0,
   "nParents": 0
 }

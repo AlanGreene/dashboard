@@ -1,5 +1,5 @@
 /*
-Copyright 2019 The Tekton Authors
+Copyright 2019-2020 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -15,17 +15,24 @@ import React from 'react';
 import { path as d3Path } from 'd3-path';
 
 const NodeLink = ({ link }) => {
-  const sections = link.sections[0];
+  const section = link.sections[0];
+  const { bendPoints, endPoint, startPoint } = section;
   const path = d3Path();
 
-  const { x: startX, y: startY } = sections.startPoint;
-  const { x: targetX, y: targetY } = sections.endPoint;
-
-  const percent = 0.5;
-  path.moveTo(startX, startY);
-  path.lineTo(startX, startY + (targetY - startY) * percent);
-  path.lineTo(targetX, startY + (targetY - startY) * percent);
-  path.lineTo(targetX, targetY - 1); // stop short to prevent it showing around the arrow tip
+  path.moveTo(startPoint.x, startPoint.y);
+  if (bendPoints) {
+    const [controlPoint1, controlPoint2] = bendPoints;
+    path.bezierCurveTo(
+      controlPoint1.x,
+      controlPoint1.y,
+      controlPoint2.x,
+      controlPoint2.y,
+      endPoint.x - 1,
+      endPoint.y
+    );
+  } else {
+    path.lineTo(endPoint.x - 1, endPoint.y); // stop short to prevent it showing around the arrow tip
+  }
 
   return (
     <path strokeWidth={1} fill="none" strokeOpacity={1} d={path.toString()} />

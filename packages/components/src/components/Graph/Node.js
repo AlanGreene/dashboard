@@ -1,5 +1,5 @@
 /*
-Copyright 2019 The Tekton Authors
+Copyright 2019-2020 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -19,6 +19,7 @@ import {
   ChevronDown20 as ChevronDown,
   ChevronUp20 as ChevronUp,
   CloseFilled20 as CloseFilled,
+  CloseOutline20 as CloseOutline,
   Undefined20 as Undefined
 } from '@carbon/icons-react';
 
@@ -54,7 +55,7 @@ export default class Node extends Component {
     if (type === 'Task' || status === 'error') {
       switch (status) {
         case 'error':
-          StatusIcon = CloseFilled;
+          StatusIcon = type === 'Task' ? CloseFilled : CloseOutline;
           break;
         case 'running':
           StatusIcon = InlineLoading;
@@ -125,9 +126,11 @@ export default class Node extends Component {
               <rect className="label-hitbox" {...labelHitboxProps} />
             )}
             {StatusIcon}
-            <text {...labelPosition}>{labelText}</text>
+            {type !== 'Start' && type !== 'End' && (
+              <text {...labelPosition}>{labelText}</text>
+            )}
             {type === 'Task' && (
-              <Chevron className="chevron" x={width - 28} y="5" />
+              <Chevron className="chevron" x={width - 22} y="5" />
             )}
           </g>
           {children && (

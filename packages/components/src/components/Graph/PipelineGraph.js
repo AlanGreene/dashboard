@@ -54,6 +54,7 @@ export default class PipelineGraph extends Component {
 
   render() {
     const { graph } = this.state;
+    console.log(JSON.stringify(graph));
     return graph ? (
       <Graph
         graph={graph}

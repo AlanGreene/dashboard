@@ -1,5 +1,5 @@
 /*
-Copyright 2019 The Tekton Authors
+Copyright 2019-2020 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -41,10 +41,9 @@ export default class Graph extends Component {
         'org.eclipse.elk.algorithm': isSubGraph
           ? 'org.eclipse.elk.box'
           : 'org.eclipse.elk.layered',
-        'org.eclipse.elk.direction': 'DOWN',
+        'org.eclipse.elk.direction': 'RIGHT',
         'org.eclipse.elk.edgeRouting': 'ORTHOGONAL',
-        // 'org.eclipse.elk.interactive': true,
-        'org.eclipse.elk.layered.nodePlacement.bk.fixedAlignment': 'BALANCED',
+        'org.eclipse.elk.layered.nodePlacement.bk.fixedAlignment': 'LEFTDOWN',
         'org.eclipse.elk.layered.nodePlacement.strategy': 'BRANDES_KOEPF',
         'org.eclipse.elk.layered.spacing.nodeNodeBetweenLayers': isSubGraph
           ? 0

@@ -127,13 +127,10 @@
       "demo-pipeline-run-6-build-skaffold-web-pttsw": {
         "pipelineTaskName": "build-skaffold-web",
         "status": {
-          "completionTime": "2019-09-06T13:53:50Z",
           "conditions": [
             {
-              "lastTransitionTime": "2019-09-06T13:53:50Z",
-              "message": "\"step-build-and-push\" exited with code 1 (image: \"docker-pullable://gcr.io/kaniko-project/executor@sha256:d9fe474f80b73808dc12b54f45f5fc90f7856d9fc699d4a5e79d968a1aef1a72\"); for logs run: kubectl -n default logs demo-pipeline-run-6-build-skaffold-web-pttsw-pod-87a900 -c step-build-and-push",
-              "reason": "Failed",
-              "status": "False",
+              "reason": "Running",
+              "status": "Unknown",
               "type": "Succeeded"
             }
           ],
@@ -144,11 +141,8 @@
               "container": "step-build-and-push",
               "imageID": "docker-pullable://gcr.io/kaniko-project/executor@sha256:d9fe474f80b73808dc12b54f45f5fc90f7856d9fc699d4a5e79d968a1aef1a72",
               "name": "build-and-push",
-              "terminated": {
+              "running": {
                 "containerID": "docker://28a0348990a8a10f97850f0dad18327fdbba4ab9aeb49fb7c0de490c746ed97a",
-                "exitCode": 1,
-                "finishedAt": "2019-09-06T13:53:50Z",
-                "reason": "Error",
                 "startedAt": "2019-09-06T13:51:15Z"
               }
             },
