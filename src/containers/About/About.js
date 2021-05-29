@@ -54,8 +54,6 @@ export function About({ intl }) {
     triggersVersion
   } = data;
 
-  const isTriggersInstalled = !!(triggersNamespace && triggersVersion);
-
   const checkMissingProperties = () => {
     if (isPlaceholderData) {
       return null;
@@ -173,7 +171,7 @@ export function About({ intl }) {
             skeletonRowCount={2}
             title="Pipelines"
           />
-          {isTriggersInstalled && (
+          {!!(triggersNamespace && triggersVersion) && (
             <Table
               headers={headers}
               id="tkn--about--triggers-table"

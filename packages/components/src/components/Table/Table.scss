@@ -47,7 +47,12 @@ limitations under the License.
     &.bx--table-column-checkbox {
       padding-top: 0;
       padding-bottom: 0;
+      padding-right: $spacing-05;
       vertical-align: middle;
+
+      .bx--checkbox-label {
+        padding-left: $spacing-05;
+      }
     }
 
     &.cell-status {

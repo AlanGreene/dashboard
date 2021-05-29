@@ -12,7 +12,7 @@ limitations under the License.
 */
 
 import React, { useContext, useEffect } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { useInfiniteQuery, useQuery, useQueryClient } from 'react-query';
 import { ALL_NAMESPACES } from '@tektoncd/dashboard-utils';
 
 import { getAPIRoot } from './comms';
@@ -153,5 +153,41 @@ export function useWebSocket(resourceType) {
 export function useNamespacedCollection(resourceType, api, params) {
   const query = useQuery([resourceType, params], () => api(params));
   useWebSocket(resourceType);
+  return query;
+}
+
+export function flattenChunkedList(data) {
+  return data.pages.reduce((items, page) => {
+    return items.concat(page.items);
+  }, []);
+}
+
+export function useChunkedList({ api, flatten, params, resourceType }) {
+  const query = useInfiniteQuery(
+    [resourceType, params],
+    ({ pageParam }) => {
+      return api({
+        limit: 500,
+        ...params,
+        continueToken: pageParam,
+        raw: true
+      });
+    },
+    {
+      getNextPageParam(lastPage) {
+        return lastPage.metadata.continue || undefined;
+      },
+      ...(flatten && { select: flattenChunkedList })
+    }
+  );
+
+  const { fetchNextPage, hasNextPage, isFetchingNextPage } = query;
+
+  useEffect(async () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
   return query;
 }

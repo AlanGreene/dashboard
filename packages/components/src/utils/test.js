@@ -15,6 +15,17 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { render as baseRender } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      cacheTime: 1000 * 60 * 5, // 5 minutes
+      refetchOnWindowFocus: false,
+      staleTime: Infinity
+    }
+  }
+});
 
 function RouterWrapper({ children }) {
   return (
@@ -50,9 +61,11 @@ export function renderWithRouter(
 
 function IntlWrapper({ children }) {
   return (
-    <IntlProvider locale="en" defaultLocale="en" messages={{}}>
-      {children}
-    </IntlProvider>
+    <QueryClientProvider client={queryClient}>
+      <IntlProvider locale="en" defaultLocale="en" messages={{}}>
+        {children}
+      </IntlProvider>
+    </QueryClientProvider>
   );
 }
 

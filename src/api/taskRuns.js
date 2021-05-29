@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2020 The Tekton Authors
+Copyright 2019-2021 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -18,16 +18,37 @@ import {
 import deepClone from 'lodash.clonedeep';
 
 import { deleteRequest, get, post, put } from './comms';
-import { checkData, getQueryParams, getTektonAPI } from './utils';
+import {
+  checkData,
+  getQueryParams,
+  getTektonAPI,
+  // useChunkedList,
+  useNamespacedCollection
+} from './utils';
 
 export function deleteTaskRun({ name, namespace }) {
   const uri = getTektonAPI('taskruns', { name, namespace });
   return deleteRequest(uri);
 }
 
-export function getTaskRuns({ filters = [], namespace } = {}) {
-  const uri = getTektonAPI('taskruns', { namespace }, getQueryParams(filters));
-  return get(uri).then(checkData);
+export function getTaskRuns({
+  continueToken,
+  filters = [],
+  limit,
+  namespace,
+  raw = false
+} = {}) {
+  const uri = getTektonAPI(
+    'taskruns',
+    { namespace },
+    {
+      ...getQueryParams(filters),
+      ...(continueToken && { continue: continueToken }),
+      ...(limit && { limit })
+    }
+  );
+  const result = get(uri);
+  return raw ? result : result.then(checkData);
 }
 
 export function getTaskRun({ name, namespace }) {
@@ -135,4 +156,14 @@ export function rerunTaskRun(taskRun) {
 
   const uri = getTektonAPI('taskruns', { namespace });
   return post(uri, payload).then(({ body }) => body);
+}
+
+export function useTaskRuns(params) {
+  // useChunkedList({
+  //   api: getTaskRuns,
+  //   flatten: true,
+  //   params,
+  //   resourceType: 'TaskRun_chunked'
+  // });
+  return useNamespacedCollection('TaskRun', getTaskRuns, params);
 }

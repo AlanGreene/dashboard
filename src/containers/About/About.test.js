@@ -12,8 +12,8 @@ limitations under the License.
 */
 
 import React from 'react';
-import { render } from '../../utils/test';
 
+import { render } from '../../utils/test';
 import * as api from '../../api';
 import About from '.';
 
