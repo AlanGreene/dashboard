@@ -78,17 +78,14 @@ import {
   fetchNamespaces as fetchNamespacesActionCreator,
   selectNamespace as selectNamespaceActionCreator
 } from '../../actions/namespaces';
-import { fetchInstallProperties as fetchInstallPropertiesActionCreator } from '../../actions/properties';
 
 import {
   getExtensions,
   getLocale,
-  getLogoutURL,
   getSelectedNamespace,
-  getTenantNamespace,
-  isReadOnly as selectIsReadOnly,
   isWebSocketConnected as selectIsWebSocketConnected
 } from '../../reducers';
+import { useIsReadOnly, useLogoutURL, useTenantNamespace } from '../../api';
 
 import config from '../../../config_frontend/config.json';
 
@@ -121,14 +118,10 @@ const ConfigError = injectIntl(ConfigErrorComponent);
 export function App({
   extensions,
   fetchExtensions,
-  fetchInstallProperties,
   fetchNamespaces,
-  isReadOnly,
   lang,
-  logoutURL,
   onUnload,
   selectNamespace,
-  tenantNamespace,
   webSocketConnected
 }) {
   useEffect(() => onUnload, []);
@@ -138,6 +131,10 @@ export function App({
   const [loadingConfigError, setLoadingConfigError] = useState(null);
   const [messages, setMessages] = useState({});
   const [showLoadingState, setShowLoadingState] = useState(true);
+
+  const isReadOnly = useIsReadOnly();
+  const logoutURL = useLogoutURL();
+  const tenantNamespace = useTenantNamespace();
 
   async function loadMessages() {
     const isSupportedLocale = supportedLocales.includes(lang);
@@ -171,7 +168,6 @@ export function App({
   async function fetchConfig() {
     setIsLoadingConfig(true);
     try {
-      await fetchInstallProperties();
       await loadMessages();
       setIsLoadingConfig(false);
       setShowLoadingState(false);
@@ -488,18 +484,14 @@ App.defaultProps = {
 /* istanbul ignore next */
 const mapStateToProps = state => ({
   extensions: getExtensions(state),
-  isReadOnly: selectIsReadOnly(state),
   lang: getLocale(state),
-  logoutURL: getLogoutURL(state),
   namespace: getSelectedNamespace(state),
-  tenantNamespace: getTenantNamespace(state),
   webSocketConnected: selectIsWebSocketConnected(state)
 });
 
 const mapDispatchToProps = {
   fetchExtensions: fetchExtensionsActionCreator,
   fetchNamespaces: fetchNamespacesActionCreator,
-  fetchInstallProperties: fetchInstallPropertiesActionCreator,
   selectNamespace: selectNamespaceActionCreator
 };
 

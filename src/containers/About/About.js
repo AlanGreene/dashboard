@@ -12,39 +12,17 @@ limitations under the License.
 */
 
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { InlineNotification } from 'carbon-components-react';
 import { Table } from '@tektoncd/dashboard-components';
 import { getErrorMessage, getTitle } from '@tektoncd/dashboard-utils';
 
+import { useProperties } from '../../api';
+
 import tektonLogo from '../../images/tekton-dashboard-color.svg';
 
-import {
-  getDashboardNamespace,
-  getDashboardVersion,
-  getLogoutURL,
-  getPipelineNamespace,
-  getPipelineVersion,
-  getTriggersNamespace,
-  getTriggersVersion,
-  isReadOnly as selectIsReadOnly,
-  isTriggersInstalled as selectIsTriggersInstalled
-} from '../../reducers';
-
 /* istanbul ignore next */
-export function About({
-  dashboardNamespace,
-  dashboardVersion,
-  intl,
-  isReadOnly,
-  isTriggersInstalled,
-  logoutURL,
-  pipelinesNamespace,
-  pipelinesVersion,
-  triggersNamespace,
-  triggersVersion
-}) {
+export function About({ intl }) {
   useEffect(() => {
     document.title = getTitle({
       page: intl.formatMessage({
@@ -66,12 +44,28 @@ export function About({
     }
   };
 
+  const { data, isPlaceholderData } = useProperties();
+  const {
+    dashboardNamespace,
+    dashboardVersion,
+    isReadOnly,
+    logoutURL,
+    pipelinesNamespace,
+    pipelinesVersion,
+    triggersNamespace,
+    triggersVersion
+  } = data;
+
   const checkMissingProperties = () => {
+    if (isPlaceholderData) {
+      return null;
+    }
+
     const propertiesToCheck = {
-      DashboardNamespace: dashboardNamespace,
-      DashboardVersion: dashboardVersion,
-      PipelineNamespace: pipelinesNamespace,
-      PipelineVersion: pipelinesVersion
+      dashboardNamespace,
+      dashboardVersion,
+      pipelinesNamespace,
+      pipelinesVersion
     };
 
     const errorsFound = Object.keys(propertiesToCheck)
@@ -156,6 +150,7 @@ export function About({
           <Table
             id="tkn--about--dashboard-table"
             headers={headers}
+            loading={isPlaceholderData}
             rows={[
               getRow('Namespace', dashboardNamespace),
               getRow(versionLabel, dashboardVersion),
@@ -163,19 +158,22 @@ export function About({
               getRow(logoutURLLabel, logoutURL)
             ].filter(Boolean)}
             size="short"
+            skeletonRowCount={2}
             title="Dashboard"
           />
           <Table
             headers={headers}
             id="tkn--about--pipelines-table"
+            loading={isPlaceholderData}
             rows={[
               getRow('Namespace', pipelinesNamespace),
               getRow(versionLabel, pipelinesVersion)
             ].filter(Boolean)}
             size="short"
+            skeletonRowCount={2}
             title="Pipelines"
           />
-          {isTriggersInstalled && (
+          {!!(triggersNamespace && triggersVersion) && (
             <Table
               headers={headers}
               id="tkn--about--triggers-table"
@@ -207,18 +205,4 @@ export function About({
   );
 }
 
-/* istanbul ignore next */
-const mapStateToProps = state => ({
-  dashboardNamespace: getDashboardNamespace(state),
-  dashboardVersion: getDashboardVersion(state),
-  isReadOnly: selectIsReadOnly(state),
-  isTriggersInstalled: selectIsTriggersInstalled(state),
-  logoutURL: getLogoutURL(state),
-  pipelinesNamespace: getPipelineNamespace(state),
-  pipelinesVersion: getPipelineVersion(state),
-  triggersNamespace: getTriggersNamespace(state),
-  triggersVersion: getTriggersVersion(state)
-});
-
-export const AboutWithIntl = injectIntl(About);
-export default connect(mapStateToProps)(AboutWithIntl);
+export default injectIntl(About);

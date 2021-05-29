@@ -38,36 +38,29 @@ import { Add16 as Add, TrashCan32 as Delete } from '@carbon/icons-react';
 
 import { ListPageLayout } from '..';
 import { sortRunsByStartTime } from '../../utils';
-import { fetchTaskRuns as fetchTaskRunsActionCreator } from '../../actions/taskRuns';
 
+import { getSelectedNamespace, isWebSocketConnected } from '../../reducers';
 import {
-  getSelectedNamespace,
-  getTaskRuns,
-  getTaskRunsErrorMessage,
-  isFetchingTaskRuns,
-  isWebSocketConnected,
-  isReadOnly as selectIsReadOnly
-} from '../../reducers';
-import { cancelTaskRun, deleteTaskRun, rerunTaskRun } from '../../api';
+  cancelTaskRun,
+  deleteTaskRun,
+  rerunTaskRun,
+  useIsReadOnly,
+  useTaskRuns
+} from '../../api';
 
 const { CLUSTER_TASK, TASK } = labels;
 
 /* istanbul ignore next */
 function TaskRuns(props) {
   const {
-    error,
-    fetchTaskRuns,
     filters,
     history,
     intl,
-    isReadOnly,
     kind,
-    loading,
     namespace,
     setStatusFilter,
     statusFilter,
     taskName,
-    taskRuns,
     webSocketConnected
   } = props;
 
@@ -76,36 +69,24 @@ function TaskRuns(props) {
   const [toBeDeleted, setToBeDeleted] = useState([]);
   const [cancelSelection, setCancelSelection] = useState(null);
 
+  const isReadOnly = useIsReadOnly();
+
   useEffect(() => {
     document.title = getTitle({ page: 'TaskRuns' });
   }, []);
 
-  function fetchData() {
-    if (kind === 'ClusterTask') {
-      // TaskRuns from ClusterTask should have label 'tekton.dev/clusterTask=',
-      // (and that is the filter on the page), but some taskruns might still
-      // only have the old label 'tekton.dev/task='
-      // So, for ClusterTasks, also fetch with the old filter:
-      fetchTaskRuns({
-        filters: [`${TASK}=${taskName}`]
-      });
-    }
+  const { data: taskRuns = [], error, isLoading, refetch } = useTaskRuns({
+    filters,
+    namespace
+  });
 
-    fetchTaskRuns({ filters, namespace });
-  }
-
-  function reset() {
+  useEffect(() => {
     setDeleteError(null);
     setShowDeleteModal(false);
     setToBeDeleted([]);
-  }
-
-  useEffect(() => {
-    reset();
-    fetchData();
   }, [JSON.stringify(filters), namespace]);
 
-  useWebSocketReconnected(fetchData, webSocketConnected);
+  useWebSocketReconnected(refetch, webSocketConnected);
 
   function getError() {
     if (error) {
@@ -311,7 +292,7 @@ function TaskRuns(props) {
       <TaskRunsList
         batchActionButtons={batchActionButtons}
         filters={statusFilters}
-        loading={loading && !taskRuns.length}
+        loading={isLoading}
         selectedNamespace={namespace}
         taskRuns={taskRuns.filter(run => {
           return runMatchesStatusFilter({ run, statusFilter });
@@ -353,40 +334,15 @@ function mapStateToProps(state, props) {
       ? clusterTaskFilter.replace(`${CLUSTER_TASK}=`, '')
       : taskFilter.replace(`${TASK}=`, '');
 
-  let taskRuns = getTaskRuns(state, { filters, namespace });
-  if (kind === 'ClusterTask') {
-    // TaskRuns from ClusterTask should have label 'tekton.dev/clusterTask=',
-    // (and that is the filter on the page), but some taskruns might still
-    // only have the old label 'tekton.dev/task='
-    // So, for ClusterTasks, also fetch with the old filter:
-    const clusterTaskRuns = getTaskRuns(state, {
-      filters: [`${TASK}=${taskName}`]
-    });
-
-    // Then merge the arrays, using a Set to prevent duplicates
-    taskRuns = [...new Set([...taskRuns, ...clusterTaskRuns])];
-  }
-
   return {
-    isReadOnly: selectIsReadOnly(state),
-    error: getTaskRunsErrorMessage(state),
-    loading: isFetchingTaskRuns(state),
     namespace,
     filters,
     taskName,
     kind,
     setStatusFilter: getStatusFilterHandler(props),
     statusFilter,
-    taskRuns,
     webSocketConnected: isWebSocketConnected(state)
   };
 }
 
-const mapDispatchToProps = {
-  fetchTaskRuns: fetchTaskRunsActionCreator
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(injectIntl(TaskRuns));
+export default connect(mapStateToProps)(injectIntl(TaskRuns));
