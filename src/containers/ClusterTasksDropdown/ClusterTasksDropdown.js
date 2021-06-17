@@ -17,24 +17,17 @@ import { connect } from 'react-redux';
 import { TooltipDropdown } from '@tektoncd/dashboard-components';
 
 import {
-  getClusterTasks,
-  isFetchingClusterTasks,
   isWebSocketConnected
 } from '../../reducers';
-import { fetchClusterTasks as fetchClusterTasksActionCreator } from '../../actions/tasks';
 
 function ClusterTasksDropdown({
-  fetchClusterTasks,
   intl,
   label,
-  webSocketConnected,
-  ...rest
+  webSocketConnected
 }) {
-  useEffect(() => {
-    if (webSocketConnected !== false) {
-      fetchClusterTasks();
-    }
-  }, [webSocketConnected]);
+  const { data: clusterTasks = [], isFetching, refetch } = useClusterTasks();
+
+  useWebSocketReconnected(refetch, webSocketConnected);
 
   const emptyText = intl.formatMessage({
     id: 'dashboard.clusterTasksDropdown.empty',
@@ -47,30 +40,22 @@ function ClusterTasksDropdown({
       id: 'dashboard.clusterTasksDropdown.label',
       defaultMessage: 'Select ClusterTask'
     });
+
+  const items = clusterTasks.map(clusterTask => clusterTask.metadata.name);
+
   return (
-    <TooltipDropdown {...rest} emptyText={emptyText} label={labelString} />
+    <TooltipDropdown emptyText={emptyText} items={items} label={labelString} loading={isFetching} />
   );
 }
 
 ClusterTasksDropdown.defaultProps = {
-  items: [],
-  loading: false,
   titleText: 'ClusterTask'
 };
 
 function mapStateToProps(state) {
   return {
-    items: getClusterTasks(state).map(clusterTask => clusterTask.metadata.name),
-    loading: isFetchingClusterTasks(state),
     webSocketConnected: isWebSocketConnected(state)
   };
 }
 
-const mapDispatchToProps = {
-  fetchClusterTasks: fetchClusterTasksActionCreator
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(injectIntl(ClusterTasksDropdown));
+export default connect(mapStateToProps)(injectIntl(ClusterTasksDropdown));

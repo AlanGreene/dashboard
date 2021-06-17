@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2020 The Tekton Authors
+Copyright 2019-2021 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -18,7 +18,12 @@ import {
 import deepClone from 'lodash.clonedeep';
 
 import { deleteRequest, get, post, put } from './comms';
-import { checkData, getQueryParams, getTektonAPI } from './utils';
+import {
+  checkData,
+  getQueryParams,
+  getTektonAPI,
+  useCollection
+} from './utils';
 
 export function deleteTaskRun({ name, namespace }) {
   const uri = getTektonAPI('taskruns', { name, namespace });
@@ -135,4 +140,8 @@ export function rerunTaskRun(taskRun) {
 
   const uri = getTektonAPI('taskruns', { namespace });
   return post(uri, payload).then(({ body }) => body);
+}
+
+export function useTaskRuns(params) {
+  return useCollection('TaskRun', getTaskRuns, params);
 }

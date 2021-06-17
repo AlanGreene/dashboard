@@ -150,7 +150,7 @@ export function useWebSocket(resourceType) {
   }, [queryClient, webSocket]);
 }
 
-export function useNamespacedCollection(resourceType, api, params) {
+export function useCollection(resourceType, api, params) {
   const query = useQuery([resourceType, params], () => api(params));
   useWebSocket(resourceType);
   return query;

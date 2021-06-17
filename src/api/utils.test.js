@@ -14,7 +14,7 @@ limitations under the License.
 import { act, renderHook } from '@testing-library/react-hooks';
 
 import * as utils from './utils';
-import { useNamespacedCollection, useWebSocket } from './utils';
+import { useCollection, useWebSocket } from './utils';
 import { getAPIWrapper, getQueryClient, getWebSocket } from '../utils/test';
 
 describe('getAPI', () => {
@@ -305,7 +305,7 @@ describe('useWebSocket', () => {
   });
 });
 
-describe('useNamespacedCollection', () => {
+describe('useCollection', () => {
   const kind = 'TaskRun';
   it('should return a valid query response', async () => {
     const queryClient = getQueryClient();
@@ -320,7 +320,7 @@ describe('useNamespacedCollection', () => {
 
     const api = () => [existingResource];
     const { result, waitFor, waitForNextUpdate } = renderHook(
-      () => useNamespacedCollection(kind, api),
+      () => useCollection(kind, api),
       {
         wrapper: getAPIWrapper({ queryClient, webSocket })
       }
