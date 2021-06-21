@@ -46,9 +46,9 @@ function SideNav(props) {
     showKubernetesResources
   } = props;
 
-  if (!expanded) {
-    return null;
-  }
+  // if (!expanded) {
+  //   return null;
+  // }
 
   const { namespace } = match?.params || {};
 
@@ -84,9 +84,10 @@ function SideNav(props) {
   return (
     <CarbonSideNav
       aria-label="Main navigation"
-      expanded
+      expanded={expanded}
       isChildOfHeader={false}
-      isFixedNav
+      isFixedNav={expanded}
+      isRail={!expanded}
     >
       <SideNavItems>
         <SideNavMenu

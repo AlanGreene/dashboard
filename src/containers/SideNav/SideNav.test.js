@@ -21,32 +21,6 @@ import { renderWithRouter } from '../../utils/test';
 import * as API from '../../api';
 import SideNavContainer, { SideNavWithIntl as SideNav } from './SideNav';
 
-it('SideNav renders only when expanded', () => {
-  const namespace = 'default';
-  const selectNamespace = jest.fn();
-  const { queryByText, rerender } = renderWithRouter(
-    <SideNav
-      expanded
-      extensions={[]}
-      location={{ search: '' }}
-      match={{ params: { namespace } }}
-      selectNamespace={selectNamespace}
-    />
-  );
-  expect(queryByText(/Tekton/)).toBeTruthy();
-
-  renderWithRouter(
-    <SideNav
-      extensions={[]}
-      location={{ search: '' }}
-      match={{ params: { namespace } }}
-      selectNamespace={selectNamespace}
-    />,
-    { rerender }
-  );
-  expect(queryByText(/Tekton/)).toBeFalsy();
-});
-
 it('SideNav renders with extensions', () => {
   const middleware = [thunk];
   const mockStore = configureStore(middleware);
