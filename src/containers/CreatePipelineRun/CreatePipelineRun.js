@@ -13,12 +13,12 @@ limitations under the License.
 /* istanbul ignore file */
 
 import React, { useState } from 'react';
-import keyBy from 'lodash.keyby';
 import {
   Button,
   Form,
   FormGroup,
   InlineNotification,
+  TextArea,
   TextInput,
   Toggle
 } from 'carbon-components-react';
@@ -70,7 +70,7 @@ const initialParamsState = paramSpecs => {
   }
   const paramsReducer = (acc, param) => ({
     ...acc,
-    [param.name]: param.default || ''
+    [param.name]: param.default || param.type === 'array' ? [] : ''
   });
   return paramSpecs.reduce(paramsReducer, {});
 };
@@ -156,25 +156,25 @@ function CreatePipelineRun(props) {
         (acc, name) => acc && !!resources[name],
         true
       );
-    const paramSpecMap = keyBy(paramSpecs, 'name');
-    const validParams =
-      !params ||
-      Object.keys(params).reduce(
-        (acc, name) =>
-          acc &&
-          (!!params[name] ||
-            typeof paramSpecMap[name]?.default !== 'undefined'),
-        true
-      );
+
+    const requiredParams =
+      paramSpecs?.filter(
+        paramSpec => typeof paramSpec.default === 'undefined'
+      ) || [];
+
+    const validParams = !requiredParams.some(({ name, type }) => {
+      const value = params[name];
+      if (type === 'array') {
+        return !value?.length || !value[0];
+      }
+
+      return !value;
+    });
 
     // Timeout is a number and less than 1 year in minutes
-    const timeoutTest =
+    const isValidTimeout =
       !Number.isNaN(timeout) && timeout < 525600 && timeout.trim() !== '';
-    if (!timeoutTest) {
-      setState(state => ({ ...state, validTimeout: false }));
-    } else {
-      setState(state => ({ ...state, validTimeout: true }));
-    }
+    setState(state => ({ ...state, validTimeout: isValidTimeout }));
 
     // Labels
     let validLabels = true;
@@ -215,7 +215,7 @@ function CreatePipelineRun(props) {
       validPipelineRef &&
       validResources &&
       validParams &&
-      timeoutTest &&
+      isValidTimeout &&
       validLabels &&
       validNodeSelector
     );
@@ -608,28 +608,41 @@ function CreatePipelineRun(props) {
         )}
         {paramSpecs && paramSpecs.length !== 0 && (
           <FormGroup legendText="Params">
-            {paramSpecs.map(paramSpec => (
-              <TextInput
-                id={`create-pipelinerun--param-${paramSpec.name}`}
-                key={`create-pipelinerun--param-${paramSpec.name}`}
-                labelText={paramSpec.name}
-                helperText={paramSpec.description}
-                placeholder={paramSpec.default || paramSpec.name}
-                invalid={
-                  validationError &&
-                  !params[paramSpec.name] &&
-                  paramSpec.default !== ''
-                }
-                invalidText={intl.formatMessage({
-                  id: 'dashboard.createRun.invalidParams',
-                  defaultMessage: 'Params cannot be empty'
-                })}
-                value={params[paramSpec.name] || ''}
-                onChange={({ target: { value } }) =>
-                  handleParamChange(paramSpec.name, value)
-                }
-              />
-            ))}
+            {paramSpecs.map(paramSpec => {
+              const paramValue = params[paramSpec.name];
+              const ParamInput =
+                paramSpec.type === 'array' ? TextArea : TextInput;
+              return (
+                <ParamInput
+                  id={`create-pipelinerun--param-${paramSpec.name}`}
+                  key={`create-pipelinerun--param-${paramSpec.name}`}
+                  labelText={paramSpec.name}
+                  helperText={paramSpec.description}
+                  placeholder={paramSpec.default || paramSpec.name}
+                  invalid={
+                    validationError &&
+                    (paramSpec.type === 'array'
+                      ? !paramValue?.[0]
+                      : !paramValue && paramSpec.default !== '')
+                  }
+                  invalidText={intl.formatMessage({
+                    id: 'dashboard.createRun.invalidParams',
+                    defaultMessage: 'Params cannot be empty'
+                  })}
+                  value={
+                    (paramSpec.type === 'array'
+                      ? paramValue?.join('\n')
+                      : paramValue) || ''
+                  }
+                  onChange={({ target: { value } }) =>
+                    handleParamChange(
+                      paramSpec.name,
+                      paramSpec.type === 'array' ? value.split('\n') : value
+                    )
+                  }
+                />
+              );
+            })}
           </FormGroup>
         )}
         <FormGroup

@@ -13,13 +13,13 @@ limitations under the License.
 /* istanbul ignore file */
 
 import React, { useState } from 'react';
-import keyBy from 'lodash.keyby';
 import {
   Button,
   Dropdown,
   Form,
   FormGroup,
   InlineNotification,
+  TextArea,
   TextInput
 } from 'carbon-components-react';
 import {
@@ -69,7 +69,10 @@ const initialParamsState = paramSpecs => {
     return {};
   }
   return paramSpecs.reduce(
-    (acc, param) => ({ ...acc, [param.name]: param.default || '' }),
+    (acc, param) => ({
+      ...acc,
+      [param.name]: param.default || param.type === 'array' ? [] : ''
+    }),
     {}
   );
 };
@@ -177,24 +180,24 @@ function CreateTaskRun(props) {
         true
       );
 
-    const paramSpecMap = keyBy(paramSpecs, 'name');
-    const validParams =
-      !params ||
-      Object.keys(params).reduce(
-        (acc, name) =>
-          acc &&
-          (!!params[name] ||
-            typeof paramSpecMap[name]?.default !== 'undefined'),
-        true
-      );
+    const requiredParams =
+      paramSpecs?.filter(
+        paramSpec => typeof paramSpec.default === 'undefined'
+      ) || [];
+
+    const validParams = !requiredParams.some(({ name, type }) => {
+      const value = params[name];
+      if (type === 'array') {
+        return !value?.length || !value[0];
+      }
+
+      return !value;
+    });
 
     // Timeout is a number and less than 1 year in minutes
     const isValidTimeout =
       !Number.isNaN(timeout) && timeout < 525600 && timeout.trim() !== '';
-    setState(state => ({
-      ...state,
-      validTimeout: isValidTimeout
-    }));
+    setState(state => ({ ...state, validTimeout: isValidTimeout }));
 
     // Labels
     let validLabels = true;
@@ -686,28 +689,42 @@ function CreateTaskRun(props) {
         )}
         {paramSpecs && paramSpecs.length !== 0 && (
           <FormGroup legendText="Params">
-            {paramSpecs.map(paramSpec => (
-              <TextInput
-                id={`create-taskrun--param-${paramSpec.name}`}
-                key={`create-taskrun--param-${paramSpec.name}`}
-                labelText={paramSpec.name}
-                helperText={paramSpec.description}
-                placeholder={paramSpec.default || paramSpec.name}
-                invalid={
-                  validationError &&
-                  !params[paramSpec.name] &&
-                  paramSpec.default !== ''
-                }
-                invalidText={intl.formatMessage({
-                  id: 'dashboard.createRun.invalidParams',
-                  defaultMessage: 'Params cannot be empty'
-                })}
-                value={params[paramSpec.name] || ''}
-                onChange={({ target: { value } }) =>
-                  handleParamChange(paramSpec.name, value)
-                }
-              />
-            ))}
+            {paramSpecs.map(paramSpec => {
+              const paramValue = params[paramSpec.name];
+              const ParamInput =
+                paramSpec.type === 'array' ? TextArea : TextInput;
+              return (
+                <ParamInput
+                  id={`create-taskrun--param-${paramSpec.name}`}
+                  key={`create-taskrun--param-${paramSpec.name}`}
+                  labelText={paramSpec.name}
+                  light
+                  helperText={paramSpec.description}
+                  placeholder={paramSpec.default || paramSpec.name}
+                  invalid={
+                    validationError &&
+                    (paramSpec.type === 'array'
+                      ? !paramValue?.[0]
+                      : !paramValue && paramSpec.default !== '')
+                  }
+                  invalidText={intl.formatMessage({
+                    id: 'dashboard.createRun.invalidParams',
+                    defaultMessage: 'Params cannot be empty'
+                  })}
+                  value={
+                    (paramSpec.type === 'array'
+                      ? paramValue?.join('\n')
+                      : paramValue) || ''
+                  }
+                  onChange={({ target: { value } }) =>
+                    handleParamChange(
+                      paramSpec.name,
+                      paramSpec.type === 'array' ? value.split('\n') : value
+                    )
+                  }
+                />
+              );
+            })}
           </FormGroup>
         )}
         <FormGroup
