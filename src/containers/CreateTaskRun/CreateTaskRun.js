@@ -13,6 +13,7 @@ limitations under the License.
 /* istanbul ignore file */
 
 import React, { useState } from 'react';
+import jsYaml from 'js-yaml';
 import {
   Button,
   Dropdown,
@@ -691,8 +692,8 @@ function CreateTaskRun(props) {
           <FormGroup legendText="Params">
             {paramSpecs.map(paramSpec => {
               const paramValue = params[paramSpec.name];
-              const ParamInput =
-                paramSpec.type === 'array' ? TextArea : TextInput;
+              const isArray = paramSpec.type === 'array';
+              const ParamInput = isArray ? TextArea : TextInput;
               return (
                 <ParamInput
                   id={`create-taskrun--param-${paramSpec.name}`}
@@ -700,10 +701,15 @@ function CreateTaskRun(props) {
                   labelText={paramSpec.name}
                   light
                   helperText={paramSpec.description}
-                  placeholder={paramSpec.default || paramSpec.name}
+                  placeholder={
+                    (isArray &&
+                      paramSpec.default &&
+                      jsYaml.dump(paramSpec.default)) ||
+                    paramSpec.default
+                  }
                   invalid={
                     validationError &&
-                    (paramSpec.type === 'array'
+                    (isArray
                       ? !paramValue?.[0]
                       : !paramValue && paramSpec.default !== '')
                   }
@@ -711,15 +717,11 @@ function CreateTaskRun(props) {
                     id: 'dashboard.createRun.invalidParams',
                     defaultMessage: 'Params cannot be empty'
                   })}
-                  value={
-                    (paramSpec.type === 'array'
-                      ? paramValue?.join('\n')
-                      : paramValue) || ''
-                  }
+                  value={(isArray ? paramValue?.join('\n') : paramValue) || ''}
                   onChange={({ target: { value } }) =>
                     handleParamChange(
                       paramSpec.name,
-                      paramSpec.type === 'array' ? value.split('\n') : value
+                      isArray ? value.split('\n') : value
                     )
                   }
                 />
@@ -769,7 +771,6 @@ function CreateTaskRun(props) {
               id: 'dashboard.createRun.invalidTimeout',
               defaultMessage: 'Timeout must be a valid number less than 525600'
             })}
-            placeholder="60"
             value={timeout}
             onChange={({ target: { value } }) =>
               setState(state => ({ ...state, timeout: value }))
