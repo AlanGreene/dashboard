@@ -1,0 +1,635 @@
+[
+  {
+    "metadata": {
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6.169edcfc60282d34",
+      "namespace": "tekton-pipelines",
+      "uid": "5a7cd005-3699-48aa-bb74-6e4a89edba6e",
+      "resourceVersion": "792789",
+      "creationTimestamp": "2021-08-26T13:04:51Z",
+      "managedFields": [
+        {
+          "manager": "kube-scheduler",
+          "operation": "Update",
+          "apiVersion": "events.k8s.io/v1",
+          "time": "2021-08-26T13:04:51Z",
+          "fieldsType": "FieldsV1",
+          "fieldsV1": {
+            "f:action": {},
+            "f:eventTime": {},
+            "f:note": {},
+            "f:reason": {},
+            "f:regarding": {
+              "f:apiVersion": {},
+              "f:kind": {},
+              "f:name": {},
+              "f:namespace": {},
+              "f:resourceVersion": {},
+              "f:uid": {}
+            },
+            "f:reportingController": {},
+            "f:reportingInstance": {},
+            "f:type": {}
+          }
+        }
+      ]
+    },
+    "involvedObject": {
+      "kind": "Pod",
+      "namespace": "tekton-pipelines",
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6",
+      "uid": "5f83bb9e-7bd6-4c9a-ba45-04ebe8d74202",
+      "apiVersion": "v1",
+      "resourceVersion": "792784"
+    },
+    "reason": "Scheduled",
+    "message": "Successfully assigned tekton-pipelines/import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6 to tekton-dashboard-control-plane",
+    "source": {},
+    "firstTimestamp": null,
+    "lastTimestamp": null,
+    "type": "Normal",
+    "eventTime": "2021-08-26T13:04:51.657776Z",
+    "action": "Binding",
+    "reportingComponent": "default-scheduler",
+    "reportingInstance": "default-scheduler-tekton-dashboard-control-plane"
+  },
+  {
+    "metadata": {
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6.169edcfc8f0fba68",
+      "namespace": "tekton-pipelines",
+      "uid": "4b3f91b9-bf84-474d-8bdb-09e8cf319e4b",
+      "resourceVersion": "792812",
+      "creationTimestamp": "2021-08-26T13:04:52Z",
+      "managedFields": [
+        {
+          "manager": "kubelet",
+          "operation": "Update",
+          "apiVersion": "v1",
+          "time": "2021-08-26T13:04:52Z",
+          "fieldsType": "FieldsV1",
+          "fieldsV1": {
+            "f:count": {},
+            "f:firstTimestamp": {},
+            "f:involvedObject": {
+              "f:apiVersion": {},
+              "f:fieldPath": {},
+              "f:kind": {},
+              "f:name": {},
+              "f:namespace": {},
+              "f:resourceVersion": {},
+              "f:uid": {}
+            },
+            "f:lastTimestamp": {},
+            "f:message": {},
+            "f:reason": {},
+            "f:source": { "f:component": {}, "f:host": {} },
+            "f:type": {}
+          }
+        }
+      ]
+    },
+    "involvedObject": {
+      "kind": "Pod",
+      "namespace": "tekton-pipelines",
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6",
+      "uid": "5f83bb9e-7bd6-4c9a-ba45-04ebe8d74202",
+      "apiVersion": "v1",
+      "resourceVersion": "792787",
+      "fieldPath": "spec.initContainers{place-tools}"
+    },
+    "reason": "Pulled",
+    "message": "Container image \"gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.27.1@sha256:c0ba474a711b98973bd909831f04531d273080177647fab7b30613f6591f1e4f\" already present on machine",
+    "source": {
+      "component": "kubelet",
+      "host": "tekton-dashboard-control-plane"
+    },
+    "firstTimestamp": "2021-08-26T13:04:52Z",
+    "lastTimestamp": "2021-08-26T13:04:52Z",
+    "count": 1,
+    "type": "Normal",
+    "eventTime": null,
+    "reportingComponent": "",
+    "reportingInstance": ""
+  },
+  {
+    "metadata": {
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6.169edcfc9241230c",
+      "namespace": "tekton-pipelines",
+      "uid": "0562fa1c-f65b-41cf-9587-196e9afc089f",
+      "resourceVersion": "792813",
+      "creationTimestamp": "2021-08-26T13:04:52Z",
+      "managedFields": [
+        {
+          "manager": "kubelet",
+          "operation": "Update",
+          "apiVersion": "v1",
+          "time": "2021-08-26T13:04:52Z",
+          "fieldsType": "FieldsV1",
+          "fieldsV1": {
+            "f:count": {},
+            "f:firstTimestamp": {},
+            "f:involvedObject": {
+              "f:apiVersion": {},
+              "f:fieldPath": {},
+              "f:kind": {},
+              "f:name": {},
+              "f:namespace": {},
+              "f:resourceVersion": {},
+              "f:uid": {}
+            },
+            "f:lastTimestamp": {},
+            "f:message": {},
+            "f:reason": {},
+            "f:source": { "f:component": {}, "f:host": {} },
+            "f:type": {}
+          }
+        }
+      ]
+    },
+    "involvedObject": {
+      "kind": "Pod",
+      "namespace": "tekton-pipelines",
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6",
+      "uid": "5f83bb9e-7bd6-4c9a-ba45-04ebe8d74202",
+      "apiVersion": "v1",
+      "resourceVersion": "792787",
+      "fieldPath": "spec.initContainers{place-tools}"
+    },
+    "reason": "Created",
+    "message": "Created container place-tools",
+    "source": {
+      "component": "kubelet",
+      "host": "tekton-dashboard-control-plane"
+    },
+    "firstTimestamp": "2021-08-26T13:04:52Z",
+    "lastTimestamp": "2021-08-26T13:04:52Z",
+    "count": 1,
+    "type": "Normal",
+    "eventTime": null,
+    "reportingComponent": "",
+    "reportingInstance": ""
+  },
+  {
+    "metadata": {
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6.169edcfc97e0d780",
+      "namespace": "tekton-pipelines",
+      "uid": "33a37ae5-6eb1-4df8-b445-6df0528bdf7f",
+      "resourceVersion": "792814",
+      "creationTimestamp": "2021-08-26T13:04:52Z",
+      "managedFields": [
+        {
+          "manager": "kubelet",
+          "operation": "Update",
+          "apiVersion": "v1",
+          "time": "2021-08-26T13:04:52Z",
+          "fieldsType": "FieldsV1",
+          "fieldsV1": {
+            "f:count": {},
+            "f:firstTimestamp": {},
+            "f:involvedObject": {
+              "f:apiVersion": {},
+              "f:fieldPath": {},
+              "f:kind": {},
+              "f:name": {},
+              "f:namespace": {},
+              "f:resourceVersion": {},
+              "f:uid": {}
+            },
+            "f:lastTimestamp": {},
+            "f:message": {},
+            "f:reason": {},
+            "f:source": { "f:component": {}, "f:host": {} },
+            "f:type": {}
+          }
+        }
+      ]
+    },
+    "involvedObject": {
+      "kind": "Pod",
+      "namespace": "tekton-pipelines",
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6",
+      "uid": "5f83bb9e-7bd6-4c9a-ba45-04ebe8d74202",
+      "apiVersion": "v1",
+      "resourceVersion": "792787",
+      "fieldPath": "spec.initContainers{place-tools}"
+    },
+    "reason": "Started",
+    "message": "Started container place-tools",
+    "source": {
+      "component": "kubelet",
+      "host": "tekton-dashboard-control-plane"
+    },
+    "firstTimestamp": "2021-08-26T13:04:52Z",
+    "lastTimestamp": "2021-08-26T13:04:52Z",
+    "count": 1,
+    "type": "Normal",
+    "eventTime": null,
+    "reportingComponent": "",
+    "reportingInstance": ""
+  },
+  {
+    "metadata": {
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6.169edcfd084c7588",
+      "namespace": "tekton-pipelines",
+      "uid": "6e25d4eb-8c61-40fe-94b4-9d192576af80",
+      "resourceVersion": "792832",
+      "creationTimestamp": "2021-08-26T13:04:54Z",
+      "managedFields": [
+        {
+          "manager": "kubelet",
+          "operation": "Update",
+          "apiVersion": "v1",
+          "time": "2021-08-26T13:04:54Z",
+          "fieldsType": "FieldsV1",
+          "fieldsV1": {
+            "f:count": {},
+            "f:firstTimestamp": {},
+            "f:involvedObject": {
+              "f:apiVersion": {},
+              "f:fieldPath": {},
+              "f:kind": {},
+              "f:name": {},
+              "f:namespace": {},
+              "f:resourceVersion": {},
+              "f:uid": {}
+            },
+            "f:lastTimestamp": {},
+            "f:message": {},
+            "f:reason": {},
+            "f:source": { "f:component": {}, "f:host": {} },
+            "f:type": {}
+          }
+        }
+      ]
+    },
+    "involvedObject": {
+      "kind": "Pod",
+      "namespace": "tekton-pipelines",
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6",
+      "uid": "5f83bb9e-7bd6-4c9a-ba45-04ebe8d74202",
+      "apiVersion": "v1",
+      "resourceVersion": "792787",
+      "fieldPath": "spec.containers{step-git-source-git-source-dxbdz}"
+    },
+    "reason": "Pulled",
+    "message": "Container image \"gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.27.1@sha256:459d996e36de1224b5d4dcf56c5f83f6885c750efa9d7c7d5407c307ded387b7\" already present on machine",
+    "source": {
+      "component": "kubelet",
+      "host": "tekton-dashboard-control-plane"
+    },
+    "firstTimestamp": "2021-08-26T13:04:54Z",
+    "lastTimestamp": "2021-08-26T13:04:54Z",
+    "count": 1,
+    "type": "Normal",
+    "eventTime": null,
+    "reportingComponent": "",
+    "reportingInstance": ""
+  },
+  {
+    "metadata": {
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6.169edcfd0b3fe7ac",
+      "namespace": "tekton-pipelines",
+      "uid": "35f94fdf-b13b-43ba-a4d3-24cb76d85862",
+      "resourceVersion": "792834",
+      "creationTimestamp": "2021-08-26T13:04:54Z",
+      "managedFields": [
+        {
+          "manager": "kubelet",
+          "operation": "Update",
+          "apiVersion": "v1",
+          "time": "2021-08-26T13:04:54Z",
+          "fieldsType": "FieldsV1",
+          "fieldsV1": {
+            "f:count": {},
+            "f:firstTimestamp": {},
+            "f:involvedObject": {
+              "f:apiVersion": {},
+              "f:fieldPath": {},
+              "f:kind": {},
+              "f:name": {},
+              "f:namespace": {},
+              "f:resourceVersion": {},
+              "f:uid": {}
+            },
+            "f:lastTimestamp": {},
+            "f:message": {},
+            "f:reason": {},
+            "f:source": { "f:component": {}, "f:host": {} },
+            "f:type": {}
+          }
+        }
+      ]
+    },
+    "involvedObject": {
+      "kind": "Pod",
+      "namespace": "tekton-pipelines",
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6",
+      "uid": "5f83bb9e-7bd6-4c9a-ba45-04ebe8d74202",
+      "apiVersion": "v1",
+      "resourceVersion": "792787",
+      "fieldPath": "spec.containers{step-git-source-git-source-dxbdz}"
+    },
+    "reason": "Created",
+    "message": "Created container step-git-source-git-source-dxbdz",
+    "source": {
+      "component": "kubelet",
+      "host": "tekton-dashboard-control-plane"
+    },
+    "firstTimestamp": "2021-08-26T13:04:54Z",
+    "lastTimestamp": "2021-08-26T13:04:54Z",
+    "count": 1,
+    "type": "Normal",
+    "eventTime": null,
+    "reportingComponent": "",
+    "reportingInstance": ""
+  },
+  {
+    "metadata": {
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6.169edcfd14d82040",
+      "namespace": "tekton-pipelines",
+      "uid": "d750cade-92ac-45de-8594-f57e58891c4f",
+      "resourceVersion": "792838",
+      "creationTimestamp": "2021-08-26T13:04:54Z",
+      "managedFields": [
+        {
+          "manager": "kubelet",
+          "operation": "Update",
+          "apiVersion": "v1",
+          "time": "2021-08-26T13:04:54Z",
+          "fieldsType": "FieldsV1",
+          "fieldsV1": {
+            "f:count": {},
+            "f:firstTimestamp": {},
+            "f:involvedObject": {
+              "f:apiVersion": {},
+              "f:fieldPath": {},
+              "f:kind": {},
+              "f:name": {},
+              "f:namespace": {},
+              "f:resourceVersion": {},
+              "f:uid": {}
+            },
+            "f:lastTimestamp": {},
+            "f:message": {},
+            "f:reason": {},
+            "f:source": { "f:component": {}, "f:host": {} },
+            "f:type": {}
+          }
+        }
+      ]
+    },
+    "involvedObject": {
+      "kind": "Pod",
+      "namespace": "tekton-pipelines",
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6",
+      "uid": "5f83bb9e-7bd6-4c9a-ba45-04ebe8d74202",
+      "apiVersion": "v1",
+      "resourceVersion": "792787",
+      "fieldPath": "spec.containers{step-git-source-git-source-dxbdz}"
+    },
+    "reason": "Started",
+    "message": "Started container step-git-source-git-source-dxbdz",
+    "source": {
+      "component": "kubelet",
+      "host": "tekton-dashboard-control-plane"
+    },
+    "firstTimestamp": "2021-08-26T13:04:54Z",
+    "lastTimestamp": "2021-08-26T13:04:54Z",
+    "count": 1,
+    "type": "Normal",
+    "eventTime": null,
+    "reportingComponent": "",
+    "reportingInstance": ""
+  },
+  {
+    "metadata": {
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6.169edcfd14fc5e60",
+      "namespace": "tekton-pipelines",
+      "uid": "2a17bccf-27a3-49f3-aa21-79be1db148fb",
+      "resourceVersion": "792839",
+      "creationTimestamp": "2021-08-26T13:04:54Z",
+      "managedFields": [
+        {
+          "manager": "kubelet",
+          "operation": "Update",
+          "apiVersion": "v1",
+          "time": "2021-08-26T13:04:54Z",
+          "fieldsType": "FieldsV1",
+          "fieldsV1": {
+            "f:count": {},
+            "f:firstTimestamp": {},
+            "f:involvedObject": {
+              "f:apiVersion": {},
+              "f:fieldPath": {},
+              "f:kind": {},
+              "f:name": {},
+              "f:namespace": {},
+              "f:resourceVersion": {},
+              "f:uid": {}
+            },
+            "f:lastTimestamp": {},
+            "f:message": {},
+            "f:reason": {},
+            "f:source": { "f:component": {}, "f:host": {} },
+            "f:type": {}
+          }
+        }
+      ]
+    },
+    "involvedObject": {
+      "kind": "Pod",
+      "namespace": "tekton-pipelines",
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6",
+      "uid": "5f83bb9e-7bd6-4c9a-ba45-04ebe8d74202",
+      "apiVersion": "v1",
+      "resourceVersion": "792787",
+      "fieldPath": "spec.containers{step-import}"
+    },
+    "reason": "Pulling",
+    "message": "Pulling image \"lachlanevenson/k8s-kubectl:latest\"",
+    "source": {
+      "component": "kubelet",
+      "host": "tekton-dashboard-control-plane"
+    },
+    "firstTimestamp": "2021-08-26T13:04:54Z",
+    "lastTimestamp": "2021-08-26T13:04:54Z",
+    "count": 1,
+    "type": "Normal",
+    "eventTime": null,
+    "reportingComponent": "",
+    "reportingInstance": ""
+  },
+  {
+    "metadata": {
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6.169edcfd725131a8",
+      "namespace": "tekton-pipelines",
+      "uid": "4d509dd8-dcc2-4e66-8f68-1a6ba160c4a1",
+      "resourceVersion": "792856",
+      "creationTimestamp": "2021-08-26T13:04:56Z",
+      "managedFields": [
+        {
+          "manager": "kubelet",
+          "operation": "Update",
+          "apiVersion": "v1",
+          "time": "2021-08-26T13:04:56Z",
+          "fieldsType": "FieldsV1",
+          "fieldsV1": {
+            "f:count": {},
+            "f:firstTimestamp": {},
+            "f:involvedObject": {
+              "f:apiVersion": {},
+              "f:fieldPath": {},
+              "f:kind": {},
+              "f:name": {},
+              "f:namespace": {},
+              "f:resourceVersion": {},
+              "f:uid": {}
+            },
+            "f:lastTimestamp": {},
+            "f:message": {},
+            "f:reason": {},
+            "f:source": { "f:component": {}, "f:host": {} },
+            "f:type": {}
+          }
+        }
+      ]
+    },
+    "involvedObject": {
+      "kind": "Pod",
+      "namespace": "tekton-pipelines",
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6",
+      "uid": "5f83bb9e-7bd6-4c9a-ba45-04ebe8d74202",
+      "apiVersion": "v1",
+      "resourceVersion": "792787",
+      "fieldPath": "spec.containers{step-import}"
+    },
+    "reason": "Pulled",
+    "message": "Successfully pulled image \"lachlanevenson/k8s-kubectl:latest\" in 1.5657887s",
+    "source": {
+      "component": "kubelet",
+      "host": "tekton-dashboard-control-plane"
+    },
+    "firstTimestamp": "2021-08-26T13:04:56Z",
+    "lastTimestamp": "2021-08-26T13:04:56Z",
+    "count": 1,
+    "type": "Normal",
+    "eventTime": null,
+    "reportingComponent": "",
+    "reportingInstance": ""
+  },
+  {
+    "metadata": {
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6.169edcfd7417f8b4",
+      "namespace": "tekton-pipelines",
+      "uid": "29c02bab-ec0a-46ed-84d2-cef1dbdb1a96",
+      "resourceVersion": "792857",
+      "creationTimestamp": "2021-08-26T13:04:56Z",
+      "managedFields": [
+        {
+          "manager": "kubelet",
+          "operation": "Update",
+          "apiVersion": "v1",
+          "time": "2021-08-26T13:04:56Z",
+          "fieldsType": "FieldsV1",
+          "fieldsV1": {
+            "f:count": {},
+            "f:firstTimestamp": {},
+            "f:involvedObject": {
+              "f:apiVersion": {},
+              "f:fieldPath": {},
+              "f:kind": {},
+              "f:name": {},
+              "f:namespace": {},
+              "f:resourceVersion": {},
+              "f:uid": {}
+            },
+            "f:lastTimestamp": {},
+            "f:message": {},
+            "f:reason": {},
+            "f:source": { "f:component": {}, "f:host": {} },
+            "f:type": {}
+          }
+        }
+      ]
+    },
+    "involvedObject": {
+      "kind": "Pod",
+      "namespace": "tekton-pipelines",
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6",
+      "uid": "5f83bb9e-7bd6-4c9a-ba45-04ebe8d74202",
+      "apiVersion": "v1",
+      "resourceVersion": "792787",
+      "fieldPath": "spec.containers{step-import}"
+    },
+    "reason": "Created",
+    "message": "Created container step-import",
+    "source": {
+      "component": "kubelet",
+      "host": "tekton-dashboard-control-plane"
+    },
+    "firstTimestamp": "2021-08-26T13:04:56Z",
+    "lastTimestamp": "2021-08-26T13:04:56Z",
+    "count": 1,
+    "type": "Normal",
+    "eventTime": null,
+    "reportingComponent": "",
+    "reportingInstance": ""
+  },
+  {
+    "metadata": {
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6.169edcfd7b96fcac",
+      "namespace": "tekton-pipelines",
+      "uid": "41025001-7e7e-4605-91e1-b7f34cf1bdef",
+      "resourceVersion": "792858",
+      "creationTimestamp": "2021-08-26T13:04:56Z",
+      "managedFields": [
+        {
+          "manager": "kubelet",
+          "operation": "Update",
+          "apiVersion": "v1",
+          "time": "2021-08-26T13:04:56Z",
+          "fieldsType": "FieldsV1",
+          "fieldsV1": {
+            "f:count": {},
+            "f:firstTimestamp": {},
+            "f:involvedObject": {
+              "f:apiVersion": {},
+              "f:fieldPath": {},
+              "f:kind": {},
+              "f:name": {},
+              "f:namespace": {},
+              "f:resourceVersion": {},
+              "f:uid": {}
+            },
+            "f:lastTimestamp": {},
+            "f:message": {},
+            "f:reason": {},
+            "f:source": { "f:component": {}, "f:host": {} },
+            "f:type": {}
+          }
+        }
+      ]
+    },
+    "involvedObject": {
+      "kind": "Pod",
+      "namespace": "tekton-pipelines",
+      "name": "import-resources-1629898289363-r-dn8mg-import-resources-q-22jt6",
+      "uid": "5f83bb9e-7bd6-4c9a-ba45-04ebe8d74202",
+      "apiVersion": "v1",
+      "resourceVersion": "792787",
+      "fieldPath": "spec.containers{step-import}"
+    },
+    "reason": "Started",
+    "message": "Started container step-import",
+    "source": {
+      "component": "kubelet",
+      "host": "tekton-dashboard-control-plane"
+    },
+    "firstTimestamp": "2021-08-26T13:04:56Z",
+    "lastTimestamp": "2021-08-26T13:04:56Z",
+    "count": 1,
+    "type": "Normal",
+    "eventTime": null,
+    "reportingComponent": "",
+    "reportingInstance": ""
+  }
+]
