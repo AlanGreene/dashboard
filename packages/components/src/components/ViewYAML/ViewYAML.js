@@ -15,18 +15,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import jsYaml from 'js-yaml';
 import classNames from 'classnames';
-import { Prism as SyntaxHighlight } from 'react-syntax-highlighter';
+// import { Prism as SyntaxHighlight } from 'react-syntax-highlighter';
+
+import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
+import yaml from 'react-syntax-highlighter/dist/esm/languages/hljs/yaml';
+import { a11yDark as style } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+
+// import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
+// import yaml from 'react-syntax-highlighter/dist/esm/languages/prism/yaml';
+// import { a11yDark as style } from 'react-syntax-highlighter/dist/esm/styles/prism';
+
+SyntaxHighlighter.registerLanguage('yaml', yaml);
 
 function YAMLHighlighter({ children, className }) {
   return (
-    <SyntaxHighlight
+    <SyntaxHighlighter
       className={className}
-      language="yaml"
-      useInlineStyles={false}
       codeTagProps={{}}
+      language="yaml"
+      showLineNumbers
+      // useInlineStyles={false}
+      style={style}
     >
       {children}
-    </SyntaxHighlight>
+    </SyntaxHighlighter>
   );
 }
 
