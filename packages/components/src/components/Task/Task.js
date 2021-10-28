@@ -57,7 +57,12 @@ class Task extends Component {
       const erroredStep = steps.find(
         step => step.terminated?.reason === 'Error' || !step.terminated
       );
-      const { name } = erroredStep || steps[0] || {};
+      const warningStep = steps.find(
+        step =>
+          step.terminated?.reason === 'Completed' &&
+          step.terminated?.exitCode !== 0
+      );
+      const { name } = erroredStep || warningStep || steps[0] || {};
       this.handleStepSelected(name);
     }
   }

@@ -18,7 +18,9 @@ import {
   CheckmarkOutline20 as CheckmarkOutline,
   CloseFilled20 as CloseFilled,
   CloseOutline20 as CloseOutline,
-  Time20 as Pending
+  Time20 as Pending,
+  WarningFilled20 as WarningFilled,
+  Warning20 as WarningOutline
 } from '@carbon/icons-react';
 import { isRunning } from '@tektoncd/dashboard-utils';
 
@@ -30,14 +32,16 @@ const icons = {
     error: CloseFilled,
     pending: Pending,
     running: Spinner,
-    success: CheckmarkFilled
+    success: CheckmarkFilled,
+    warning: WarningFilled
   },
   inverse: {
     cancelled: CloseOutline,
     error: CloseOutline,
     pending: Pending,
     running: Spinner,
-    success: CheckmarkOutline
+    success: CheckmarkOutline,
+    warning: WarningOutline
   }
 };
 
@@ -66,6 +70,8 @@ export default function StatusIcon({
     (reason === 'PipelineRunCancelled' || reason === 'TaskRunCancelled')
   ) {
     statusClass = 'cancelled';
+  } else if (status === 'terminated' && reason === 'Warning') {
+    statusClass = 'warning';
   } else if (
     status === 'False' ||
     status === 'cancelled' ||

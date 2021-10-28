@@ -47,6 +47,12 @@ class Step extends Component {
     }
 
     if (status === 'terminated') {
+      if (reason === 'Warning') {
+        return intl.formatMessage({
+          id: 'dashboard.taskRun.status.warning',
+          defaultMessage: 'Warning'
+        });
+      }
       if (reason === 'Completed') {
         return intl.formatMessage({
           id: 'dashboard.taskRun.status.succeeded',

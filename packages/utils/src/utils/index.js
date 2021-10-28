@@ -91,8 +91,16 @@ export function getStepStatusReason(step) {
   let status;
   let reason;
   if (step.terminated) {
-    status = 'terminated';
-    reason = step.terminated.reason;
+    if (
+      step.terminated.exitCode !== 0 &&
+      step.terminated.reason === 'Completed'
+    ) {
+      status = 'terminated';
+      reason = 'Warning';
+    } else {
+      status = 'terminated';
+      reason = step.terminated.reason;
+    }
   } else if (step.running) {
     status = 'running';
   } else if (step.waiting) {

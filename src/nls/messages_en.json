@@ -239,6 +239,7 @@
     "dashboard.taskRun.status.running": "Running",
     "dashboard.taskRun.status.succeeded": "Completed",
     "dashboard.taskRun.status.waiting": "Waiting",
+    "dashboard.taskRun.status.warning": "Warning",
     "dashboard.taskRun.unavailable": "TaskRun not available",
     "dashboard.taskRunParams.name": "Name",
     "dashboard.taskRunParams.value": "Value",
