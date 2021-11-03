@@ -89,4 +89,9 @@ header.tkn--step-details-header {
       color: $support-01;
     }
   }
+  &[data-status='terminated'][data-reason='Warning'] {
+    .tkn--status-label {
+      color: $support-03;
+    }
+  }
 }

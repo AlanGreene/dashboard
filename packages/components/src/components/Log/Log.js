@@ -274,18 +274,21 @@ export class LogContainer extends Component {
     );
   };
 
-  getTrailerMessage = trailer => {
+  getTrailerMessage = ({ exitCode, reason }) => {
     const { forcePolling, intl } = this.props;
 
-    if (trailer && forcePolling) {
+    if (reason && forcePolling) {
       return intl.formatMessage({
         id: 'dashboard.logs.pending',
         defaultMessage: 'Final logs pending'
       });
     }
 
-    switch (trailer) {
+    switch (reason) {
       case 'Completed':
+        if (exitCode !== 0) {
+          return 'Step completed - ignoring failure';
+        }
         return intl.formatMessage({
           id: 'dashboard.pipelineRun.stepCompleted',
           defaultMessage: 'Step completed'
@@ -383,8 +386,8 @@ export class LogContainer extends Component {
 
   logTrailer = () => {
     const { forcePolling, stepStatus } = this.props;
-    const { reason } = (stepStatus && stepStatus.terminated) || {};
-    const trailer = this.getTrailerMessage(reason);
+    const { exitCode, reason } = (stepStatus && stepStatus.terminated) || {};
+    const trailer = this.getTrailerMessage({ exitCode, reason });
     if (!trailer) {
       return null;
     }

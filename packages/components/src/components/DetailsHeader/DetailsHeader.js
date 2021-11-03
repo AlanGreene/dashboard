@@ -74,7 +74,7 @@ class DetailsHeader extends Component {
       });
     }
     if (status === 'terminated') {
-      if (reason === 'Completed') {
+      if (reason === 'Completed' || reason === 'Warning') {
         return intl.formatMessage({
           id: 'dashboard.taskRun.status.succeeded',
           defaultMessage: 'Completed'
