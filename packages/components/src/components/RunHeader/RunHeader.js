@@ -16,7 +16,7 @@ import { injectIntl } from 'react-intl';
 import { CopyButton, SkeletonPlaceholder } from 'carbon-components-react';
 import { copyToClipboard } from '@tektoncd/dashboard-utils';
 
-import { FormattedDate } from '..';
+import { FormattedDate, FormattedDuration } from '..';
 
 class RunHeader extends Component {
   /* istanbul ignore next */
@@ -26,6 +26,7 @@ class RunHeader extends Component {
 
   render() {
     const {
+      createdTime,
       intl,
       lastTransitionTime,
       loading,
@@ -54,6 +55,29 @@ class RunHeader extends Component {
               />
             );
           }
+
+          let endTime = Date.now();
+          if (status === 'False' || status === 'True') {
+            endTime = new Date(lastTransitionTime).getTime();
+          }
+
+          const duration = intl.formatMessage(
+            {
+              id: 'dashboard.run.duration',
+              defaultMessage: 'Duration: {duration}'
+            },
+            {
+              duration: (
+                <FormattedDuration
+                  milliseconds={
+                    new Date(endTime).getTime() -
+                    new Date(createdTime).getTime()
+                  }
+                />
+              )
+            }
+          );
+
           return (
             runName && (
               <>
@@ -83,7 +107,7 @@ class RunHeader extends Component {
                 </h1>
                 <div className="tkn--status">
                   <span className="tkn--status-label">{reason}</span>
-                  {message && (
+                  {message ? (
                     <>
                       <span className="tkn--status-message" title={message}>
                         {message}
@@ -100,7 +124,10 @@ class RunHeader extends Component {
                         onClick={this.copyStatusMessage}
                       />
                     </>
-                  )}
+                  ) : null}
+                  {createdTime ? (
+                    <span className="tkn--status-duration">{duration}</span>
+                  ) : null}
                 </div>
                 {triggerHeader}
               </>

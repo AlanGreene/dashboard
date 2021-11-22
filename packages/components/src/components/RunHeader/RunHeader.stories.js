@@ -66,6 +66,19 @@ Failed.args = {
 
 export const Loading = () => <RunHeader loading />;
 
+export const WithDuration = args => (
+  <RunHeader
+    createdTime={now}
+    lastTransitionTime={now}
+    status="True"
+    reason="Completed"
+    {...args}
+  />
+);
+WithDuration.args = {
+  message: 'All Tasks have completed executing'
+};
+
 export const WithTriggerInfo = args => (
   <RunHeader
     lastTransitionTime={now}

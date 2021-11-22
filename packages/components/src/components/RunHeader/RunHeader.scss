@@ -72,6 +72,16 @@ header.tkn--pipeline-run-header {
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    .bx--copy-btn {
+      margin: 0 0.5rem;
+    }
+
+    .tkn--status-duration {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 
   // catch all for unknown states

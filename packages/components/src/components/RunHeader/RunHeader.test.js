@@ -22,44 +22,60 @@ const props = {
   runName: 'simple-pipeline-run-1'
 };
 
-it('RunHeader renders the provided content', () => {
-  const { queryByText, queryByTitle } = renderWithRouter(
-    <RunHeader {...props} />
-  );
-  expect(queryByText(/simple-pipeline/i)).toBeTruthy();
-  expect(queryByText(props.message)).toBeTruthy();
-  expect(queryByTitle(props.message)).toBeTruthy();
-  expect(queryByText(/Last updated/i)).toBeFalsy();
-});
+describe('RunHeader', () => {
+  it('renders the provided content', () => {
+    const { queryByText, queryByTitle } = renderWithRouter(
+      <RunHeader {...props} />
+    );
+    expect(queryByText(/simple-pipeline/i)).toBeTruthy();
+    expect(queryByText(props.message)).toBeTruthy();
+    expect(queryByTitle(props.message)).toBeTruthy();
+    expect(queryByText(/Last updated/i)).toBeFalsy();
+  });
 
-it('RunHeader renders the running state', () => {
-  const { queryByText } = renderWithRouter(
-    <RunHeader
-      {...props}
-      lastTransitionTime={new Date()}
-      status="Unknown"
-      reason="Running"
-    />
-  );
-  expect(queryByText(/running/i)).toBeTruthy();
-  expect(queryByText(/Last updated/i)).toBeTruthy();
-});
+  it('renders the running state', () => {
+    const { queryByText } = renderWithRouter(
+      <RunHeader
+        {...props}
+        lastTransitionTime={new Date()}
+        status="Unknown"
+        reason="Running"
+      />
+    );
+    expect(queryByText(/running/i)).toBeTruthy();
+    expect(queryByText(/Last updated/i)).toBeTruthy();
+  });
 
-it('RunHeader renders the completed state', () => {
-  const { queryByText } = renderWithRouter(
-    <RunHeader {...props} status="True" reason="Completed" />
-  );
-  expect(queryByText(/completed/i)).toBeTruthy();
-});
+  it('renders the completed state', () => {
+    const { queryByText } = renderWithRouter(
+      <RunHeader {...props} status="True" reason="Completed" />
+    );
+    expect(queryByText(/completed/i)).toBeTruthy();
+  });
 
-it('RunHeader renders the failed state', () => {
-  const { queryByText } = renderWithRouter(
-    <RunHeader {...props} status="False" reason="Failed" />
-  );
-  expect(queryByText(/failed/i)).toBeTruthy();
-});
+  it('renders the failed state', () => {
+    const { queryByText } = renderWithRouter(
+      <RunHeader {...props} status="False" reason="Failed" />
+    );
+    expect(queryByText(/failed/i)).toBeTruthy();
+  });
 
-it('RunHeader renders the loading state', () => {
-  const { queryByTitle } = renderWithRouter(<RunHeader loading />);
-  expect(queryByTitle(/loading/i)).toBeTruthy();
+  it('renders the loading state', () => {
+    const { queryByTitle } = renderWithRouter(<RunHeader loading />);
+    expect(queryByTitle(/loading/i)).toBeTruthy();
+  });
+
+  it('renders the duration', () => {
+    const now = Date.now();
+    const { queryByText } = renderWithRouter(
+      <RunHeader
+        {...props}
+        createdTime={now}
+        lastTransitionTime={now}
+        reason="Completed"
+        status="True"
+      />
+    );
+    expect(queryByText(/duration/i)).toBeTruthy();
+  });
 });

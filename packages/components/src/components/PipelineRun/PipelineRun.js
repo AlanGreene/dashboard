@@ -185,6 +185,7 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
     const {
       customNotification,
       error,
+      getPipelineRunCreatedTime,
       handleTaskSelected,
       intl,
       loading,
@@ -221,7 +222,7 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
       );
     }
 
-    if (!this.props.pipelineRun) {
+    if (!pipelineRun) {
       return (
         <>
           {customNotification}
@@ -313,6 +314,7 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
     return (
       <>
         <RunHeader
+          createdTime={getPipelineRunCreatedTime(pipelineRun)}
           lastTransitionTime={lastTransitionTime}
           loading={loading}
           message={pipelineRunStatusMessage}
@@ -361,6 +363,7 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
 }
 
 PipelineRunContainer.propTypes = {
+  getPipelineRunCreatedTime: PropTypes.func,
   handleTaskSelected: PropTypes.func,
   onViewChange: PropTypes.func,
   selectedStepId: PropTypes.string,
@@ -368,9 +371,12 @@ PipelineRunContainer.propTypes = {
   view: PropTypes.string
 };
 
+/* istanbul ignore next */
 PipelineRunContainer.defaultProps = {
-  handleTaskSelected: /* istanbul ignore next */ () => {},
-  onViewChange: /* istanbul ignore next */ () => {},
+  getPipelineRunCreatedTime: pipelineRun =>
+    pipelineRun.metadata.creationTimestamp,
+  handleTaskSelected: () => {},
+  onViewChange: () => {},
   selectedStepId: null,
   selectedTaskId: null,
   view: null
