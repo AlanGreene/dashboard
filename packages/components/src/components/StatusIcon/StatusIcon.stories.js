@@ -59,7 +59,48 @@ export const Pending = args => (
 export const Queued = args => <StatusIcon {...args} />;
 
 export const Running = args => (
-  <StatusIcon reason="Running" status="Unknown" {...args} />
+  <>
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+    <StatusIcon reason="Running" status="Unknown" {...args} />
+  </>
 );
 
 export const Succeeded = args => <StatusIcon status="True" {...args} />;

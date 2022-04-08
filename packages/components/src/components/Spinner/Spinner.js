@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2021 The Tekton Authors
+Copyright 2019-2022 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -13,12 +13,25 @@ limitations under the License.
 
 import React from 'react';
 
-import { Renew20 as SpinnerIcon } from '@carbon/icons-react';
-
 export default function Spinner({ children, className }) {
   return (
-    <SpinnerIcon className={`tkn--spinner ${className}`}>
+    <svg
+      aria-hidden="true"
+      className={`tkn--spinner ${className}`}
+      fill="currentColor"
+      focusable="false"
+      height="20"
+      preserveAspectRatio="xMidYMid meet"
+      viewBox="0 0 32 32"
+      width="20"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 10H6.78A11 11 0 0127 16h2A13 13 0 006 7.68V4H4v8h8zM20 22h5.22A11 11 0 015 16H3a13 13 0 0023 8.32V28h2V20H20z"
+        transform="scale (-1, 1)"
+        transform-origin="center"
+      />
       {children}
-    </SpinnerIcon>
+    </svg>
   );
 }
