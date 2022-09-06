@@ -50,6 +50,13 @@ function install_pipelines() {
     kubectl delete --ignore-not-found=true ${res}.tekton.dev --all
   done
 
+  kubectl patch cm feature-flags -n tekton-pipelines --type merge --patch '{ "data": { "embedded-status": "minimal", "enable-api-fields": "alpha" } }'
+  # pipeline-feature-flags.yaml
+  # data:
+  #   embedded-status: minimal
+  #   enable-api-fields: alpha
+  # kubectl patch cm feature-flags -n tekton-pipelines --type merge --patch-file pipeline-feature-flags.yaml
+
   # Wait for pods to be running in the namespaces we are deploying to
   wait_until_pods_running tekton-pipelines || fail_test "Tekton Pipelines did not come up"
 }
