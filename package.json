@@ -86,7 +86,7 @@
     "jest": "^27.4.7",
     "lodash.difference": "^4.5.0",
     "lodash.omit": "^4.5.0",
-    "mini-css-extract-plugin": "^2.5.3",
+    "mini-css-extract-plugin": "^2.6.1",
     "node-fetch": "^2.6.7",
     "prettier": "^2.7.1",
     "sass": "^1.54.8",
