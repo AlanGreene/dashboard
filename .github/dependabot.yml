@@ -8,6 +8,7 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    open-pull-requests-limit: 50
   - package-ecosystem: "docker"
     directory: "/packages/e2e/"
     schedule:
