@@ -89,7 +89,7 @@
     "lodash.omit": "^4.5.0",
     "mini-css-extract-plugin": "^2.5.3",
     "node-fetch": "^2.6.1",
-    "prettier": "^2.4.1",
+    "prettier": "^2.7.1",
     "rimraf": "^2.7.1",
     "sass": "^1.26.9",
     "sass-loader": "^13.0.2",
