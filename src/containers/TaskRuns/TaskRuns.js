@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2021 The Tekton Authors
+Copyright 2019-2022 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -12,7 +12,7 @@ limitations under the License.
 */
 
 import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import keyBy from 'lodash.keyby';
 import {
@@ -50,7 +50,7 @@ const { CLUSTER_TASK, TASK } = labels;
 
 /* istanbul ignore next */
 function TaskRuns({ intl }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();
 
@@ -78,7 +78,7 @@ function TaskRuns({ intl }) {
       ? clusterTaskFilter.replace(`${CLUSTER_TASK}=`, '')
       : taskFilter.replace(`${TASK}=`, '');
 
-  const setStatusFilter = getStatusFilterHandler({ history, location });
+  const setStatusFilter = getStatusFilterHandler({ location, navigate });
 
   useTitleSync({ page: 'TaskRuns' });
 
@@ -257,7 +257,7 @@ function TaskRuns({ intl }) {
                 ...(taskName && { taskName })
               }).toString();
             }
-            history.push(
+            navigate(
               urls.taskRuns.create() + (queryString ? `?${queryString}` : '')
             );
           },

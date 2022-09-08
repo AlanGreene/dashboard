@@ -14,7 +14,11 @@ limitations under the License.
 
 import React from 'react';
 import { Link as CarbonLink } from 'carbon-components-react';
+import { useHref } from 'react-router-dom';
 
-export default function Link({ navigate, ...rest }) {
-  return <CarbonLink {...rest} />;
-}
+const Link = React.forwardRef(({ to, ...rest }, ref) => {
+  const href = useHref(to);
+  return <CarbonLink {...rest} href={href} ref={ref} />;
+});
+
+export default Link;

@@ -13,7 +13,7 @@ limitations under the License.
 /* istanbul ignore file */
 
 import React, { useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import keyBy from 'lodash.keyby';
 import { Button } from 'carbon-components-react';
@@ -24,9 +24,9 @@ import {
   useTitleSync
 } from '@tektoncd/dashboard-utils';
 import {
-  Link as CustomLink,
   DeleteModal,
   FormattedDate,
+  Link,
   Table
 } from '@tektoncd/dashboard-components';
 import {
@@ -53,7 +53,6 @@ function getFormattedResources({
     id: task.metadata.uid,
     name: (
       <Link
-        component={CustomLink}
         to={urls.rawCRD.byNamespace({
           namespace: task.metadata.namespace,
           type: 'tasks',

@@ -13,9 +13,8 @@ limitations under the License.
 
 import React from 'react';
 import { injectIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
 import { urls } from '@tektoncd/dashboard-utils';
-import { Link as CustomLink } from '@tektoncd/dashboard-components';
+import { Link } from '@tektoncd/dashboard-components';
 
 import { FormattedDate, Table } from '..';
 
@@ -71,7 +70,7 @@ const PipelineResources = ({
     return {
       id: pipelineResource.metadata.uid,
       name: url ? (
-        <Link component={CustomLink} to={url} title={pipelineResourceName}>
+        <Link to={url} title={pipelineResourceName}>
           {pipelineResourceName}
         </Link>
       ) : (

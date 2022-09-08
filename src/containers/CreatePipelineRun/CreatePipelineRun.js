@@ -13,7 +13,7 @@ limitations under the License.
 /* istanbul ignore file */
 
 import React, { useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import keyBy from 'lodash.keyby';
 import {
   Button,
@@ -91,8 +91,8 @@ const initialResourcesState = resourceSpecs => {
 };
 
 function CreatePipelineRun({ intl }) {
-  const history = useHistory();
   const location = useLocation();
+  const navigate = useNavigate();
   const { selectedNamespace: defaultNamespace } = useSelectedNamespace();
 
   function getPipelineName() {
@@ -268,7 +268,7 @@ function CreatePipelineRun({ intl }) {
     } else if (namespace && namespace !== ALL_NAMESPACES) {
       url = urls.pipelineRuns.byNamespace({ namespace });
     }
-    history.push(url);
+    navigate(url);
   }
 
   function handleAddLabel(prop) {
@@ -341,7 +341,7 @@ function CreatePipelineRun({ intl }) {
       }
       queryParams.delete('pipelineName');
       const browserURL = location.pathname.concat(`?${queryParams.toString()}`);
-      history.push(browserURL);
+      navigate(browserURL);
     }
   }
 
@@ -365,7 +365,7 @@ function CreatePipelineRun({ intl }) {
       queryParams.delete('pipelineName');
     }
     const browserURL = location.pathname.concat(`?${queryParams.toString()}`);
-    history.push(browserURL);
+    navigate(browserURL);
 
     if (text && text !== pipelineRef) {
       setState(state => {
@@ -433,7 +433,7 @@ function CreatePipelineRun({ intl }) {
         : null
     })
       .then(() => {
-        history.push(urls.pipelineRuns.byNamespace({ namespace }));
+        navigate(urls.pipelineRuns.byNamespace({ namespace }));
       })
       .catch(error => {
         error.response.text().then(text => {

@@ -404,7 +404,7 @@ export function useIsLogStreamingEnabled() {
 
 export function useIsReadOnly() {
   const { data } = useProperties();
-  return data.isReadOnly;
+  return data.isReadOnly || true;
 }
 
 export function useIsTriggersInstalled() {

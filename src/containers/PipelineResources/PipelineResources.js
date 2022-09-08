@@ -13,7 +13,7 @@ limitations under the License.
 /* istanbul ignore file */
 
 import React, { useState } from 'react';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import keyBy from 'lodash.keyby';
 import {
@@ -37,8 +37,8 @@ import {
 } from '../../api';
 
 export function PipelineResources({ intl }) {
-  const history = useHistory();
   const location = useLocation();
+  const navigate = useNavigate();
   const params = useParams();
   const filters = getFilters(location);
 
@@ -124,7 +124,7 @@ export function PipelineResources({ intl }) {
     ? []
     : [
         {
-          onClick: () => history.push(urls.pipelineResources.create()),
+          onClick: () => navigate(urls.pipelineResources.create()),
           text: intl.formatMessage({
             id: 'dashboard.actions.createButton',
             defaultMessage: 'Create'

@@ -12,7 +12,7 @@ limitations under the License.
 */
 
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import { Button, InlineNotification } from 'carbon-components-react';
 import {
@@ -52,7 +52,7 @@ function validateInputs(value, id) {
 }
 
 export /* istanbul ignore next */ function CreatePipelineResource({ intl }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { selectedNamespace: defaultNamespace } = useSelectedNamespace();
   const [creating, setCreating] = useState(false);
   const [gitSource, setGitSource] = useState(true);
@@ -74,7 +74,7 @@ export /* istanbul ignore next */ function CreatePipelineResource({ intl }) {
   });
 
   function handleClose() {
-    history.push(urls.pipelineResources.all());
+    navigate(urls.pipelineResources.all());
   }
 
   function resetError() {
@@ -165,7 +165,7 @@ export /* istanbul ignore next */ function CreatePipelineResource({ intl }) {
 
     createPipelineResource({ namespace, resource })
       .then(() => {
-        history.push(urls.pipelineResources.byNamespace({ namespace }));
+        navigate(urls.pipelineResources.byNamespace({ namespace }));
       })
       .catch(error => {
         error.response.text().then(text => {

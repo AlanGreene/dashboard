@@ -14,7 +14,6 @@ limitations under the License.
 
 import React from 'react';
 import { injectIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
 import { InlineNotification } from 'carbon-components-react';
 import {
   ALL_NAMESPACES,
@@ -22,7 +21,7 @@ import {
   urls,
   useTitleSync
 } from '@tektoncd/dashboard-utils';
-import { Link as CustomLink, Table } from '@tektoncd/dashboard-components';
+import { Link, Table } from '@tektoncd/dashboard-components';
 
 import { useExtensions, useTenantNamespace } from '../../api';
 
@@ -86,7 +85,6 @@ function Extensions({ intl }) {
           id: name,
           name: (
             <Link
-              component={CustomLink}
               to={urls.kubernetesResources.all({
                 group: apiGroup,
                 version: apiVersion,

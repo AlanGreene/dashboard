@@ -13,7 +13,7 @@ limitations under the License.
 /* istanbul ignore file */
 
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import keyBy from 'lodash.keyby';
 import {
@@ -25,10 +25,10 @@ import {
 } from '@tektoncd/dashboard-utils';
 import {
   Actions,
-  Link as CustomLink,
   DeleteModal,
   FormattedDate,
   FormattedDuration,
+  Link,
   StatusIcon,
   Table
 } from '@tektoncd/dashboard-components';
@@ -393,7 +393,6 @@ function Runs({ intl }) {
               <div>
                 <span>
                   <Link
-                    component={CustomLink}
                     to={urls.runs.byName({
                       namespace: run.metadata.namespace,
                       runName: run.metadata.name

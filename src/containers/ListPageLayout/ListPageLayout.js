@@ -15,8 +15,8 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   generatePath,
-  useHistory,
   useLocation,
+  useNavigate,
   useParams,
   useRouteMatch
 } from 'react-router-dom';
@@ -40,9 +40,9 @@ export const ListPageLayout = ({
   resources = [],
   title
 }) => {
-  const history = useHistory();
   const location = useLocation();
   const match = useRouteMatch();
+  const navigate = useNavigate();
   const params = useParams();
   const tenantNamespace = useTenantNamespace();
   const { selectedNamespace: namespace, selectNamespace } =
@@ -63,7 +63,7 @@ export const ListPageLayout = ({
   }, [pageSize]);
 
   function setPath(path) {
-    history.push(`${path}${location.search}`);
+    navigate(`${path}${location.search}`);
   }
 
   function handleNamespaceSelected(event) {
@@ -109,7 +109,11 @@ export const ListPageLayout = ({
         )}
       </div>
       {filters && (
-        <LabelFilter filters={filters} history={history} location={location} />
+        <LabelFilter
+          filters={filters}
+          location={location}
+          navigate={navigate}
+        />
       )}
       {error && (
         <InlineNotification

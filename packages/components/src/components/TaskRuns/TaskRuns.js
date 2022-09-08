@@ -13,7 +13,6 @@ limitations under the License.
 
 import React from 'react';
 import { injectIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
 import {
   Calendar16 as CalendarIcon,
   Time16 as TimeIcon,
@@ -23,9 +22,9 @@ import { getStatus, taskRunHasWarning, urls } from '@tektoncd/dashboard-utils';
 
 import {
   Actions,
-  Link as CustomLink,
   FormattedDate,
   FormattedDuration,
+  Link,
   StatusIcon,
   Table
 } from '..';
@@ -175,7 +174,7 @@ const TaskRuns = ({
         <div>
           <span>
             {taskRunURL ? (
-              <Link component={CustomLink} to={taskRunURL} title={taskRunName}>
+              <Link to={taskRunURL} title={taskRunName}>
                 {taskRunName}
               </Link>
             ) : (
@@ -191,7 +190,7 @@ const TaskRuns = ({
         <div>
           <span>
             {taskRefName ? (
-              <Link component={CustomLink} to={taskRunsURL} title={taskRefName}>
+              <Link to={taskRunsURL} title={taskRefName}>
                 {taskRefName}
               </Link>
             ) : (

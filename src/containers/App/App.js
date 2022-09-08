@@ -19,7 +19,7 @@ import {
   Redirect,
   Route,
   HashRouter as Router,
-  Switch
+  Routes
 } from 'react-router-dom';
 
 import { injectIntl, IntlProvider } from 'react-intl';
@@ -80,7 +80,6 @@ import {
 import {
   NamespaceContext,
   useExtensions,
-  useIsReadOnly,
   useLogoutURL,
   useNamespaces,
   useProperties,
@@ -157,7 +156,6 @@ export function App({ lang }) {
     isFetching: isFetchingProperties,
     isPlaceholderData: isPropertiesPlaceholder
   } = useProperties();
-  const isReadOnly = useIsReadOnly();
   const logoutURL = useLogoutURL();
   const tenantNamespace = useTenantNamespace();
 
@@ -239,146 +237,164 @@ export function App({ lang }) {
                 tabIndex="0"
               >
                 <PageErrorBoundary>
-                  <Switch>
-                    <Redirect exact from="/" to={urls.about()} />
-                    <Route path={paths.pipelines.all()} exact>
+                  <Routes>
+                    <Route
+                      path="/"
+                      render={() => <Redirect to={urls.about()} />}
+                    />
+                    <Route path={paths.pipelines.all()}>
                       <Pipelines />
                     </Route>
-                    <Route path={paths.pipelines.byNamespace()} exact>
+                    <Route path={paths.pipelines.byNamespace()}>
                       <Pipelines />
                     </Route>
-                    <ReadWriteRoute
-                      isReadOnly={isReadOnly}
+                    <Route
                       path={paths.pipelineRuns.create()}
-                      exact
-                      component={CreatePipelineRun}
+                      element={
+                        <ReadWriteRoute>
+                          <CreatePipelineRun />
+                        </ReadWriteRoute>
+                      }
                     />
                     <Route path={paths.pipelineRuns.all()}>
+                      {/* did not have `exact` */}
                       <PipelineRuns />
                     </Route>
-                    <Route path={paths.pipelineRuns.byNamespace()} exact>
+                    <Route path={paths.pipelineRuns.byNamespace()}>
                       <PipelineRuns />
                     </Route>
-                    <Route path={paths.pipelineRuns.byPipeline()} exact>
+                    <Route path={paths.pipelineRuns.byPipeline()}>
                       <PipelineRuns />
                     </Route>
                     <Route path={paths.pipelineRuns.byName()}>
+                      {/* did not have `exact` */}
                       <PipelineRun />
                     </Route>
-                    <Route path={paths.pipelineResources.all()} exact>
+                    <Route path={paths.pipelineResources.all()}>
                       <PipelineResources />
                     </Route>
-                    <Route path={paths.pipelineResources.byNamespace()} exact>
+                    <Route path={paths.pipelineResources.byNamespace()}>
                       <PipelineResources />
                     </Route>
-                    <Route path={paths.pipelineResources.byName()} exact>
+                    <Route path={paths.pipelineResources.byName()}>
                       <PipelineResource />
                     </Route>
-                    <ReadWriteRoute
-                      isReadOnly={isReadOnly}
+                    <Route
                       path={paths.pipelineResources.create()}
-                      exact
-                      component={CreatePipelineResource}
+                      element={
+                        <ReadWriteRoute>
+                          <CreatePipelineResource />
+                        </ReadWriteRoute>
+                      }
                     />
 
-                    <Route path={paths.tasks.all()} exact>
+                    <Route path={paths.tasks.all()}>
                       <Tasks />
                     </Route>
-                    <Route path={paths.tasks.byNamespace()} exact>
+                    <Route path={paths.tasks.byNamespace()}>
                       <Tasks />
                     </Route>
-                    <ReadWriteRoute
-                      isReadOnly={isReadOnly}
+                    <Route
                       path={paths.taskRuns.create()}
-                      exact
-                      component={CreateTaskRun}
+                      element={
+                        <ReadWriteRoute>
+                          <CreateTaskRun />
+                        </ReadWriteRoute>
+                      }
                     />
                     <Route path={paths.taskRuns.all()}>
+                      {/* did not have `exact` */}
                       <TaskRuns />
                     </Route>
-                    <Route path={paths.taskRuns.byNamespace()} exact>
+                    <Route path={paths.taskRuns.byNamespace()}>
                       <TaskRuns />
                     </Route>
-                    <Route path={paths.taskRuns.byTask()} exact>
+                    <Route path={paths.taskRuns.byTask()}>
                       <TaskRuns />
                     </Route>
-                    <Route path={paths.taskRuns.byName()} exact>
+                    <Route path={paths.taskRuns.byName()}>
                       <TaskRun />
                     </Route>
 
                     <Route path={paths.runs.all()}>
+                      {/* did not have `exact` */}
                       <Runs />
                     </Route>
-                    <Route path={paths.runs.byNamespace()} exact>
+                    <Route path={paths.runs.byNamespace()}>
                       <Runs />
                     </Route>
-                    <Route path={paths.runs.byName()} exact>
+                    <Route path={paths.runs.byName()}>
                       <Run />
                     </Route>
 
-                    <Route path={paths.clusterTasks.all()} exact>
+                    <Route path={paths.clusterTasks.all()}>
                       <ClusterTasks />
                     </Route>
 
                     <Route path={paths.about()}>
+                      {/* did not have `exact` */}
                       <About />
                     </Route>
                     <Route path={paths.settings()}>
+                      {/* did not have `exact` */}
                       <Settings />
                     </Route>
 
-                    <ReadWriteRoute
-                      isReadOnly={isReadOnly}
+                    <Route
                       path={paths.importResources()}
-                      component={ImportResources}
+                      element={
+                        <ReadWriteRoute>
+                          <ImportResources />
+                        </ReadWriteRoute>
+                      }
                     />
 
-                    <Route path={paths.eventListeners.all()} exact>
+                    <Route path={paths.eventListeners.all()}>
                       <EventListeners />
                     </Route>
-                    <Route path={paths.eventListeners.byNamespace()} exact>
+                    <Route path={paths.eventListeners.byNamespace()}>
                       <EventListeners />
                     </Route>
-                    <Route path={paths.eventListeners.byName()} exact>
+                    <Route path={paths.eventListeners.byName()}>
                       <EventListener />
                     </Route>
-                    <Route path={paths.triggers.byName()} exact>
+                    <Route path={paths.triggers.byName()}>
                       <Trigger />
                     </Route>
-                    <Route path={paths.triggers.all()} exact>
+                    <Route path={paths.triggers.all()}>
                       <Triggers />
                     </Route>
-                    <Route path={paths.triggers.byNamespace()} exact>
+                    <Route path={paths.triggers.byNamespace()}>
                       <Triggers />
                     </Route>
-                    <Route path={paths.triggerBindings.byName()} exact>
+                    <Route path={paths.triggerBindings.byName()}>
                       <TriggerBinding />
                     </Route>
-                    <Route path={paths.triggerBindings.all()} exact>
+                    <Route path={paths.triggerBindings.all()}>
                       <TriggerBindings />
                     </Route>
-                    <Route path={paths.triggerBindings.byNamespace()} exact>
+                    <Route path={paths.triggerBindings.byNamespace()}>
                       <TriggerBindings />
                     </Route>
-                    <Route path={paths.clusterTriggerBindings.byName()} exact>
+                    <Route path={paths.clusterTriggerBindings.byName()}>
                       <ClusterTriggerBinding />
                     </Route>
-                    <Route path={paths.clusterTriggerBindings.all()} exact>
+                    <Route path={paths.clusterTriggerBindings.all()}>
                       <ClusterTriggerBindings />
                     </Route>
-                    <Route path={paths.triggerTemplates.byName()} exact>
+                    <Route path={paths.triggerTemplates.byName()}>
                       <TriggerTemplate />
                     </Route>
-                    <Route path={paths.triggerTemplates.all()} exact>
+                    <Route path={paths.triggerTemplates.all()}>
                       <TriggerTemplates />
                     </Route>
-                    <Route path={paths.triggerTemplates.byNamespace()} exact>
+                    <Route path={paths.triggerTemplates.byNamespace()}>
                       <TriggerTemplates />
                     </Route>
-                    <Route path={paths.clusterInterceptors.all()} exact>
+                    <Route path={paths.clusterInterceptors.all()}>
                       <ClusterInterceptors />
                     </Route>
-                    <Route path={paths.extensions.all()} exact>
+                    <Route path={paths.extensions.all()}>
                       <Extensions />
                     </Route>
                     {extensions
@@ -388,6 +404,7 @@ export function App({ lang }) {
                           key={name}
                           path={paths.extensions.byName({ name })}
                         >
+                          {/* did not have `exact` */}
                           <Extension
                             displayName={displayName}
                             source={source}
@@ -395,27 +412,28 @@ export function App({ lang }) {
                         </Route>
                       ))}
 
-                    <Route path={paths.rawCRD.byNamespace()} exact>
+                    <Route path={paths.rawCRD.byNamespace()}>
                       <CustomResourceDefinition />
                     </Route>
-                    <Route path={paths.rawCRD.cluster()} exact>
+                    <Route path={paths.rawCRD.cluster()}>
                       <CustomResourceDefinition />
                     </Route>
-                    <Route path={paths.kubernetesResources.all()} exact>
+                    <Route path={paths.kubernetesResources.all()}>
                       <ResourceList />
                     </Route>
-                    <Route path={paths.kubernetesResources.byNamespace()} exact>
+                    <Route path={paths.kubernetesResources.byNamespace()}>
                       <ResourceList />
                     </Route>
-                    <Route path={paths.kubernetesResources.byName()} exact>
+                    <Route path={paths.kubernetesResources.byName()}>
                       <CustomResourceDefinition />
                     </Route>
-                    <Route path={paths.kubernetesResources.cluster()} exact>
+                    <Route path={paths.kubernetesResources.cluster()}>
                       <CustomResourceDefinition />
                     </Route>
 
                     <NotFound />
-                  </Switch>
+                    {/* how do we handle this now? */}
+                  </Routes>
                 </PageErrorBoundary>
               </Content>
             </>

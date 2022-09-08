@@ -12,14 +12,10 @@ limitations under the License.
 */
 
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import { getFilters, urls, useTitleSync } from '@tektoncd/dashboard-utils';
-import {
-  Link as CustomLink,
-  FormattedDate,
-  Table
-} from '@tektoncd/dashboard-components';
+import { FormattedDate, Link, Table } from '@tektoncd/dashboard-components';
 
 import { ListPageLayout } from '..';
 import { useClusterInterceptors } from '../../api';
@@ -29,7 +25,6 @@ function getFormattedResources(resources) {
     id: clusterInterceptor.metadata.uid,
     name: (
       <Link
-        component={CustomLink}
         to={urls.rawCRD.cluster({
           name: clusterInterceptor.metadata.name,
           type: 'clusterinterceptors'

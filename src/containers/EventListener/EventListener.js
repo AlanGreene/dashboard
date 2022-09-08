@@ -13,21 +13,17 @@ limitations under the License.
 /* istanbul ignore file */
 
 import React from 'react';
-import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import { urls, useTitleSync } from '@tektoncd/dashboard-utils';
-import {
-  Link as CustomLink,
-  ResourceDetails,
-  Trigger
-} from '@tektoncd/dashboard-components';
+import { Link, ResourceDetails, Trigger } from '@tektoncd/dashboard-components';
 
 import { useEventListener } from '../../api';
 import { getViewChangeHandler } from '../../utils';
 
 export function EventListenerContainer({ intl }) {
-  const history = useHistory();
   const location = useLocation();
+  const navigate = useNavigate();
   const params = useParams();
   const { eventListenerName, namespace } = params;
 
@@ -112,7 +108,6 @@ export function EventListenerContainer({ intl }) {
               <div className="tkn--trigger-resourcelinks">
                 <span>Trigger:</span>
                 <Link
-                  component={CustomLink}
                   to={urls.triggers.byName({
                     namespace,
                     triggerName: trigger.triggerRef
@@ -136,7 +131,7 @@ export function EventListenerContainer({ intl }) {
       additionalMetadata={getAdditionalMetadata()}
       error={error}
       loading={isFetching}
-      onViewChange={getViewChangeHandler({ history, location })}
+      onViewChange={getViewChangeHandler({ location, navigate })}
       resource={eventListener}
       view={view}
     >

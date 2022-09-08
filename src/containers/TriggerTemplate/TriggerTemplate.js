@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2021 The Tekton Authors
+Copyright 2019-2022 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -12,7 +12,7 @@ limitations under the License.
 */
 
 import React from 'react';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import { DataTable } from 'carbon-components-react';
 import {
@@ -39,8 +39,8 @@ const {
 } = DataTable;
 
 export /* istanbul ignore next */ function TriggerTemplateContainer({ intl }) {
-  const history = useHistory();
   const location = useLocation();
+  const navigate = useNavigate();
   const { namespace, triggerTemplateName: resourceName } = useParams();
 
   const queryParams = new URLSearchParams(location.search);
@@ -211,7 +211,7 @@ export /* istanbul ignore next */ function TriggerTemplateContainer({ intl }) {
     <ResourceDetails
       error={error}
       loading={isFetching}
-      onViewChange={getViewChangeHandler({ history, location })}
+      onViewChange={getViewChangeHandler({ location, navigate })}
       resource={triggerTemplate}
       view={view}
     >

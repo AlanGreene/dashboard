@@ -12,7 +12,6 @@ limitations under the License.
 */
 
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import {
@@ -24,8 +23,8 @@ import {
 import { ContentSwitcher, Switch } from 'carbon-components-react';
 
 import {
-  Link as CustomLink,
   DetailsHeader,
+  Link,
   Param,
   ResourceTable,
   Tab,
@@ -55,7 +54,6 @@ function resourceTable(title, namespace, resources, intl) {
         value:
           resourceRef && resourceRef.name ? (
             <Link
-              component={CustomLink}
               to={urls.pipelineResources.byName({
                 namespace,
                 pipelineResourceName: resourceRef.name

@@ -14,7 +14,7 @@ limitations under the License.
 
 import React, { useRef, useState } from 'react';
 import { injectIntl } from 'react-intl';
-import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { InlineNotification, SkeletonText } from 'carbon-components-react';
 import {
   Actions,
@@ -80,8 +80,8 @@ function notification({ intl, kind, message }) {
 }
 
 export function TaskRunContainer({ intl }) {
-  const history = useHistory();
   const location = useLocation();
+  const navigate = useNavigate();
   const params = useParams();
 
   const { namespace: namespaceParam, taskRunName } = params;
@@ -201,7 +201,7 @@ export function TaskRunContainer({ intl }) {
     }
 
     const browserURL = location.pathname.concat(`?${queryParams.toString()}`);
-    history.push(browserURL);
+    navigate(browserURL);
   }
 
   function cancel() {
@@ -217,7 +217,7 @@ export function TaskRunContainer({ intl }) {
       namespace: taskRun.metadata.namespace
     })
       .then(() => {
-        history.push(urls.taskRuns.byNamespace({ namespace }));
+        navigate(urls.taskRuns.byNamespace({ namespace }));
       })
       .catch(err => {
         err.response.text().then(text => {
@@ -398,7 +398,7 @@ export function TaskRunContainer({ intl }) {
     taskRun
   });
 
-  const onViewChange = getViewChangeHandler({ history, location });
+  const onViewChange = getViewChangeHandler({ location, navigate });
 
   const runActions = taskRunActions();
 

@@ -14,9 +14,8 @@ limitations under the License.
 
 import React from 'react';
 import { injectIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
 import { Column, Grid, Row } from 'carbon-components-react';
-import { Link as CustomLink } from '@tektoncd/dashboard-components';
+import { Link } from '@tektoncd/dashboard-components';
 import { urls } from '@tektoncd/dashboard-utils';
 
 import robocat from '../../images/robocat_404.svg';
@@ -62,7 +61,7 @@ function NotFound({ intl }) {
 
           <ul>
             <li>
-              <Link component={CustomLink} to="/">
+              <Link to="/">
                 {intl.formatMessage({
                   id: 'dashboard.home.title',
                   defaultMessage: 'Home'
@@ -70,14 +69,10 @@ function NotFound({ intl }) {
               </Link>
             </li>
             <li>
-              <Link component={CustomLink} to={urls.pipelineRuns.all()}>
-                PipelineRuns
-              </Link>
+              <Link to={urls.pipelineRuns.all()}>PipelineRuns</Link>
             </li>
             <li>
-              <Link component={CustomLink} to={urls.taskRuns.all()}>
-                TaskRuns
-              </Link>
+              <Link to={urls.taskRuns.all()}>TaskRuns</Link>
             </li>
           </ul>
         </Column>

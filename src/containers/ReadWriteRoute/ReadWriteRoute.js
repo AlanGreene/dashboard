@@ -1,5 +1,5 @@
 /*
-Copyright 2020-2021 The Tekton Authors
+Copyright 2020-2022 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -12,20 +12,13 @@ limitations under the License.
 */
 /* istanbul ignore file */
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-import { NotFound } from '..';
+import { useIsReadOnly } from '../../api';
 
-const ReadWriteRoute = ({
-  component: Component,
-  exact,
-  isReadOnly,
-  path,
-  ...rest
-}) => (
-  <Route {...rest} exact={exact} path={path}>
-    {isReadOnly ? <NotFound /> : <Component />}
-  </Route>
-);
+const ReadWriteRoute = ({ children }) => {
+  const isReadOnly = useIsReadOnly();
+  return isReadOnly ? children : <Navigate to="/404" />;
+};
 
 export default ReadWriteRoute;

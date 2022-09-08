@@ -12,14 +12,10 @@ limitations under the License.
 */
 
 import React from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import { getFilters, urls, useTitleSync } from '@tektoncd/dashboard-utils';
-import {
-  Link as CustomLink,
-  FormattedDate,
-  Table
-} from '@tektoncd/dashboard-components';
+import { FormattedDate, Link, Table } from '@tektoncd/dashboard-components';
 
 import { ListPageLayout } from '..';
 import { useSelectedNamespace, useTriggers } from '../../api';
@@ -29,7 +25,6 @@ function getFormattedResources(resources) {
     id: trigger.metadata.uid,
     name: (
       <Link
-        component={CustomLink}
         to={urls.triggers.byName({
           namespace: trigger.metadata.namespace,
           triggerName: trigger.metadata.name
