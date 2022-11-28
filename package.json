@@ -68,7 +68,7 @@
     "@svgr/webpack": "^6.5.1",
     "@testing-library/react": "^12.1.5",
     "@testing-library/react-hooks": "^8.0.1",
-    "babel-loader": "^8.2.5",
+    "babel-loader": "^9.1.0",
     "babel-plugin-formatjs": "^10.3.31",
     "cross-env": "^7.0.2",
     "css-loader": "^6.7.1",
