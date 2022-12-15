@@ -14,6 +14,7 @@ limitations under the License.
 import React, { Component } from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 import FormattedDuration from 'react-intl-formatted-duration';
+import { Tooltip } from 'carbon-components-react';
 
 defineMessages({
   duration: {
@@ -79,19 +80,24 @@ class FormattedDurationWrapper extends Component {
   render() {
     const { milliseconds } = this.props;
     return (
-      <span
-        ref={ref => {
-          this.durationNode = ref;
-        }}
-        title={this.state.tooltip}
-        aria-label={this.state.tooltip}
+      <Tooltip
+        showIcon={false}
+        triggerText={
+          <span
+            ref={ref => {
+              this.durationNode = ref;
+            }}
+          >
+            <FormattedDuration
+              format="{days} {hours} {minutes} {seconds}"
+              seconds={milliseconds / 1000}
+              unitDisplay="narrow"
+            />
+          </span>
+        }
       >
-        <FormattedDuration
-          format="{days} {hours} {minutes} {seconds}"
-          seconds={milliseconds / 1000}
-          unitDisplay="narrow"
-        />
-      </span>
+        {this.state.tooltip}
+      </Tooltip>
     );
   }
 }
