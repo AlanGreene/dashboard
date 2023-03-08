@@ -51,6 +51,8 @@ limitations under the License.
 @import '@tektoncd/dashboard-components/src/components/Trigger/Trigger.scss';
 @import '@tektoncd/dashboard-components/src/components/ViewYAML/ViewYAML.scss';
 
+@import '@tektoncd/dashboard-graph/src/components/newGraph.scss';
+
 html,
 #root,
 .tkn--main-content {

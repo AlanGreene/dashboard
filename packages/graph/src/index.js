@@ -16,3 +16,6 @@ export { default as buildGraphData } from './buildGraphData';
 
 export { default as Graph } from './components/Graph';
 export { default as PipelineGraph } from './components/PipelineGraph';
+
+export { default as NewGraph } from './components/Graph/';
+export * from './newGraph';

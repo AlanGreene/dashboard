@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2022 The Tekton Authors
+Copyright 2019-2023 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -20,6 +20,7 @@ import {
 } from 'react-router-dom-v5-compat';
 import { useTitleSync } from '@tektoncd/dashboard-utils';
 import { ResourceDetails } from '@tektoncd/dashboard-components';
+import { getDAG, NewGraph as Graph } from '@tektoncd/dashboard-graph';
 
 import { getViewChangeHandler } from '../../utils';
 import {
@@ -70,6 +71,12 @@ function CustomResourceDefinition() {
     resourceName: name
   });
 
+  let dag;
+  if (type === 'pipelines' && !isFetching) {
+    dag = getDAG({ pipeline: data });
+    console.log({ dag });
+  }
+
   return (
     <ResourceDetails
       error={error}
@@ -77,7 +84,11 @@ function CustomResourceDefinition() {
       onViewChange={getViewChangeHandler({ location, navigate })}
       resource={data}
       view={view}
-    />
+    >
+      {type === 'pipelines' && !isFetching ? (
+        <Graph direction="RIGHT" id="id" {...dag} />
+      ) : null}
+    </ResourceDetails>
   );
 }
 
