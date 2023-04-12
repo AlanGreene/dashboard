@@ -68,3 +68,7 @@ $colors: (
     text-decoration: line-through;
   }
 }
+
+.xterm-cursor {
+  display: none !important;
+}

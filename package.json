@@ -45,7 +45,10 @@
     "react-intl": "^6.2.10",
     "react-router-dom": "^5.3.4",
     "react-router-dom-v5-compat": "^6.4.5",
-    "reconnecting-websocket": "^4.4.0"
+    "reconnecting-websocket": "^4.4.0",
+    "xterm": "^5.1.0",
+    "xterm-addon-fit": "^0.7.0",
+    "xterm-addon-web-links": "^0.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
