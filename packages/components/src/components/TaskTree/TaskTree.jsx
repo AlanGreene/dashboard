@@ -67,14 +67,7 @@ const TaskTree = ({
           (!erroredTask && !selectedTaskId && index === 0);
         const selectDefaultStep = !selectedTaskId;
 
-        const retryName = selectedTaskId === pipelineTaskName && (selectedRetry || taskRun.status?.retriesStatus) ? intl.formatMessage(
-          {
-            id: 'dashboard.pipelineRun.pipelineTaskName.retry',
-            defaultMessage: '{pipelineTaskName} (retry {retryNumber, number})'
-          },
-          { pipelineTaskName: displayName || pipelineTaskName, retryNumber: selectedRetry || taskRun.status.retriesStatus.length }
-        ) : null;
-        const taskDisplayName = displayName || retryName || pipelineTaskName || name;
+        const taskDisplayName = displayName || pipelineTaskName || name;
 
         return (
           <Task
@@ -86,7 +79,7 @@ const TaskTree = ({
             onSelect={onSelect}
             reason={reason}
             selectDefaultStep={selectDefaultStep}
-            selectedRetry={selectedRetry}
+            selectedRetry={expanded && selectedRetry}
             selectedStepId={selectedStepId}
             steps={steps}
             succeeded={status}

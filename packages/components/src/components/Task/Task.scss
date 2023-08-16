@@ -73,6 +73,13 @@ limitations under the License.
     }
   }
 
+  .bx--dropdown__wrapper.bx--dropdown__wrapper--inline {
+    position: relative;
+    left: -1.5rem;
+    grid-gap: 0;
+    margin-left: 0.5rem;
+  }
+
   &:not([data-succeeded]) > a.tkn--task-link {
     &:hover {
       color: inherit;

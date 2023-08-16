@@ -131,7 +131,7 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
   };
 
   loadTaskRuns = () => {
-    const { intl, pipelineRun } = this.props;
+    const { pipelineRun } = this.props;
     if (
       !pipelineRun?.status?.taskRuns &&
       !pipelineRun?.status?.childReferences
@@ -145,68 +145,68 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
       return [];
     }
 
-    const retryPodIndex = {};
-    // TODO: remove this
-    // taskRuns = taskRuns.reduce((acc, taskRun) => {
-    //   if (taskRun.status?.retriesStatus) {
-    //     taskRun.status.retriesStatus.forEach((retryStatus, index) => {
-    //       const retryRun = { ...taskRun };
-    //       retryRun.status = retryStatus;
-    //       retryPodIndex[retryStatus.podName] = index;
-    //       acc.push(retryRun);
-    //     });
-    //   }
-    //   acc.push(taskRun);
-    //   return acc;
-    // }, []);
+    return taskRuns;
+    // TODO: [AG] layout / design:
+    // TODO: [AG] - resolve double arrow with task expansion indicator?
+    // TODO: [AG] - dropdown vs. overflow vs. ???, see ^^
+    // TODO: [AG] - show always or only when task selected?
+    // TODO: [AG] a11y - dropdown inside link not valid, need to modify structure
 
-    return taskRuns.map(taskRun => {
-      const { name: taskRunName, uid } = taskRun.metadata;
+    // TODO: [AG] make sure all tasks show their retry number, not just the selected / expanded task
+    // TODO: [AG] possible bug with retry selected + multiple steps in task, select another step, does retry get reset?
+    //            - seeing similar when clicking on already selected step, retry query param is removed from URL
 
-      let pipelineTaskName = getPipelineTaskName({
-        pipelineRun,
-        taskRunName
-      });
+    // TODO: [AG] is the stuff below still needed with this new approach? Maybe some of the displayName pieces?
 
-      const { podName } = taskRun.status || {};
-      let displayName =
-        taskRun.metadata.labels?.[labelConstants.DASHBOARD_DISPLAY_NAME];
+    // const retryPodIndex = {};
 
-      if (retryPodIndex[podName] || taskRun.status?.retriesStatus) {
-        const retryNumber =
-          retryPodIndex[podName] || taskRun.status.retriesStatus.length;
-        pipelineTaskName = intl.formatMessage(
-          {
-            id: 'dashboard.pipelineRun.pipelineTaskName.retry',
-            defaultMessage: '{pipelineTaskName} (retry {retryNumber, number})'
-          },
-          { pipelineTaskName: displayName || pipelineTaskName, retryNumber }
-        );
-        if (displayName) {
-          displayName = pipelineTaskName;
-        }
-      }
+    // return taskRuns.map(taskRun => {
+      // const { uid } = taskRun.metadata;
 
-      return {
-        ...taskRun,
-        metadata: {
-          ...taskRun.metadata,
-          labels: {
-            ...taskRun.metadata.labels,
-            ...(displayName
-              ? {
-                  [labelConstants.DASHBOARD_DISPLAY_NAME]: displayName
-                }
-              : null)
-            // [labelConstants.DASHBOARD_RETRY_NAME]: pipelineTaskName
-          },
-          uid: `${uid}${podName}`
-        },
-        status: {
-          ...taskRun.status
-        }
-      };
-    });
+      // let pipelineTaskName = getPipelineTaskName({
+      //   pipelineRun,
+      //   taskRunName
+      // });
+
+      // const { podName } = taskRun.status || {};
+      // let displayName =
+      //   taskRun.metadata.labels?.[labelConstants.DASHBOARD_DISPLAY_NAME];
+
+      // if (retryPodIndex[podName] || taskRun.status?.retriesStatus) {
+      //   const retryNumber =
+      //     retryPodIndex[podName] || taskRun.status.retriesStatus.length;
+      //   pipelineTaskName = intl.formatMessage(
+      //     {
+      //       id: 'dashboard.pipelineRun.pipelineTaskName.retry',
+      //       defaultMessage: '{pipelineTaskName} (retry {retryNumber, number})'
+      //     },
+      //     { pipelineTaskName: displayName || pipelineTaskName, retryNumber }
+      //   );
+      //   if (displayName) {
+      //     displayName = pipelineTaskName;
+      //   }
+      // }
+
+      // return {
+      //   ...taskRun,
+      //   metadata: {
+      //     ...taskRun.metadata,
+      //     labels: {
+      //       ...taskRun.metadata.labels,
+      //       ...(displayName
+      //         ? {
+      //             [labelConstants.DASHBOARD_DISPLAY_NAME]: displayName
+      //           }
+      //         : null)
+      //       // [labelConstants.DASHBOARD_RETRY_NAME]: pipelineTaskName
+      //     },
+      //     uid: `${uid}${podName}`
+      //   },
+      //   status: {
+      //     ...taskRun.status
+      //   }
+      // };
+    // });
   };
 
   render() {

@@ -203,7 +203,7 @@ export /* istanbul ignore next */ function PipelineRunContainer() {
     // if (Number.isInteger(retry)) {
     //   queryParams.set(RETRY, retry);
     // } else {
-    //   queryParams.delete(RETRY);
+    queryParams.delete(RETRY);
     // }
 
     if (

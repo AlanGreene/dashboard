@@ -12,10 +12,9 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
-import { Dropdown } from 'carbon-components-react';
 import { Pending24 as DefaultIcon } from '@carbon/icons-react';
 import { injectIntl } from 'react-intl';
-import { getStatus, getTranslateWithId } from '@tektoncd/dashboard-utils';
+import { getStatus } from '@tektoncd/dashboard-utils';
 
 import FormattedDuration from '../FormattedDuration';
 import StatusIcon from '../StatusIcon';
@@ -114,8 +113,6 @@ class DetailsHeader extends Component {
       displayName,
       hasWarning,
       intl,
-      onRetryChange,
-      retry,
       taskRun,
       type = 'step'
     } = this.props;
@@ -136,15 +133,6 @@ class DetailsHeader extends Component {
       statusLabel = this.statusLabel();
     }
 
-    // if (taskRun.status?.retriesStatus) {
-    //   taskRun.status.retriesStatus.forEach((retryStatus, index) => {
-    //     const retryRun = { ...taskRun };
-    //     retryRun.status = retryStatus;
-    //     retryPodIndex[retryStatus.podName] = index;
-    //     acc.push(retryRun);
-    //   });
-    // }
-
     return (
       <header
         className="tkn--step-details-header"
@@ -162,23 +150,6 @@ class DetailsHeader extends Component {
           <span className="tkn--run-details-name" title={displayName}>
             {displayName}
           </span>
-          {taskRun.status?.retriesStatus ? (
-            <Dropdown
-              hideLabel
-              id="taskRunRetriesDropdown"
-              items={taskRun.status.retriesStatus.map((retryStatus, index) => ({ id: index, text: `Retry ${index}` })).concat([{ id: '', text: `Retry ${taskRun.status.retriesStatus.length}` }])}
-              itemToString={item => (item ? item.text : '')}
-              label="Retries"
-              onChange={({ selectedItem }) => {
-                onRetryChange(selectedItem.id);
-              }}            
-              selectedItem={{ id: retry ?? '', text: `Retry ${retry ?? taskRun.status.retriesStatus.length}` }}
-              size="sm"
-              titleText="Retries"
-              translateWithId={getTranslateWithId(intl)}
-              type="inline"
-            />
-          ) : null}
           <span className="tkn--status-label">{statusLabel}</span>
         </h2>
         {duration}

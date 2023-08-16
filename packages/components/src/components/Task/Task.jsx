@@ -13,7 +13,7 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
-import { Dropdown } from 'carbon-components-react';
+import { Dropdown, OverflowMenu } from 'carbon-components-react';
 import {
   PendingFilled20 as DefaultIcon,
   ChevronDown20 as ExpandIcon
@@ -115,6 +115,14 @@ class Task extends Component {
       <ExpandIcon className="tkn--task--expand-icon" />
     );
 
+    const retryName = (selectedRetry || taskRun.status?.retriesStatus) ? intl.formatMessage(
+      {
+        id: 'dashboard.pipelineRun.pipelineTaskName.retry',
+        defaultMessage: '{pipelineTaskName} (retry {retryNumber, number})'
+      },
+      { pipelineTaskName: displayName, retryNumber: selectedRetry || taskRun.status.retriesStatus.length }
+    ) : null;
+
     return (
       <li
         className="tkn--task"
@@ -127,7 +135,7 @@ class Task extends Component {
         <a
           className="tkn--task-link"
           href="#"
-          title={displayName}
+          title={retryName || displayName}
           onClick={this.handleTaskSelected}
         >
           <StatusIcon
@@ -136,19 +144,41 @@ class Task extends Component {
             reason={reason}
             status={succeeded}
           />
-          <span className="tkn--task-link--name">{displayName}</span>
-          {taskRun.status?.retriesStatus ? (
+          {(!expanded || !taskRun.status?.retriesStatus) && <span className="tkn--task-link--name">{retryName || displayName}</span>}
+          {/*
+            TODO: [AG] dropdown instead of name when expanded?
+          */}
+          {expanded && taskRun.status?.retriesStatus ? (
             <Dropdown
+              disabled={!expanded}
               hideLabel
               id="taskRunRetriesDropdown"
-              items={taskRun.status.retriesStatus.map((retryStatus, index) => ({ id: index, text: `Retry ${index}` })).concat([{ id: '', text: `Retry ${taskRun.status.retriesStatus.length}` }])}
+              items={taskRun.status.retriesStatus.map((retryStatus, index) => ({ id: index, text: intl.formatMessage(
+                {
+                  id: 'dashboard.pipelineRun.pipelineTaskName.retry',
+                  defaultMessage: '{pipelineTaskName} (retry {retryNumber, number})'
+                },
+                { pipelineTaskName: displayName, retryNumber: index }
+              ) })).concat([{ id: '', text: intl.formatMessage(
+                {
+                  id: 'dashboard.pipelineRun.pipelineTaskName.retry',
+                  defaultMessage: '{pipelineTaskName} (retry {retryNumber, number})'
+                },
+                { pipelineTaskName: displayName, retryNumber: taskRun.status.retriesStatus.length }
+              ) }])}
               itemToString={item => (item ? item.text : '')}
               label="Retries"
               onChange={({ selectedItem }) => {
                 console.log('Task onChange retry', { selectedItem });
                 onRetryChange(selectedItem.id);
               }}            
-              selectedItem={{ id: selectedRetry ?? '', text: `Retry ${selectedRetry ?? taskRun.status.retriesStatus.length}` }}
+              selectedItem={{ id: selectedRetry ?? '', text: intl.formatMessage(
+                {
+                  id: 'dashboard.pipelineRun.pipelineTaskName.retry',
+                  defaultMessage: '{pipelineTaskName} (retry {retryNumber, number})'
+                },
+                { pipelineTaskName: displayName, retryNumber: selectedRetry ?? taskRun.status.retriesStatus.length }
+              ) }}
               size="sm"
               titleText="Retries"
               translateWithId={getTranslateWithId(intl)}
