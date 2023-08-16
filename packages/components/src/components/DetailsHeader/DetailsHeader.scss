@@ -33,6 +33,17 @@ header.tkn--step-details-header {
       text-overflow: ellipsis;
     }
 
+    .bx--dropdown__wrapper.bx--dropdown__wrapper--inline {
+      position: relative;
+      top: -1px;
+      grid-gap: 0;
+      margin-left: 0.5rem;
+
+      .bx--list-box__menu-icon svg {
+        align-self: auto;
+      }
+    }
+
     > .skeleton-placeholder {
       height: 100%;
       width: 12rem;

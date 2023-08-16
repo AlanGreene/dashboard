@@ -12,12 +12,15 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
+import { injectIntl } from 'react-intl';
+import { Dropdown } from 'carbon-components-react';
 import {
   PendingFilled20 as DefaultIcon,
   ChevronDown20 as ExpandIcon
 } from '@carbon/icons-react';
 import {
   getStepStatusReason,
+  getTranslateWithId,
   updateUnexecutedSteps
 } from '@tektoncd/dashboard-utils';
 
@@ -104,7 +107,7 @@ class Task extends Component {
   }
 
   render() {
-    const { expanded, displayName, reason, selectedStepId, succeeded } =
+    const { displayName, expanded, intl, onRetryChange, reason, selectedRetry, selectedStepId, succeeded, taskRun } =
       this.props;
     const { hasWarning } = this.state;
 
@@ -134,6 +137,24 @@ class Task extends Component {
             status={succeeded}
           />
           <span className="tkn--task-link--name">{displayName}</span>
+          {taskRun.status?.retriesStatus ? (
+            <Dropdown
+              hideLabel
+              id="taskRunRetriesDropdown"
+              items={taskRun.status.retriesStatus.map((retryStatus, index) => ({ id: index, text: `Retry ${index}` })).concat([{ id: '', text: `Retry ${taskRun.status.retriesStatus.length}` }])}
+              itemToString={item => (item ? item.text : '')}
+              label="Retries"
+              onChange={({ selectedItem }) => {
+                console.log('Task onChange retry', { selectedItem });
+                onRetryChange(selectedItem.id);
+              }}            
+              selectedItem={{ id: selectedRetry ?? '', text: `Retry ${selectedRetry ?? taskRun.status.retriesStatus.length}` }}
+              size="sm"
+              titleText="Retries"
+              translateWithId={getTranslateWithId(intl)}
+              type="inline"
+            />
+          ) : null}
           {expandIcon}
         </a>
         {expanded && (
@@ -164,4 +185,4 @@ Task.defaultProps = {
   steps: []
 };
 
-export default Task;
+export default injectIntl(Task);

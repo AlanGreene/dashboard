@@ -81,6 +81,7 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
       getLogsToolbar,
       maximizedLogsContainer,
       pollingInterval,
+      selectedRetry,
       selectedStepId,
       selectedTaskId
     } = this.props;
@@ -112,7 +113,7 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
           }
           fetchLogs={() => fetchLogs(stepName, stepStatus, taskRun)}
           forcePolling={forceLogPolling}
-          key={`${selectedTaskId}:${selectedStepId}`}
+          key={`${selectedTaskId}:${selectedStepId}:${selectedRetry}`}
           pollingInterval={pollingInterval}
           stepStatus={stepStatus}
           isLogsMaximized={isLogsMaximized}
@@ -145,18 +146,19 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
     }
 
     const retryPodIndex = {};
-    taskRuns = taskRuns.reduce((acc, taskRun) => {
-      if (taskRun.status?.retriesStatus) {
-        taskRun.status.retriesStatus.forEach((retryStatus, index) => {
-          const retryRun = { ...taskRun };
-          retryRun.status = retryStatus;
-          retryPodIndex[retryStatus.podName] = index;
-          acc.push(retryRun);
-        });
-      }
-      acc.push(taskRun);
-      return acc;
-    }, []);
+    // TODO: remove this
+    // taskRuns = taskRuns.reduce((acc, taskRun) => {
+    //   if (taskRun.status?.retriesStatus) {
+    //     taskRun.status.retriesStatus.forEach((retryStatus, index) => {
+    //       const retryRun = { ...taskRun };
+    //       retryRun.status = retryStatus;
+    //       retryPodIndex[retryStatus.podName] = index;
+    //       acc.push(retryRun);
+    //     });
+    //   }
+    //   acc.push(taskRun);
+    //   return acc;
+    // }, []);
 
     return taskRuns.map(taskRun => {
       const { name: taskRunName, uid } = taskRun.metadata;
@@ -195,8 +197,8 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
               ? {
                   [labelConstants.DASHBOARD_DISPLAY_NAME]: displayName
                 }
-              : null),
-            [labelConstants.DASHBOARD_RETRY_NAME]: pipelineTaskName
+              : null)
+            // [labelConstants.DASHBOARD_RETRY_NAME]: pipelineTaskName
           },
           uid: `${uid}${podName}`
         },
@@ -215,10 +217,12 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
       icon,
       intl,
       loading,
+      onRetryChange,
       onViewChange,
       pipelineRun,
       pod,
       runActions,
+      selectedRetry,
       selectedStepId,
       selectedTaskId,
       triggerHeader,
@@ -311,8 +315,18 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
     }
 
     const taskRuns = this.loadTaskRuns();
-    const taskRun =
-      taskRuns.find(run => run.metadata.uid === selectedTaskId) || {};
+
+    let taskRun = taskRuns.find(
+      ({ metadata }) =>
+        metadata.labels?.[labelConstants.PIPELINE_TASK] === selectedTaskId
+    ) || {};
+
+    if (taskRun.status?.retriesStatus && selectedRetry) {
+      taskRun = {
+        ...taskRun,
+        status: taskRun.status.retriesStatus[selectedRetry]
+      };
+    }
 
     const task =
       (taskRun.spec?.taskRef?.name &&
@@ -356,16 +370,20 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
         {taskRuns.length > 0 && (
           <div className="tkn--tasks">
             <TaskTree
+              onRetryChange={onRetryChange}
               onSelect={handleTaskSelected}
-              selectedTaskId={selectedTaskId}
+              selectedRetry={selectedRetry}
               selectedStepId={selectedStepId}
+              selectedTaskId={selectedTaskId}
               taskRuns={taskRuns}
             />
             {(selectedStepId && (
               <StepDetails
                 definition={definition}
                 logContainer={logContainer}
+                onRetryChange={onRetryChange}
                 onViewChange={onViewChange}
+                retry={selectedRetry}
                 stepName={selectedStepId}
                 stepStatus={stepStatus}
                 taskRun={taskRun}
@@ -374,8 +392,10 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
             )) ||
               (selectedTaskId && (
                 <TaskRunDetails
+                  onRetryChange={onRetryChange}
                   onViewChange={onViewChange}
                   pod={pod}
+                  retry={selectedRetry}
                   task={task}
                   taskRun={taskRun}
                   view={view}

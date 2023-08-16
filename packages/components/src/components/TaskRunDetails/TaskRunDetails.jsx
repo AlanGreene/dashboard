@@ -60,14 +60,17 @@ function getDescriptions(array) {
 }
 
 const defaults = {
+  onRetryChange: /* istanbul ignore next */ () => {},
   onViewChange: /* istanbul ignore next */ () => {},
   task: {},
   taskRun: {}
 };
 
 const TaskRunDetails = ({
+  onRetryChange = defaults.onRetryChange,
   onViewChange = defaults.onViewChange,
   pod,
+  retry,
   task = defaults.task,
   taskRun = defaults.taskRun,
   view
@@ -175,6 +178,8 @@ const TaskRunDetails = ({
       <DetailsHeader
         displayName={displayName}
         hasWarning={taskRunHasWarning(taskRun)}
+        onRetryChange={onRetryChange}
+        retry={retry}
         taskRun={taskRun}
         type="taskRun"
       />

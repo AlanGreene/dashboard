@@ -14,7 +14,7 @@ limitations under the License.
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { Dropdown } from 'carbon-components-react';
-import { statusFilterOrder } from '@tektoncd/dashboard-utils';
+import { getTranslateWithId, statusFilterOrder } from '@tektoncd/dashboard-utils';
 
 const StatusFilterDropdown = ({ id, initialSelectedStatus, onChange }) => {
   const intl = useIntl();
@@ -77,6 +77,7 @@ const StatusFilterDropdown = ({ id, initialSelectedStatus, onChange }) => {
         id: 'dashboard.filter.status.title',
         defaultMessage: 'Status:'
       })}
+      translateWithId={getTranslateWithId(intl)}
       type="inline"
     />
   );

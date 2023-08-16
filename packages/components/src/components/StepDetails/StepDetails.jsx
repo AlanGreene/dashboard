@@ -24,6 +24,7 @@ import Tabs from '../Tabs';
 const tabs = ['logs', 'details'];
 
 const defaults = {
+  onRetryChange: /* istanbul ignore next */ () => {},
   onViewChange: /* istanbul ignore next */ () => {},
   taskRun: {}
 };
@@ -31,7 +32,9 @@ const defaults = {
 const StepDetails = ({
   definition,
   logContainer,
+  onRetryChange = defaults.onRetryChange,
   onViewChange = defaults.onViewChange,
+  retry,
   stepName,
   stepStatus,
   taskRun = defaults.taskRun,
@@ -55,7 +58,9 @@ const StepDetails = ({
         displayName={stepName}
         exitCode={exitCode}
         hasWarning={exitCode !== 0}
+        onRetryChange={onRetryChange}
         reason={reason}
+        retry={retry}
         status={statusValue}
         stepStatus={stepStatus}
         taskRun={taskRun}

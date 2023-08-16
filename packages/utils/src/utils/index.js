@@ -155,7 +155,7 @@ export function getStepDefinition({ selectedStepId, task, taskRun }) {
   // unnamed step numbering skips named steps, so we could have for example:
   // ['unnamed-2', 'unnamed-4']
   // but the order will be consistent with unnamed steps in the definition
-  const statusSteps = taskRun.status.steps.filter(({ name }) =>
+  const statusSteps = (taskRun.status.steps || []).filter(({ name }) =>
     name.startsWith('unnamed-')
   );
   const unnamedSteps = stepDefinitions.filter(({ name }) => !name);

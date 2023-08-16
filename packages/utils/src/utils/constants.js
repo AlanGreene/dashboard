@@ -16,7 +16,7 @@ export const labels = {
   DASHBOARD_DESCRIPTION: 'dashboard.tekton.dev/description',
   DASHBOARD_DISPLAY_NAME: 'dashboard.tekton.dev/displayName',
   DASHBOARD_IMPORT: 'dashboard.tekton.dev/import',
-  DASHBOARD_RETRY_NAME: 'dashboard.tekton.dev/retryName',
+  // DASHBOARD_RETRY_NAME: 'dashboard.tekton.dev/retryName',
   PIPELINE: 'tekton.dev/pipeline',
   PIPELINE_RUN: 'tekton.dev/pipelineRun',
   PIPELINE_TASK: 'tekton.dev/pipelineTask',
