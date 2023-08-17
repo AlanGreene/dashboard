@@ -30,23 +30,23 @@ import StepDetails from '../StepDetails';
 import TaskRunDetails from '../TaskRunDetails';
 import TaskTree from '../TaskTree';
 
-function getPipelineTaskName({ pipelineRun, taskRunName }) {
-  const {
-    status: { childReferences, taskRuns }
-  } = pipelineRun;
+// function getPipelineTaskName({ pipelineRun, taskRunName }) {
+//   const {
+//     status: { childReferences, taskRuns }
+//   } = pipelineRun;
 
-  if (taskRuns) {
-    return taskRuns[taskRunName]?.pipelineTaskName;
-  }
+//   if (taskRuns) {
+//     return taskRuns[taskRunName]?.pipelineTaskName;
+//   }
 
-  if (childReferences) {
-    const { pipelineTaskName } =
-      childReferences.find(({ name }) => name === taskRunName) || {};
-    return pipelineTaskName;
-  }
+//   if (childReferences) {
+//     const { pipelineTaskName } =
+//       childReferences.find(({ name }) => name === taskRunName) || {};
+//     return pipelineTaskName;
+//   }
 
-  return undefined;
-}
+//   return undefined;
+// }
 
 export /* istanbul ignore next */ class PipelineRunContainer extends Component {
   state = {
@@ -319,6 +319,10 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
     let taskRun = taskRuns.find(
       ({ metadata }) =>
         metadata.labels?.[labelConstants.PIPELINE_TASK] === selectedTaskId
+        // TODO: [AG] and if matrix, also matched [name | id ??] - name is what's included in childReferences, and is slightly less opaque than a uuid…
+        //            what about index from end of name? Is that reliable enough? Could then use similar to retry - for both display name + URL
+        //            need to test with longer names etc. to see if index is kept
+        //            still risky to rely on it if it's not part of official API
     ) || {};
 
     if (taskRun.status?.retriesStatus && selectedRetry) {

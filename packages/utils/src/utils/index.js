@@ -443,6 +443,25 @@ export function getPlaceholderTaskRun({ clusterTasks, pipelineTask, tasks }) {
   };
 }
 
+function addDashboardLabels({ pipelineTask, taskRun }) {
+  const { description, displayName } = pipelineTask;
+  // eslint-disable-next-line no-param-reassign
+  taskRun.metadata.labels = {
+    ...taskRun.metadata.labels,
+    ...(description
+      ? {
+          [labelConstants.DASHBOARD_DESCRIPTION]: description
+        }
+      : null),
+    ...(displayName
+      ? {
+          [labelConstants.DASHBOARD_DISPLAY_NAME]: displayName
+        }
+      : null)
+  };
+  return taskRun;
+}
+
 export function getTaskRunsWithPlaceholders({
   clusterTasks,
   pipeline,
@@ -472,32 +491,24 @@ export function getTaskRunsWithPlaceholders({
 
   const taskRunsToDisplay = [];
   pipelineTasks.forEach(pipelineTask => {
-    const realTaskRun = taskRuns.find(
+    const realTaskRuns = taskRuns.filter(
       taskRun =>
         taskRun.metadata.labels?.[labelConstants.PIPELINE_TASK] ===
         pipelineTask.name
     );
 
-    const taskRunToDisplay =
-      realTaskRun ||
-      getPlaceholderTaskRun({ clusterTasks, pipelineTask, tasks });
+    realTaskRuns.forEach(taskRun => {
+      taskRunsToDisplay.push(addDashboardLabels({ pipelineTask, taskRun }));
+    });
 
-    const { description, displayName } = pipelineTask;
-    taskRunToDisplay.metadata.labels = {
-      ...taskRunToDisplay.metadata.labels,
-      ...(description
-        ? {
-            [labelConstants.DASHBOARD_DESCRIPTION]: description
-          }
-        : null),
-      ...(displayName
-        ? {
-            [labelConstants.DASHBOARD_DISPLAY_NAME]: displayName
-          }
-        : null)
-    };
-
-    taskRunsToDisplay.push(taskRunToDisplay);
+    if (!realTaskRuns.length) {
+      taskRunsToDisplay.push(
+        addDashboardLabels({
+          pipelineTask,
+          taskRun: getPlaceholderTaskRun({ clusterTasks, pipelineTask, tasks })
+        })
+      );
+    }
   });
 
   return taskRunsToDisplay;

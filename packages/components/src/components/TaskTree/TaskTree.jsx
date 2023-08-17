@@ -12,7 +12,6 @@ limitations under the License.
 */
 
 import React from 'react';
-import { useIntl } from 'react-intl';
 import { getStatus, labels as labelConstants } from '@tektoncd/dashboard-utils';
 import Task from '../Task';
 
@@ -28,8 +27,6 @@ const TaskTree = ({
   selectedTaskId,
   taskRuns = defaults.taskRuns
 }) => {
-  const intl = useIntl();
-
   if (!taskRuns) {
     return <div />;
   }
@@ -37,6 +34,8 @@ const TaskTree = ({
   const erroredTask = taskRuns
     .filter(Boolean)
     .find(taskRun => getStatus(taskRun).status === 'False');
+
+  console.log('TaskTree', { taskRuns });
 
   return (
     <ol className="tkn--task-tree">
