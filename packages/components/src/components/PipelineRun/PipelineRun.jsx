@@ -30,24 +30,6 @@ import StepDetails from '../StepDetails';
 import TaskRunDetails from '../TaskRunDetails';
 import TaskTree from '../TaskTree';
 
-// function getPipelineTaskName({ pipelineRun, taskRunName }) {
-//   const {
-//     status: { childReferences, taskRuns }
-//   } = pipelineRun;
-
-//   if (taskRuns) {
-//     return taskRuns[taskRunName]?.pipelineTaskName;
-//   }
-
-//   if (childReferences) {
-//     const { pipelineTaskName } =
-//       childReferences.find(({ name }) => name === taskRunName) || {};
-//     return pipelineTaskName;
-//   }
-
-//   return undefined;
-// }
-
 export /* istanbul ignore next */ class PipelineRunContainer extends Component {
   state = {
     isLogsMaximized: false
@@ -146,67 +128,6 @@ export /* istanbul ignore next */ class PipelineRunContainer extends Component {
     }
 
     return taskRuns;
-    // TODO: [AG] layout / design:
-    // TODO: [AG] - resolve double arrow with task expansion indicator?
-    // TODO: [AG] - dropdown vs. overflow vs. ???, see ^^
-    // TODO: [AG] - show always or only when task selected?
-    // TODO: [AG] a11y - dropdown inside link not valid, need to modify structure
-
-    // TODO: [AG] make sure all tasks show their retry number, not just the selected / expanded task
-    // TODO: [AG] possible bug with retry selected + multiple steps in task, select another step, does retry get reset?
-    //            - seeing similar when clicking on already selected step, retry query param is removed from URL
-
-    // TODO: [AG] is the stuff below still needed with this new approach? Maybe some of the displayName pieces?
-
-    // const retryPodIndex = {};
-
-    // return taskRuns.map(taskRun => {
-      // const { uid } = taskRun.metadata;
-
-      // let pipelineTaskName = getPipelineTaskName({
-      //   pipelineRun,
-      //   taskRunName
-      // });
-
-      // const { podName } = taskRun.status || {};
-      // let displayName =
-      //   taskRun.metadata.labels?.[labelConstants.DASHBOARD_DISPLAY_NAME];
-
-      // if (retryPodIndex[podName] || taskRun.status?.retriesStatus) {
-      //   const retryNumber =
-      //     retryPodIndex[podName] || taskRun.status.retriesStatus.length;
-      //   pipelineTaskName = intl.formatMessage(
-      //     {
-      //       id: 'dashboard.pipelineRun.pipelineTaskName.retry',
-      //       defaultMessage: '{pipelineTaskName} (retry {retryNumber, number})'
-      //     },
-      //     { pipelineTaskName: displayName || pipelineTaskName, retryNumber }
-      //   );
-      //   if (displayName) {
-      //     displayName = pipelineTaskName;
-      //   }
-      // }
-
-      // return {
-      //   ...taskRun,
-      //   metadata: {
-      //     ...taskRun.metadata,
-      //     labels: {
-      //       ...taskRun.metadata.labels,
-      //       ...(displayName
-      //         ? {
-      //             [labelConstants.DASHBOARD_DISPLAY_NAME]: displayName
-      //           }
-      //         : null)
-      //       // [labelConstants.DASHBOARD_RETRY_NAME]: pipelineTaskName
-      //     },
-      //     uid: `${uid}${podName}`
-      //   },
-      //   status: {
-      //     ...taskRun.status
-      //   }
-      // };
-    // });
   };
 
   render() {

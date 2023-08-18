@@ -45,7 +45,6 @@ const TaskTree = ({
         const {
           [labelConstants.DASHBOARD_DISPLAY_NAME]: displayName,
           [labelConstants.PIPELINE_TASK]: pipelineTaskName
-          // [labelConstants.DASHBOARD_RETRY_NAME]: retryName
         } = labels;
 
         let taskRunToUse = taskRun;

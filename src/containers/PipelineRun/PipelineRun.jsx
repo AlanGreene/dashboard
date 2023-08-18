@@ -165,41 +165,10 @@ export /* istanbul ignore next */ function PipelineRunContainer() {
       return { podName: taskRun.status?.podName };
     }
 
-    // const retryNumber = parseInt(retry, 10);
-    // if (!Number.isNaN(retryNumber) && taskRun.status?.retriesStatus) {
-    //   const retryStatus = taskRun.status.retriesStatus[retryNumber];
-    //   return retryStatus && taskRun.metadata.uid + retryStatus.podName;
-    // }
-
     return { podName: taskRun.status?.retriesStatus?.[selectedRetry]?.podName };
-
-    // const lookup = taskRuns.reduce((acc, taskRun) => {
-    //   const { labels, uid } = taskRun.metadata;
-    //   const pipelineTaskName = labels?.[labelConstants.PIPELINE_TASK];
-    //   const { podName, retriesStatus } = taskRun.status || {};
-    //   acc[uid + podName] = {
-    //     pipelineTaskName,
-    //     podName,
-    //     uid
-    //   };
-    //   if (retriesStatus) {
-    //     retriesStatus.forEach((retryStatus, index) => {
-    //       acc[uid + retryStatus.podName] = {
-    //         pipelineTaskName,
-    //         podName: retryStatus.podName,
-    //         retry: index,
-    //         uid
-    //       };
-    //     });
-    //   }
-    //   return acc;
-    // }, {});
-    // return lookup[selectedTaskId];
   }
 
-  function handleTaskSelected(selectedTaskId, selectedStepId) {
-    // const { retry } = getSelectedTaskRun({ selectedRetry, selectedTaskId });
-
+  function handleTaskSelected(selectedTaskId, selectedStepId, retry) {
     queryParams.set(PIPELINE_TASK, selectedTaskId);
     if (selectedStepId) {
       queryParams.set(STEP, selectedStepId);
@@ -207,11 +176,11 @@ export /* istanbul ignore next */ function PipelineRunContainer() {
       queryParams.delete(STEP);
     }
 
-    // if (Number.isInteger(retry)) {
-    //   queryParams.set(RETRY, retry);
-    // } else {
-    queryParams.delete(RETRY);
-    // }
+    if (retry && /^[0-9]+$/.test(retry)) {
+      queryParams.set(RETRY, retry);
+    } else {
+      queryParams.delete(RETRY);
+    }
 
     if (
       selectedStepId !== currentSelectedStepId ||

@@ -74,13 +74,12 @@ class Task extends Component {
   }
 
   handleClick = () => {
-    const { id } = this.props;
+    const { id, selectedRetry } = this.props;
     const { selectedStepId } = this.state;
-    this.props.onSelect(id, selectedStepId);
+    this.props.onSelect(id, selectedStepId, selectedRetry);
   };
 
   handleStepSelected = selectedStepId => {
-    // TODO: [AG] preserve selected retry
     this.setState({ selectedStepId }, () => {
       this.handleClick();
     });
@@ -119,26 +118,17 @@ class Task extends Component {
     let retryName;
     if (selectedRetry || taskRun.status?.retriesStatus) {
       if (selectedRetry === '0') {
-        retryName = intl.formatMessage(
-          {
-            id: 'dashboard.pipelineRun.pipelineTaskName.firstAttempt',
-            defaultMessage: '{pipelineTaskName} (first attempt)'
-          },
-          { pipelineTaskName: displayName }
-        );
+        retryName = intl.formatMessage({
+          id: 'dashboard.pipelineRun.pipelineTaskName.firstAttempt',
+          defaultMessage: '{pipelineTaskName} (first attempt)'
+        }, { pipelineTaskName: displayName });
       } else {
-        retryName = intl.formatMessage(
-          {
-            id: 'dashboard.pipelineRun.pipelineTaskName.retry',
-            defaultMessage: '{pipelineTaskName} (retry {retryNumber, number})'
-          },
-          { pipelineTaskName: displayName, retryNumber: selectedRetry || taskRun.status.retriesStatus.length }
-        );
+        retryName = intl.formatMessage({
+          id: 'dashboard.pipelineRun.pipelineTaskName.retry',
+          defaultMessage: '{pipelineTaskName} (retry {retryNumber, number})'
+        }, { pipelineTaskName: displayName, retryNumber: selectedRetry || taskRun.status.retriesStatus.length });
       }
     }
-
-    // TODO: [AG] remove this when finished with experiments
-    const useDropdown = false;
 
     return (
       <li
@@ -151,7 +141,6 @@ class Task extends Component {
       >
         <span
           className="tkn--task-link"
-          // href="#"
           tabIndex={0}
           title={retryName || displayName}
           onClick={this.handleTaskSelected}
@@ -163,110 +152,40 @@ class Task extends Component {
             reason={reason}
             status={succeeded}
           />
-          {(!expanded || !taskRun.status?.retriesStatus || !useDropdown) && <span className="tkn--task-link--name">{retryName || displayName}</span>}
-          {/*
-            TODO: [AG] address a11y / structure issues - dropdown in anchor not valid
-            TODO: [AG] address usability issues - when currently viewing step, not easy to select taskrun without opening dropdown, need to click before / after it instead…
-          */}
-          {expanded && taskRun.status?.retriesStatus && useDropdown ? (
-            <Dropdown
-              disabled={!expanded}
-              hideLabel
-              id="taskRunRetriesDropdown"
-              items={taskRun.status.retriesStatus.map((retryStatus, index) => ({ id: index, text: intl.formatMessage(
-                {
-                  id: 'dashboard.pipelineRun.pipelineTaskName.retry',
-                  defaultMessage: '{pipelineTaskName} (retry {retryNumber, number})'
-                },
-                { pipelineTaskName: displayName, retryNumber: index }
-              ) })).concat([{ id: '', text: intl.formatMessage(
-                {
-                  id: 'dashboard.pipelineRun.pipelineTaskName.retry',
-                  defaultMessage: '{pipelineTaskName} (retry {retryNumber, number})'
-                },
-                { pipelineTaskName: displayName, retryNumber: taskRun.status.retriesStatus.length }
-              ) }])}
-              itemToString={item => (item ? item.text : '')}
-              label="Retries" // TODO: [AG]
-              onChange={({ selectedItem }) => {
-                onRetryChange(selectedItem.id);
-              }}            
-              selectedItem={{ id: selectedRetry ?? '', text: intl.formatMessage(
-                {
-                  id: 'dashboard.pipelineRun.pipelineTaskName.retry',
-                  defaultMessage: '{pipelineTaskName} (retry {retryNumber, number})'
-                },
-                { pipelineTaskName: displayName, retryNumber: selectedRetry ?? taskRun.status.retriesStatus.length }
-              ) }}
-              size="sm"
-              titleText="Retries"
-              translateWithId={getTranslateWithId(intl)}
-              type="inline"
-            />
-          ) : null}
-          {expanded && taskRun.status?.retriesStatus && !useDropdown ? (
+          <span className="tkn--task-link--name">{retryName || displayName}</span>
+          {expanded && taskRun.status?.retriesStatus ? (
             <OverflowMenu
-              ariaLabel="View retries" // TODO: [AG] extract
-              // className={`tkn--actions-dropdown${
-              //   isButton ? ' tkn--actions-dropdown--button' : ''
-              // }`}
-              // direction="top"
-              // flipped
-              iconDescription="View retries" // TODO: [AG] extract (duplicate above)
+              ariaLabel={intl.formatMessage({ id: 'dashboard.pipelineRun.retries.view', defaultMessage: 'View retries' })}
+              iconDescription={intl.formatMessage({ id: 'dashboard.pipelineRun.retries.view', defaultMessage: 'View retries' })}
               menuOptionsClass='tkn--task--retries-menu-options'
               selectorPrimaryFocus="button:not([disabled])"
               size="sm"
-              title="View retries" // TODO: [AG] extract (duplicate above)
-              // renderIcon={
-              //   isButton
-              //     ? iconProps => (
-              //         <span
-              //           {...iconProps}
-              //           className="bx--btn bx--btn--md bx--btn--tertiary"
-              //         >
-              //           {title}
-              //           <CaretDown16 className="bx--btn__icon" />
-              //         </span>
-              //       )
-              //     : undefined
-              // }
+              title={intl.formatMessage({ id: 'dashboard.pipelineRun.retries.view', defaultMessage: 'View retries' })}
             >
               {
-                taskRun.status.retriesStatus.map((retryStatus, index) => {
-                  if (index === 0) {
-                    return {
-                      id: index,
-                      text: intl.formatMessage(
-                        {
-                          id: 'dashboard.pipelineRun.retries.viewFirstAttempt',
-                          defaultMessage: 'View first attempt'
-                        }
-                      )
-                    };
-                  }
+                taskRun.status.retriesStatus.map((_retryStatus, index) => {
                   return {
                     id: index,
-                    text: intl.formatMessage(
-                      {
+                    text: index === 0 ?
+                      intl.formatMessage({
+                        id: 'dashboard.pipelineRun.retries.viewFirstAttempt',
+                        defaultMessage: 'View first attempt'
+                      }) :
+                      intl.formatMessage({
                         id: 'dashboard.pipelineRun.retries.viewRetry',
                         defaultMessage: 'View retry {retryNumber, number}'
-                      },
-                      { retryNumber: index }
-                    )
+                      }, { retryNumber: index })
                   };
-                }).concat([{ id: '', text: intl.formatMessage(
-                  {
-                    id: 'dashboard.pipelineRun.retries.viewLatestRetry',
-                    defaultMessage: 'View latest retry'
-                  }
-                ) }]).map(item =>
+                }).concat([{ id: '', text: intl.formatMessage({
+                  id: 'dashboard.pipelineRun.retries.viewLatestRetry',
+                  defaultMessage: 'View latest retry'
+                })}]).map(item =>
                   <OverflowMenuItem
                     disabled={`${item.id}` === selectedRetry}
                     itemText={item.text}
                     key={item.text}
                     onClick={() => onRetryChange(item.id)}
                     requireTitle
-                    wrapperClassName='tkn--task--retries-menu-option'
                   />
                 )
               }
