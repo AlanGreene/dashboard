@@ -80,6 +80,7 @@ class Task extends Component {
   };
 
   handleStepSelected = selectedStepId => {
+    // TODO: [AG] preserve selected retry
     this.setState({ selectedStepId }, () => {
       this.handleClick();
     });
