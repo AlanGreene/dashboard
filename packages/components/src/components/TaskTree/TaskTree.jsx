@@ -35,8 +35,6 @@ const TaskTree = ({
     .filter(Boolean)
     .find(taskRun => getStatus(taskRun).status === 'False');
 
-  console.log('TaskTree', { taskRuns });
-
   return (
     <ol className="tkn--task-tree">
       {taskRuns.map((taskRun, index) => {

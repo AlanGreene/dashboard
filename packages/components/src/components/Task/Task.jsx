@@ -13,7 +13,7 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
-import { Dropdown, OverflowMenu } from 'carbon-components-react';
+import { Dropdown, OverflowMenu, OverflowMenuItem } from 'carbon-components-react';
 import {
   PendingFilled20 as DefaultIcon,
   ChevronDown20 as ExpandIcon
@@ -115,13 +115,29 @@ class Task extends Component {
       <ExpandIcon className="tkn--task--expand-icon" />
     );
 
-    const retryName = (selectedRetry || taskRun.status?.retriesStatus) ? intl.formatMessage(
-      {
-        id: 'dashboard.pipelineRun.pipelineTaskName.retry',
-        defaultMessage: '{pipelineTaskName} (retry {retryNumber, number})'
-      },
-      { pipelineTaskName: displayName, retryNumber: selectedRetry || taskRun.status.retriesStatus.length }
-    ) : null;
+    let retryName;
+    if (selectedRetry || taskRun.status?.retriesStatus) {
+      if (selectedRetry === '0') {
+        retryName = intl.formatMessage(
+          {
+            id: 'dashboard.pipelineRun.pipelineTaskName.firstAttempt',
+            defaultMessage: '{pipelineTaskName} (first attempt)'
+          },
+          { pipelineTaskName: displayName }
+        );
+      } else {
+        retryName = intl.formatMessage(
+          {
+            id: 'dashboard.pipelineRun.pipelineTaskName.retry',
+            defaultMessage: '{pipelineTaskName} (retry {retryNumber, number})'
+          },
+          { pipelineTaskName: displayName, retryNumber: selectedRetry || taskRun.status.retriesStatus.length }
+        );
+      }
+    }
+
+    // TODO: [AG] remove this when finished with experiments
+    const useDropdown = false;
 
     return (
       <li
@@ -132,11 +148,13 @@ class Task extends Component {
         data-succeeded={succeeded}
         data-selected={(expanded && !selectedStepId) || undefined}
       >
-        <a
+        <span
           className="tkn--task-link"
-          href="#"
+          // href="#"
+          tabIndex={0}
           title={retryName || displayName}
           onClick={this.handleTaskSelected}
+          onKeyUp={e => e.key === 'Enter' && this.handleTaskSelected(e)}
         >
           <StatusIcon
             DefaultIcon={DefaultIcon}
@@ -144,11 +162,12 @@ class Task extends Component {
             reason={reason}
             status={succeeded}
           />
-          {(!expanded || !taskRun.status?.retriesStatus) && <span className="tkn--task-link--name">{retryName || displayName}</span>}
+          {(!expanded || !taskRun.status?.retriesStatus || !useDropdown) && <span className="tkn--task-link--name">{retryName || displayName}</span>}
           {/*
-            TODO: [AG] dropdown instead of name when expanded?
+            TODO: [AG] address a11y / structure issues - dropdown in anchor not valid
+            TODO: [AG] address usability issues - when currently viewing step, not easy to select taskrun without opening dropdown, need to click before / after it instead…
           */}
-          {expanded && taskRun.status?.retriesStatus ? (
+          {expanded && taskRun.status?.retriesStatus && useDropdown ? (
             <Dropdown
               disabled={!expanded}
               hideLabel
@@ -167,9 +186,8 @@ class Task extends Component {
                 { pipelineTaskName: displayName, retryNumber: taskRun.status.retriesStatus.length }
               ) }])}
               itemToString={item => (item ? item.text : '')}
-              label="Retries"
+              label="Retries" // TODO: [AG]
               onChange={({ selectedItem }) => {
-                console.log('Task onChange retry', { selectedItem });
                 onRetryChange(selectedItem.id);
               }}            
               selectedItem={{ id: selectedRetry ?? '', text: intl.formatMessage(
@@ -185,8 +203,74 @@ class Task extends Component {
               type="inline"
             />
           ) : null}
+          {expanded && taskRun.status?.retriesStatus && !useDropdown ? (
+            <OverflowMenu
+              ariaLabel="View retries" // TODO: [AG] extract
+              // className={`tkn--actions-dropdown${
+              //   isButton ? ' tkn--actions-dropdown--button' : ''
+              // }`}
+              flipped
+              iconDescription="View retries" // TODO: [AG] extract (duplicate above)
+              selectorPrimaryFocus="button:not([disabled])"
+              title="View retries" // TODO: [AG] extract (duplicate above)
+              // renderIcon={
+              //   isButton
+              //     ? iconProps => (
+              //         <span
+              //           {...iconProps}
+              //           className="bx--btn bx--btn--md bx--btn--tertiary"
+              //         >
+              //           {title}
+              //           <CaretDown16 className="bx--btn__icon" />
+              //         </span>
+              //       )
+              //     : undefined
+              // }
+            >
+              {
+                taskRun.status.retriesStatus.map((retryStatus, index) => {
+                  if (index === 0) {
+                    return {
+                      id: index,
+                      text: intl.formatMessage(
+                        {
+                          id: 'dashboard.pipelineRun.retries.viewFirstAttempt',
+                          defaultMessage: 'View first attempt'
+                        }
+                      )
+                    };
+                  }
+                  return {
+                    id: index,
+                    text: intl.formatMessage(
+                      {
+                        id: 'dashboard.pipelineRun.retries.viewRetry',
+                        defaultMessage: 'View retry {retryNumber, number}'
+                      },
+                      { retryNumber: index }
+                    )
+                  };
+                }).concat([{ id: '', text: intl.formatMessage(
+                  {
+                    id: 'dashboard.pipelineRun.retries.viewLatestRetry',
+                    defaultMessage: 'View latest retry'
+                  }
+                ) }]).map(item => {
+                  return (
+                    <OverflowMenuItem
+                      disabled={`${item.id}` === selectedRetry}
+                      itemText={item.text}
+                      key={item.text}
+                      onClick={() => onRetryChange(item.id)}
+                      requireTitle
+                    />
+                  );
+                })
+              }
+            </OverflowMenu>
+          ) : null}
           {expandIcon}
-        </a>
+        </span>
         {expanded && (
           <ol className="tkn--step-list">
             {this.getStepData().map(step => {

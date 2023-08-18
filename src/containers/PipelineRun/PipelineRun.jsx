@@ -72,7 +72,14 @@ export /* istanbul ignore next */ function PipelineRunContainer() {
 
   const queryParams = new URLSearchParams(location.search);
   const currentPipelineTaskName = queryParams.get(PIPELINE_TASK);
-  const currentRetry = queryParams.get(RETRY);
+
+  let currentRetry = queryParams.get(RETRY);
+  if (!currentRetry || !/^[0-9]+$/.test(currentRetry)) {
+    // if retry param is specified it should contain a positive integer (or 0) only
+    // otherwise we'll default to the latest attempt
+    currentRetry = '';
+  }
+
   const currentSelectedStepId = queryParams.get(STEP);
   const view = queryParams.get(VIEW);
 
@@ -144,7 +151,7 @@ export /* istanbul ignore next */ function PipelineRunContainer() {
     tasks
   });
 
-  function getSelectedTaskRun({ selectedRetry, selectedTaskId} ) {
+  function getSelectedTaskRun({ selectedRetry, selectedTaskId }) {
     const taskRun = taskRuns.find(
       ({ metadata }) =>
         metadata.labels?.[labelConstants.PIPELINE_TASK] === selectedTaskId
@@ -461,7 +468,8 @@ export /* istanbul ignore next */ function PipelineRunContainer() {
 
   const selectedTaskId = currentPipelineTaskName;
 
-  const { podName } = getSelectedTaskRun({ selectedRetry: currentRetry, selectedTaskId }) || {};
+  const { podName } =
+    getSelectedTaskRun({ selectedRetry: currentRetry, selectedTaskId }) || {};
   let { data: pod } = usePod(
     { name: podName, namespace },
     { enabled: !!podName && view === 'pod' }
@@ -557,7 +565,9 @@ export /* istanbul ignore next */ function PipelineRunContainer() {
           } else {
             queryParams.delete(RETRY);
           }
-          const browserURL = location.pathname.concat(`?${queryParams.toString()}`);
+          const browserURL = location.pathname.concat(
+            `?${queryParams.toString()}`
+          );
           navigate(browserURL);
         }}
         onViewChange={getViewChangeHandler({ location, navigate })}
