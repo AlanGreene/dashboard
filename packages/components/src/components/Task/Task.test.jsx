@@ -19,7 +19,8 @@ import { render } from '../../utils/test';
 const props = {
   displayName: 'A Task',
   id: 'fake_task_id',
-  onSelect: () => {}
+  onSelect: () => {},
+  taskRun: {}
 };
 
 describe('Task', () => {
