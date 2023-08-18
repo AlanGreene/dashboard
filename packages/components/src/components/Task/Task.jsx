@@ -209,9 +209,12 @@ class Task extends Component {
               // className={`tkn--actions-dropdown${
               //   isButton ? ' tkn--actions-dropdown--button' : ''
               // }`}
-              flipped
+              // direction="top"
+              // flipped
               iconDescription="View retries" // TODO: [AG] extract (duplicate above)
+              menuOptionsClass='tkn--task--retries-menu-options'
               selectorPrimaryFocus="button:not([disabled])"
+              size="sm"
               title="View retries" // TODO: [AG] extract (duplicate above)
               // renderIcon={
               //   isButton
@@ -255,17 +258,16 @@ class Task extends Component {
                     id: 'dashboard.pipelineRun.retries.viewLatestRetry',
                     defaultMessage: 'View latest retry'
                   }
-                ) }]).map(item => {
-                  return (
-                    <OverflowMenuItem
-                      disabled={`${item.id}` === selectedRetry}
-                      itemText={item.text}
-                      key={item.text}
-                      onClick={() => onRetryChange(item.id)}
-                      requireTitle
-                    />
-                  );
-                })
+                ) }]).map(item =>
+                  <OverflowMenuItem
+                    disabled={`${item.id}` === selectedRetry}
+                    itemText={item.text}
+                    key={item.text}
+                    onClick={() => onRetryChange(item.id)}
+                    requireTitle
+                    wrapperClassName='tkn--task--retries-menu-option'
+                  />
+                )
               }
             </OverflowMenu>
           ) : null}

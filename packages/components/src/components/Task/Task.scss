@@ -58,6 +58,11 @@ limitations under the License.
     > .tkn--task--expand-icon {
       flex-shrink: 0;
     }
+
+    > .bx--overflow-menu {
+      flex-shrink: 0;
+      margin-right: 10px;
+    }
   }
 
   &[data-selected] > .tkn--task-link {
@@ -94,5 +99,14 @@ limitations under the License.
 
   .tkn--step-list {
     background-color: $ui-01;
+  }
+}
+
+.tkn--task--retries-menu-options {
+  max-height: 350px;
+  overflow: auto;
+
+  .tkn--task--retries-menu-option {
+    flex-shrink: 0;
   }
 }
