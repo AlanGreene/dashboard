@@ -66,7 +66,10 @@ export default defineConfig(({ mode }) => ({
         ws: true
       }
     },
-    strictPort: mode !== 'test'
+    strictPort: mode !== 'test',
+    watch: {
+      ignored: ['**/packages/e2e/*', '**/storybook-static/*']
+    }
   },
   test: {
     clearMocks: true,
