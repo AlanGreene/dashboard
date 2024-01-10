@@ -1,5 +1,5 @@
 /*
-Copyright 2022-2023 The Tekton Authors
+Copyright 2022-2024 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -12,6 +12,8 @@ limitations under the License.
 */
 
 const { defineConfig } = require('cypress');
+const cypressSplit = require('cypress-split');
+const fixOn = require('cypress-on-fix');
 const { unlink } = require('node:fs/promises');
 
 const isCI = process.env.CI === 'true';
@@ -21,8 +23,11 @@ module.exports = defineConfig({
     baseUrl: 'http://localhost:8000',
     experimentalRunAllSpecs: true,
     experimentalStudio: true,
-    setupNodeEvents(on, config) {
+    setupNodeEvents(cypressOn, config) {
       config.env.carbonPrefix = 'bx'; // eslint-disable-line no-param-reassign
+
+      const on = fixOn(cypressOn);
+      cypressSplit(on, config);
 
       on('after:spec', (spec, results) => {
         if (isCI && results && results.video && results.stats.failures === 0) {

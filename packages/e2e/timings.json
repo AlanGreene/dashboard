@@ -1,0 +1,48 @@
+{
+  "durations": [
+    {
+      "spec": "cypress/e2e/common/about.cy.js",
+      "duration": 1410
+    },
+    {
+      "spec": "cypress/e2e/common/extensions.cy.js",
+      "duration": 10961
+    },
+    {
+      "spec": "cypress/e2e/common/i18n.cy.js",
+      "duration": 1857
+    },
+    {
+      "spec": "cypress/e2e/common/pipelinerun.cy.js",
+      "duration": 15406
+    },
+    {
+      "spec": "cypress/e2e/common/read-permissions.cy.js",
+      "duration": 3845
+    },
+    {
+      "spec": "cypress/e2e/common/root.cy.js",
+      "duration": 1122
+    },
+    {
+      "spec": "cypress/e2e/import/import-resources.cy.js",
+      "duration": 26228
+    },
+    {
+      "spec": "cypress/e2e/run/pipelinerun-create.cy.js",
+      "duration": 46318
+    },
+    {
+      "spec": "cypress/e2e/run/pipelinerun-edit.cy.js",
+      "duration": 22053
+    },
+    {
+      "spec": "cypress/e2e/run/taskrun-create.cy.js",
+      "duration": 42320
+    },
+    {
+      "spec": "cypress/e2e/run/taskrun-edit.cy.js",
+      "duration": 19287
+    }
+  ]
+}

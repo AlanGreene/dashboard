@@ -14,10 +14,12 @@
   "private": true,
   "scripts": {
     "test": "cypress open --e2e --browser chrome",
-    "test:ci": "node -e \"console.log('process.arch:', process.arch)\" && cypress run"
+    "test:ci": "node -e \"console.log('process.arch:', process.arch)\" && cypress run --env split=4,splitIndex=0,splitFile=timings.json"
   },
   "devDependencies": {
-    "cypress": "^13.6.2"
+    "cypress": "^13.6.2",
+    "cypress-on-fix": "^1.0.2",
+    "cypress-split": "^1.18.1"
   },
   "engines": {
     "node": "^18.17.0",
