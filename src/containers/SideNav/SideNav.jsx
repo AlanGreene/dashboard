@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2023 The Tekton Authors
+Copyright 2019-2024 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -58,12 +58,13 @@ function SideNav({ expanded, showKubernetesResources = false }) {
     { disableWebSocket: true }
   );
 
-  function getMenuItemProps(to) {
+  function getMenuItemProps(to, state) {
     return {
       element: NavLink,
       isActive: !!matchPath(location.pathname, {
         path: to
       }),
+      state,
       to
     };
   }
@@ -198,7 +199,14 @@ function SideNav({ expanded, showKubernetesResources = false }) {
             })}
           >
             {extensions.map(
-              ({ apiGroup, apiVersion, displayName, name, namespaced }) => {
+              ({
+                apiGroup,
+                apiVersion,
+                disableResourceDetailsLinks,
+                displayName,
+                name,
+                namespaced
+              }) => {
                 const to = getPath(
                   urls.kubernetesResources.all({
                     group: apiGroup,
@@ -209,7 +217,9 @@ function SideNav({ expanded, showKubernetesResources = false }) {
                 );
                 return (
                   <SideNavMenuItem
-                    {...getMenuItemProps(to)}
+                    {...getMenuItemProps(to, {
+                      disableResourceDetailsLinks
+                    })}
                     key={name}
                     title={displayName}
                   >

@@ -14,7 +14,12 @@ limitations under the License.
 import React, { useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { hot } from 'react-hot-loader/root';
-import { Link, Redirect, HashRouter as Router, Switch } from 'react-router-dom';
+import {
+  Link,
+  Redirect,
+  BrowserRouter as Router,
+  Switch
+} from 'react-router-dom';
 import {
   CompatRoute,
   CompatRouter,
@@ -228,7 +233,7 @@ export function App({ lang }) {
       >
         {showLoadingState && <LoadingShell />}
         {!showLoadingState && (
-          <Router>
+          <Router basename="#">
             <CompatRouter>
               <>
                 <Routes>
