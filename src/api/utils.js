@@ -221,6 +221,8 @@ export function useWebSocket({ enabled, kind, resourceVersion, url }) {
         case 'MODIFIED':
           handleUpdated({ kind, payload, queryClient });
           break;
+        // TODO: 'ERROR': handle 410 status, invalidate cache, list+watch again
+        // https://github.com/kubernetes-client/javascript/blob/0d700c0b960bd507628e5c12908cecc74d6a0c1d/src/cache.ts#L217
         default:
       }
     }
