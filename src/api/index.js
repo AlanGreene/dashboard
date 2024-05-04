@@ -12,7 +12,6 @@ limitations under the License.
 */
 
 import { useQuery } from '@tanstack/react-query';
-import { labels as labelConstants } from '@tektoncd/dashboard-utils';
 import deepClone from 'lodash.clonedeep';
 
 import { useClusterTask } from './clusterTasks';
@@ -250,8 +249,8 @@ export function importResources({
   pipelineRun.apiVersion = `tekton.dev/${pipelinesAPIVersion}`;
   pipelineRun.metadata.name = `import-resources-${Date.now()}`;
   pipelineRun.metadata.labels = {
-    ...labels,
-    [labelConstants.DASHBOARD_IMPORT]: 'true'
+    ...pipelineRun.metadata.labels,
+    ...labels
   };
   pipelineRun.spec.params = [
     { name: 'method', value: method },
