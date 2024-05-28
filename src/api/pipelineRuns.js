@@ -18,7 +18,6 @@ import { deleteRequest, get, patch, post } from './comms';
 import {
   getQueryParams,
   getTektonAPI,
-  getTektonPipelinesAPIVersion,
   removeSystemLabels,
   useCollection,
   useResource
@@ -95,10 +94,8 @@ export function getPipelineRunPayload({
   timeoutsPipeline,
   timeoutsTasks
 }) {
-  const pipelinesAPIVersion = getTektonPipelinesAPIVersion();
-
   const payload = {
-    apiVersion: `tekton.dev/${pipelinesAPIVersion}`,
+    apiVersion: 'tekton.dev/v1',
     kind: 'PipelineRun',
     metadata: {
       name: pipelineRunName,
@@ -130,13 +127,9 @@ export function getPipelineRunPayload({
     };
   }
   if (serviceAccount) {
-    if (pipelinesAPIVersion === 'v1') {
-      payload.spec.taskRunTemplate = {
-        serviceAccountName: serviceAccount
-      };
-    } else {
-      payload.spec.serviceAccountName = serviceAccount;
-    }
+    payload.spec.taskRunTemplate = {
+      serviceAccountName: serviceAccount
+    };
   }
   if (timeoutsFinally || timeoutsPipeline || timeoutsTasks) {
     payload.spec.timeouts = {
@@ -184,8 +177,7 @@ export function generateNewPipelineRunPayload({ pipelineRun, rerun }) {
     pipelineRun.metadata;
 
   const payload = deepClone(pipelineRun);
-  payload.apiVersion =
-    payload.apiVersion || `tekton.dev/${getTektonPipelinesAPIVersion()}`;
+  payload.apiVersion = payload.apiVersion || 'tekton.dev/v1';
   payload.kind = payload.kind || 'PipelineRun';
 
   function getGenerateName() {

@@ -23,9 +23,7 @@ import {
 import { getTheme, setTheme } from '../../utils';
 import {
   isLogTimestampsEnabled,
-  isPipelinesV1ResourcesEnabled,
-  setLogTimestampsEnabled,
-  setPipelinesV1ResourcesEnabled
+  setLogTimestampsEnabled
 } from '../../api/utils';
 
 export function Settings() {
@@ -94,24 +92,6 @@ export function Settings() {
             defaultMessage: 'On'
           })}
           onToggle={checked => setLogTimestampsEnabled(checked)}
-        />
-
-        <Toggle
-          defaultToggled={isPipelinesV1ResourcesEnabled()}
-          id="tkn--pipelines-v1-resources-toggle"
-          labelText={intl.formatMessage({
-            id: 'dashboard.pipelines.v1Resources.label',
-            defaultMessage: 'Use Tekton Pipelines API version v1'
-          })}
-          labelA={intl.formatMessage({
-            id: 'dashboard.toggle.off',
-            defaultMessage: 'Off'
-          })}
-          labelB={intl.formatMessage({
-            id: 'dashboard.toggle.on',
-            defaultMessage: 'On'
-          })}
-          onToggle={checked => setPipelinesV1ResourcesEnabled(checked)}
         />
       </div>
     </div>

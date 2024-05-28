@@ -23,7 +23,6 @@ import {
   getKubeAPI,
   getQueryParams,
   getTektonAPI,
-  getTektonPipelinesAPIVersion,
   isLogTimestampsEnabled,
   useCollection,
   useResource
@@ -282,9 +281,8 @@ export function importResources({
   serviceAccount
 }) {
   const pipelineRun = deepClone(importResourcesPipelineRunTemplate);
-  const pipelinesAPIVersion = getTektonPipelinesAPIVersion();
 
-  pipelineRun.apiVersion = `tekton.dev/${pipelinesAPIVersion}`;
+  pipelineRun.apiVersion = 'tekton.dev/v1';
   pipelineRun.metadata.name = `import-resources-${Date.now()}`;
   pipelineRun.metadata.labels = {
     ...labels,
@@ -298,33 +296,12 @@ export function importResources({
     { name: 'target-namespace', value: namespace }
   ];
 
-  if (pipelinesAPIVersion === 'v1beta1') {
-    pipelineRun.spec.podTemplate = {
-      ...pipelineRun.spec.taskRunTemplate.podTemplate
-    };
-    delete pipelineRun.spec.taskRunTemplate.podTemplate;
-  }
-
   if (serviceAccount) {
-    if (pipelinesAPIVersion === 'v1') {
-      pipelineRun.spec.taskRunTemplate.serviceAccountName = serviceAccount;
-    } else {
-      pipelineRun.spec.taskRunSpecs = [
-        {
-          pipelineTaskName: 'fetch-repo',
-          taskServiceAccountName: serviceAccount
-        },
-        {
-          pipelineTaskName: 'import-resources',
-          taskServiceAccountName: serviceAccount
-        }
-      ];
-    }
+    pipelineRun.spec.taskRunTemplate.serviceAccountName = serviceAccount;
   }
 
   const uri = getTektonAPI('pipelineruns', {
-    namespace: importerNamespace,
-    version: pipelinesAPIVersion
+    namespace: importerNamespace
   });
   return post(uri, pipelineRun).then(({ body }) => body);
 }

@@ -48,19 +48,4 @@ describe('Settings', () => {
     fireEvent.click(getByLabelText(/show log timestamps/i));
     expect(APIUtils.setLogTimestampsEnabled).toHaveBeenCalledWith(false);
   });
-
-  it('should render the v1 API settings correctly', () => {
-    vi.spyOn(APIUtils, 'isPipelinesV1ResourcesEnabled').mockImplementation(
-      () => true
-    );
-    vi.spyOn(APIUtils, 'setPipelinesV1ResourcesEnabled');
-
-    const { getByLabelText, getByText } = render(<Settings />);
-
-    const apiVersionToggle = getByText(/api version v1/i);
-    expect(apiVersionToggle).toBeTruthy();
-    expect(within(apiVersionToggle).getByText('On')).toBeTruthy();
-    fireEvent.click(getByLabelText(/api version v1/i));
-    expect(APIUtils.setPipelinesV1ResourcesEnabled).toHaveBeenCalledWith(false);
-  });
 });

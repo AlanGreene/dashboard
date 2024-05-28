@@ -18,7 +18,6 @@ import { deleteRequest, get, patch, post } from './comms';
 import {
   getQueryParams,
   getTektonAPI,
-  getTektonPipelinesAPIVersion,
   removeSystemAnnotations,
   removeSystemLabels,
   useCollection,
@@ -90,7 +89,7 @@ export function getTaskRunPayload({
   timeout
 }) {
   const payload = {
-    apiVersion: `tekton.dev/${getTektonPipelinesAPIVersion()}`,
+    apiVersion: 'tekton.dev/v1',
     kind: 'TaskRun',
     metadata: {
       name: taskRunName,
@@ -161,8 +160,7 @@ export function generateNewTaskRunPayload({ taskRun, rerun }) {
     taskRun.metadata;
 
   const payload = deepClone(taskRun);
-  payload.apiVersion =
-    payload.apiVersion || `tekton.dev/${getTektonPipelinesAPIVersion()}`;
+  payload.apiVersion = payload.apiVersion || 'tekton.dev/v1';
   payload.kind = payload.kind || 'TaskRun';
 
   function getGenerateName() {

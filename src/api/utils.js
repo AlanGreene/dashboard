@@ -76,18 +76,6 @@ export function getQueryParams({
   return '';
 }
 
-export function isPipelinesV1ResourcesEnabled() {
-  return localStorage.getItem('tkn-pipelines-v1-resources') !== 'false';
-}
-
-export function setPipelinesV1ResourcesEnabled(enabled) {
-  localStorage.setItem('tkn-pipelines-v1-resources', enabled);
-}
-
-export function getTektonPipelinesAPIVersion() {
-  return isPipelinesV1ResourcesEnabled() ? 'v1' : 'v1beta1';
-}
-
 // TODO: remove this and replace usage with getKubeAPI directly
 export function getTektonAPI(
   kind,
@@ -96,7 +84,7 @@ export function getTektonAPI(
     isWebSocket,
     name = '',
     namespace,
-    version = getTektonPipelinesAPIVersion()
+    version = 'v1'
   } = {},
   queryParams
 ) {
