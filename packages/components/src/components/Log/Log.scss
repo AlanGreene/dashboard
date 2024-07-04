@@ -11,12 +11,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+@use '@carbon/react/scss/config';
+
+// TODO: carbon11 - convert to Carbon 11 mixins and tokens
+
 pre.tkn--log {
   position: relative;
   padding-block-start: 2rem;
   padding-block-end: 1.3rem;
   padding-inline: 1.6rem;
-  @include carbon--font-family('mono');
+  // @include font-family('mono');
   font-size: 0.75rem;
   @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
     font-size: 0.6875rem;
@@ -24,22 +28,22 @@ pre.tkn--log {
 
   line-height: 0.95rem; // Update the react-window List itemSize if changing this
   overflow: hidden;
-  background-color: $ui-background;
-  color: $text-01;
+  // background-color: $ui-background;
+  // color: $text-01;
 
   word-break: normal;
   word-wrap: normal;
 
-  .#{$prefix}--skeleton__text {
-    background-color: $skeleton-01;
+  .#{config.$prefix}--skeleton__text {
+    // background-color: $skeleton-01;
 
     &::before {
-      background-color: $skeleton-02;
+      // background-color: $skeleton-02;
     }
   }
 
   a {
-    color: $link-01;
+    // color: $link-01;
   }
 
   code {
@@ -47,7 +51,7 @@ pre.tkn--log {
     overflow-wrap: normal;
   }
 
-  .#{$prefix}--btn-set {
+  .#{config.$prefix}--btn-set {
     position: absolute;
     inset-block-start: 0;
     inset-inline-end: 0;
@@ -79,13 +83,13 @@ pre.tkn--log {
     inset-block-end: var(--tkn-scroll-button-bottom);
   }
 
-  .#{$prefix}--copy-btn {
+  .#{config.$prefix}--copy-btn {
     inline-size: 2rem;
     block-size: 2rem;
-    background-color: $ui-background;
+    // background-color: $ui-background;
 
     &:hover {
-      background-color: $hover-ui;
+      // background-color: $hover-ui;
     }
 
     &:focus {
@@ -93,7 +97,7 @@ pre.tkn--log {
     }
 
     svg {
-      fill: $icon-01;
+      // fill: $icon-01;
     }
   }
 
@@ -102,10 +106,10 @@ pre.tkn--log {
     font-weight: bold;
 
     &[data-status='Completed'] {
-      color: $support-02;
+      // color: $support-02;
     }
     &[data-status='Error'] {
-      color: $support-01;
+      // color: $support-01;
     }
   }
 

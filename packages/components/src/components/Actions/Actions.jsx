@@ -13,12 +13,8 @@ limitations under the License.
 
 import { Component } from 'react';
 import { injectIntl } from 'react-intl';
-import {
-  Button,
-  OverflowMenu,
-  OverflowMenuItem
-} from 'carbon-components-react';
-import { CaretDown16 } from '@carbon/icons-react';
+import { Button, OverflowMenu, OverflowMenuItem } from '@carbon/react';
+import { CaretDown } from '@carbon/react/icons';
 import { getCarbonPrefix } from '@tektoncd/dashboard-utils';
 
 import Modal from '../Modal';
@@ -115,7 +111,7 @@ class Actions extends Component {
                     className={`${carbonPrefix}--btn ${carbonPrefix}--btn--md ${carbonPrefix}--btn--tertiary`}
                   >
                     {title}
-                    <CaretDown16 className={`${carbonPrefix}--btn__icon`} />
+                    <CaretDown className={`${carbonPrefix}--btn__icon`} />
                   </span>
                 )
               : undefined

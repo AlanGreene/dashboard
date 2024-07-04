@@ -12,12 +12,7 @@ limitations under the License.
 */
 /* istanbul ignore file */
 import { useIntl } from 'react-intl';
-import {
-  Download16,
-  Launch16,
-  Maximize16,
-  Minimize16
-} from '@carbon/icons-react';
+import { Download, Launch, Maximize, Minimize } from '@carbon/react/icons';
 import { getCarbonPrefix } from '@tektoncd/dashboard-utils';
 
 const carbonPrefix = getCarbonPrefix();
@@ -33,23 +28,23 @@ const LogsToolbar = ({ isMaximized, name, toggleMaximized, url }) => {
           type="button"
         >
           {isMaximized ? (
-            <Minimize16>
+            <Minimize>
               <title>
                 {intl.formatMessage({
                   id: 'dashboard.logs.restore',
                   defaultMessage: 'Return to default'
                 })}
               </title>
-            </Minimize16>
+            </Minimize>
           ) : (
-            <Maximize16>
+            <Maximize>
               <title>
                 {intl.formatMessage({
                   id: 'dashboard.logs.maximize',
                   defaultMessage: 'Maximize'
                 })}
               </title>
-            </Maximize16>
+            </Maximize>
           )}
         </button>
       ) : null}
@@ -59,24 +54,24 @@ const LogsToolbar = ({ isMaximized, name, toggleMaximized, url }) => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Launch16>
+        <Launch>
           <title>
             {intl.formatMessage({
               id: 'dashboard.logs.launchButtonTooltip',
               defaultMessage: 'Open logs in a new window'
             })}
           </title>
-        </Launch16>
+        </Launch>
       </a>
       <a className={`${carbonPrefix}--copy-btn`} download={name} href={url}>
-        <Download16>
+        <Download>
           <title>
             {intl.formatMessage({
               id: 'dashboard.logs.downloadButtonTooltip',
               defaultMessage: 'Download logs'
             })}
           </title>
-        </Download16>
+        </Download>
       </a>
     </div>
   );

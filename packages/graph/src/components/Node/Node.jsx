@@ -19,8 +19,8 @@ import CardNode, {
   CardNodeTitle
   // CardNodeSubtitle
 } from '@carbon/charts-react/diagrams/CardNode';
-import { Tooltip } from 'carbon-components-react';
-// import { ChevronDown16 } from '@carbon/icons-react';
+import { Tooltip } from '@carbon/react';
+// import { ChevronDown } from '@carbon/react/icons';
 
 import StatusIcon from '../StatusIcon';
 
@@ -83,7 +83,7 @@ export default function Node({
               {/* {expanded && <CardNodeLabel>Label</CardNodeLabel>} */}
             </CardNodeColumn>
             {/* <CardNodeColumn farsideColumn>
-              <ChevronDown16 />
+              <ChevronDown size={16} />
             </CardNodeColumn> */}
           </CardNode>
         )}

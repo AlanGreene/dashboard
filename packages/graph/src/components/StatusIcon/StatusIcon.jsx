@@ -12,18 +12,18 @@ limitations under the License.
 */
 
 import {
-  Misuse16 as FailedIcon,
-  Branch16 as GitIcon,
-  PendingFilled16 as PendingIcon,
-  InProgress16 as RunningIcon,
-  CheckmarkFilled16 as SuccessIcon,
-  CheckmarkFilledWarning16 as SuccessWarningIcon,
-  Timer16 as TimerIcon,
-  Flash16 as TriggerIcon,
-  User16 as UserIcon,
-  WarningAltFilled16 as WarningIcon,
-  Webhook16 as WebhookIcon
-} from '@carbon/icons-react';
+  Misuse as FailedIcon,
+  Branch as GitIcon,
+  PendingFilled as PendingIcon,
+  InProgress as RunningIcon,
+  CheckmarkFilled as SuccessIcon,
+  CheckmarkFilledWarning as SuccessWarningIcon,
+  Timer as TimerIcon,
+  Flash as TriggerIcon,
+  User as UserIcon,
+  WarningAltFilled as WarningIcon,
+  Webhook as WebhookIcon
+} from '@carbon/react/icons';
 
 // TODO: need 'skipped' status (e.g. when expressions)
 const statusIcons = {

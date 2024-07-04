@@ -48,6 +48,8 @@ const StepDetails = ({
     selectedTabIndex = 0;
   }
 
+  // TODO: carbon11 - Tabs composition changed
+
   return (
     <div className="tkn--step-details">
       <DetailsHeader

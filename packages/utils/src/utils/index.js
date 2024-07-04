@@ -11,7 +11,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { settings } from 'carbon-components';
+// TODO: carbon11 - what's the Carbon 11 way to get this?
+// import { settings } from 'carbon-components';
 
 import { labels as labelConstants } from './constants';
 import { getStatus } from './status';
@@ -550,5 +551,6 @@ export function taskRunHasWarning(taskRun) {
 }
 
 export function getCarbonPrefix() {
-  return settings.prefix;
+  return 'bx';
+  // return settings.prefix;
 }

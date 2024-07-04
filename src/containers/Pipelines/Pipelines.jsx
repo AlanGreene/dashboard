@@ -15,13 +15,13 @@ limitations under the License.
 import { useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import {
-  TrashCan16 as DeleteIcon,
-  PlayOutline16 as RunIcon,
-  Playlist16 as RunsIcon
-} from '@carbon/icons-react';
+  TrashCan as DeleteIcon,
+  PlayOutline as RunIcon,
+  Playlist as RunsIcon
+} from '@carbon/react/icons';
 import { useIntl } from 'react-intl';
 import keyBy from 'lodash.keyby';
-import { Button } from 'carbon-components-react';
+import { Button } from '@carbon/react';
 import {
   ALL_NAMESPACES,
   getFilters,
@@ -268,7 +268,7 @@ export function Pipelines() {
         <>
           <Table
             batchActionButtons={batchActionButtons}
-            className="tkn--table--inline-actions"
+            className="tkn--table--inline-actions" // TODO: carbon11 - className now applied to outermost element
             headers={initialHeaders}
             rows={getFormattedResources({
               intl,

@@ -11,32 +11,36 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+@use '@carbon/react/scss/config';
+
+// TODO: carbon11 - convert to Carbon 11 mixins and tokens
+
 .tkn--table {
   // add space between adjacent tables
   ~ .tkn--table {
-    margin-block-start: $spacing-05;
+    // margin-block-start: $spacing-05;
   }
 
-  .#{$prefix}--table-toolbar {
+  .#{config.$prefix}--table-toolbar {
     background: transparent;
   }
 
-  .#{$prefix}--data-table.#{$prefix}--data-table--short td.#{$prefix}--table-expand {
+  .#{config.$prefix}--data-table.#{config.$prefix}--data-table--short td.#{config.$prefix}--table-expand {
     block-size: 2rem;
   }
 
-  .#{$prefix}--data-table-header {
+  .#{config.$prefix}--data-table-header {
     padding-inline-start: 0;
-    padding-block-end: $spacing-03;
+    // padding-block-end: $spacing-03;
   }
 
-  .#{$prefix}--data-table-container {
+  .#{config.$prefix}--data-table-container {
     margin-block-start: 0;
     inline-size: 100%;
   }
 
-  .#{$prefix}--data-table td {
-    &:not(.cell-actions):not(.#{$prefix}--table-column-checkbox) {
+  .#{config.$prefix}--data-table td {
+    &:not(.cell-actions):not(.#{config.$prefix}--table-column-checkbox) {
       max-inline-size: 10vi;
       vertical-align: middle;
 
@@ -48,13 +52,13 @@ limitations under the License.
       }
     }
 
-    &.#{$prefix}--table-column-checkbox {
+    &.#{config.$prefix}--table-column-checkbox {
       padding-block-start: 0;
       padding-block-end: 0;
       vertical-align: middle;
 
-      .#{$prefix}--checkbox-label {
-        padding-inline-start: $spacing-05;
+      .#{config.$prefix}--checkbox-label {
+        // padding-inline-start: $spacing-05;
       }
     }
 
@@ -80,10 +84,10 @@ limitations under the License.
     }
 
     &.cell-actions {
-      .tkn--danger.#{$prefix}--btn--ghost.#{$prefix}--btn--icon-only {
+      .tkn--danger.#{config.$prefix}--btn--ghost.#{config.$prefix}--btn--icon-only {
         &:focus, &:hover {
           svg, path {
-            fill: $danger;
+            // fill: $danger;
           }
         }
       }
@@ -98,7 +102,7 @@ limitations under the License.
   }
 
   &.tkn--table--inline-actions {
-    .#{$prefix}--data-table td {
+    .#{config.$prefix}--data-table td {
       &.cell-actions {
         text-align: end;
         inline-size: 8rem;
@@ -107,77 +111,77 @@ limitations under the License.
   }
 
   &.tkn--table-with-filters {
-    .#{$prefix}--data-table-container {
+    .#{config.$prefix}--data-table-container {
       overflow: visible;
     }
 
-    .#{$prefix}--table-toolbar {
+    .#{config.$prefix}--table-toolbar {
       overflow: visible;
       flex-direction: row;
 
-      .#{$prefix}--multi-select__wrapper {
-        .#{$prefix}--combo-box {
+      .#{config.$prefix}--multi-select__wrapper {
+        .#{config.$prefix}--combo-box {
           border: none;
         }
 
-        .#{$prefix}--text-input {
-          background-color: $ui-01;
+        .#{config.$prefix}--text-input {
+          // background-color: $ui-01;
           border: none;
         }
       }
 
-      .#{$prefix}--multi-select__wrapper,
-      .#{$prefix}--dropdown__wrapper {
-        background-color: $ui-01;
+      .#{config.$prefix}--multi-select__wrapper,
+      .#{config.$prefix}--dropdown__wrapper {
+        // background-color: $ui-01;
         display: flex;
         align-items: center;
-        border-inline-end: 1px solid $ui-03;
+        // border-inline-end: 1px solid $ui-03;
         margin-inline-end: 0;
-        padding-inline-end: $spacing-03;
+        // padding-inline-end: $spacing-03;
         white-space: nowrap;
 
-        .#{$prefix}--label {
-          padding-inline-start: $spacing-05;
+        .#{config.$prefix}--label {
+          // padding-inline-start: $spacing-05;
         }
 
-        .#{$prefix}--text-input {
+        .#{config.$prefix}--text-input {
           padding-block: 0;
-          padding-inline-start: $spacing-03;
-          padding-inline-end: $spacing-07;
+          // padding-inline-start: $spacing-03;
+          // padding-inline-end: $spacing-07;
         }
 
-        .#{$prefix}--list-box__menu-icon {
-          inset-inline-end: $spacing-03;
+        .#{config.$prefix}--list-box__menu-icon {
+          // inset-inline-end: $spacing-03;
         }
 
-        .#{$prefix}--dropdown,
-        .#{$prefix}--multi-select {
+        .#{config.$prefix}--dropdown,
+        .#{config.$prefix}--multi-select {
           inline-size: 10rem;
         }
 
-        .#{$prefix}--multi-select--inline,
-        .#{$prefix}--list-box--inline {
-          background-color: $ui-01;
+        .#{config.$prefix}--multi-select--inline,
+        .#{config.$prefix}--list-box--inline {
+          // background-color: $ui-01;
           block-size: 100%;
           max-block-size: 3rem;
         }
 
-        .#{$prefix}--list-box__field {
+        .#{config.$prefix}--list-box__field {
           block-size: 100%;
 
-          input.#{$prefix}--text-input {
+          input.#{config.$prefix}--text-input {
             &:placeholder-shown {
               text-overflow: ellipsis;
             }
           }
         }
 
-        &.#{$prefix}--dropdown__wrapper--inline .#{$prefix}--label {
+        &.#{config.$prefix}--dropdown__wrapper--inline .#{config.$prefix}--label {
           padding-inline-start: 1rem;
         }
 
         @media (max-width: 672px) {
-          &.#{$prefix}--list-box__wrapper--inline .#{$prefix}--label {
+          &.#{config.$prefix}--list-box__wrapper--inline .#{config.$prefix}--label {
             display: none;
           }
         }
@@ -189,16 +193,16 @@ limitations under the License.
     padding-block-start: 14px;
     padding-block-end: 14px;
 
-    &:not(.cell-actions):not(.#{$prefix}--table-column-checkbox) > div {
+    &:not(.cell-actions):not(.#{config.$prefix}--table-column-checkbox) > div {
       display: flex;
       flex-direction: column;
     }
 
     &.cell-time, .tkn--table--sub {
-      @include type-style('helper-text-01');
+      // @include type-style('helper-text-01');
     }
 
-    &.#{$prefix}--table-column-checkbox {
+    &.#{config.$prefix}--table-column-checkbox {
       padding-block-start: 12px;
       vertical-align: baseline;
     }
@@ -216,7 +220,7 @@ limitations under the License.
     }
   }
 
-  a.#{$prefix}--link {
+  a.#{config.$prefix}--link {
     display: inline;
   }
 }

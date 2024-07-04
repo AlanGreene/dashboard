@@ -13,7 +13,7 @@ limitations under the License.
 
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
-import { InlineNotification, SkeletonText, Tag } from 'carbon-components-react';
+import { InlineNotification, SkeletonText, Tag } from '@carbon/react';
 import { formatLabels, getErrorMessage } from '@tektoncd/dashboard-utils';
 
 import FormattedDate from '../FormattedDate';
@@ -69,6 +69,7 @@ const ResourceDetails = ({
     delete resource.metadata.managedFields;
   }
 
+  // TODO: carbon11 - Tabs composition changed
   return (
     <div className="tkn--resourcedetails">
       <div className="tkn--resourcedetails--header">

@@ -20,6 +20,8 @@ export default {
   title: 'Tabs'
 };
 
+// TODO: carbon11 - Tabs composition changed
+
 export const Default = () => (
   <Tabs>
     <Tab label="label for tab1">content of tab 1</Tab>

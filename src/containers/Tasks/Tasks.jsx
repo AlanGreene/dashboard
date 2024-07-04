@@ -16,7 +16,7 @@ import { useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import keyBy from 'lodash.keyby';
-import { Button } from 'carbon-components-react';
+import { Button } from '@carbon/react';
 import {
   ALL_NAMESPACES,
   getFilters,
@@ -30,10 +30,10 @@ import {
   Table
 } from '@tektoncd/dashboard-components';
 import {
-  TrashCan16 as DeleteIcon,
-  PlayOutline16 as RunIcon,
-  Playlist16 as RunsIcon
-} from '@carbon/icons-react';
+  TrashCan as DeleteIcon,
+  PlayOutline as RunIcon,
+  Playlist as RunsIcon
+} from '@carbon/react/icons';
 
 import ListPageLayout from '../ListPageLayout';
 import {
@@ -266,7 +266,7 @@ function Tasks() {
         <>
           <Table
             batchActionButtons={batchActionButtons}
-            className="tkn--table--inline-actions"
+            className="tkn--table--inline-actions" // TODO: carbon11 - className now applied to outermost element
             headers={initialHeaders}
             rows={getFormattedResources({
               intl,

@@ -11,7 +11,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-@import './carbon';
+// TODO: carbon11 - convert to Carbon 11 mixins and tokens
+
+@use './carbon';
+@use '@carbon/react/scss/config';
 
 @import './grid.scss';
 @import './Definitions.scss';
@@ -69,58 +72,58 @@ body {
 }
 
 a {
-  color: $link-01;
+  // color: $link-01;
 }
 
-.#{$prefix}--btn.link-btn.#{$prefix}--btn--ghost {
+.#{config.$prefix}--btn.link-btn.#{config.$prefix}--btn--ghost {
   text-decoration: none;
 }
 
-.#{$prefix}--header ~ {
-  .#{$prefix}--content {
+.#{config.$prefix}--header ~ {
+  .#{config.$prefix}--content {
     position: relative;
-    background-color: $ui-background;
+    // background-color: $ui-background;
     transform: none;
-    padding-block-start: $spacing-06;
+    // padding-block-start: $spacing-06;
 
     h1 {
-      @include type-style('productive-heading-04');
-      margin-block-end: $spacing-06;
+      // @include type-style('productive-heading-04');
+      // margin-block-end: $spacing-06;
     }
 
     h2 {
-      @include type-style('heading-01');
+      // @include type-style('heading-01');
     }
   }
 }
 
-.#{$prefix}--header:has(.#{$prefix}--side-nav--expanded) ~ .#{$prefix}--content {
-  margin-inline-start: mini-units(32);
+.#{config.$prefix}--header:has(.#{config.$prefix}--side-nav--expanded) ~ .#{config.$prefix}--content {
+  margin-inline-start: 16rem;
 }
 
-.#{$prefix}--modal-header,
-.#{$prefix}--modal-content {
+.#{config.$prefix}--modal-header,
+.#{config.$prefix}--modal-content {
   inline-size: 100%;
 }
 
-.#{$prefix}--modal-content,
-.#{$prefix}--modal-header {
+.#{config.$prefix}--modal-content,
+.#{config.$prefix}--modal-header {
   padding-inline-end: 1rem;
 }
 
-.#{$prefix}--modal-content {
-  margin-block-end: $spacing-07;
+.#{config.$prefix}--modal-content {
+  // margin-block-end: $spacing-07;
 }
 
-.#{$prefix}--data-table-container {
-  margin-block-start: $spacing-07;
+.#{config.$prefix}--data-table-container {
+  // margin-block-start: $spacing-07;
 }
 
-.#{$prefix}--table-header-label {
+.#{config.$prefix}--table-header-label {
   white-space: nowrap;
 }
 
-.#{$prefix}--list--unordered {
+.#{config.$prefix}--list--unordered {
   margin-block-start: 1rem;
 }
 
@@ -141,6 +144,6 @@ a {
   }
 }
 
-.#{$prefix}--overflow-menu-options:after {
+.#{config.$prefix}--overflow-menu-options:after {
   display: none;
 }

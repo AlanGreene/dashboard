@@ -10,9 +10,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-@import 'carbon-components/scss/globals/scss/helper-mixins';
 
-.tkn--data-table-skeleton.#{$prefix}--data-table.#{$prefix}--skeleton {
+@use '@carbon/react/scss/config';
+
+// TODO: carbon11 - convert to Carbon 11 mixins and tokens
+
+// @import 'carbon-components/scss/globals/scss/helper-mixins';
+
+.tkn--data-table-skeleton.#{config.$prefix}--data-table.#{config.$prefix}--skeleton {
   th {
     vertical-align: middle;
 
@@ -31,7 +36,7 @@ limitations under the License.
 
   th span,
   td span {
-    @include skeleton;
+    // @include skeleton;
     inline-size: 75%;
     block-size: 1rem;
     display: block;
@@ -39,11 +44,11 @@ limitations under the License.
 
   tr:hover {
     td {
-      border-color: $ui-03;
+      // border-color: $ui-03;
       background: transparent;
       &:first-of-type,
       &:last-of-type {
-        border-color: $ui-03;
+        // border-color: $ui-03;
       }
     }
   }

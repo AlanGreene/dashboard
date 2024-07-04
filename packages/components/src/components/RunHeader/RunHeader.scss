@@ -11,12 +11,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-@import 'carbon-components/scss/globals/scss/typography';
+// TODO: carbon11 - convert to Carbon 11 mixins and tokens
+// @import 'carbon-components/scss/globals/scss/typography';
 
 header.tkn--pipeline-run-header {
-  @include type-style('body-short-01');
+  // @include type-style('body-short-01');
   line-height: 1;
-  background: $ui-01;
+  // background: $ui-01;
   margin-block-end: 2em;
   padding-block: 0.4em;
   padding-inline-start: 1.5em;
@@ -29,7 +30,7 @@ header.tkn--pipeline-run-header {
   }
 
   h1.tkn--run-header--heading {
-    @include type-style('productive-heading-04');
+    // @include type-style('productive-heading-04');
     display: flex;
     align-items: baseline;
     block-size: 3rem;
@@ -81,33 +82,33 @@ header.tkn--pipeline-run-header {
   // catch all for unknown states
   &:not([data-succeeded]) {
     .tkn--status-label {
-      color: $text-02;
+      // color: $text-02;
     }
   }
 
   &[data-succeeded='True'] {
     .tkn--status-label {
-      color: $support-02;
+      // color: $support-02;
     }
   }
 
   &[data-succeeded='False'],
   &[data-succeeded='Unknown'][data-reason='PipelineRunCouldntCancel'] {
     .tkn--status-label {
-      color: $support-01;
+      // color: $support-01;
     }
   }
 
   &[data-succeeded='Unknown'][data-reason='PipelineRunPending'] {
     .tkn--status-label {
-      color: $text-02;
+      // color: $text-02;
     }
   }
 
   &[data-succeeded='Unknown'][data-reason='Running'],
   &[data-succeeded='Unknown'][data-reason='PipelineRunStopping'] {
     .tkn--status-label {
-      color: $support-04;
+      // color: $support-04;
     }
   }
 }

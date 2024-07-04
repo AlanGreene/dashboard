@@ -11,38 +11,40 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// TODO: carbon11 - convert to Carbon 11 mixins and tokens
+
 .tkn--status-icon {
-  fill: $ui-04;
+  // fill: $ui-04;
   inline-size: 20px;
   block-size: 20px;
 
   &.tkn--status-icon--cancelled {
-    fill: $ui-04;
+    // fill: $ui-04;
   }
 
   &.tkn--status-icon--error {
-    fill: $support-01;
+    // fill: $support-01;
   }
 
   &.tkn--status-icon--running {
-    fill: $support-04;
+    // fill: $support-04;
   }
 
   &.tkn--status-icon--success {
-    fill: $support-02;
+    // fill: $support-02;
   }
 
   &.tkn--status-icon--warning {
     &.tkn--status-icon--type-normal {
-      fill: $support-02;
+      // fill: $support-02;
 
       path:nth-child(2) {
-        fill: $support-03;
+        // fill: $support-03;
       }
     }
 
     &.tkn--status-icon--type-inverse {
-      fill: $support-03;
+      // fill: $support-03;
 
       path:first-child {
         fill: black;

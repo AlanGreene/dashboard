@@ -11,23 +11,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// TODO: carbon11 - convert to Carbon 11 mixins and tokens
+
 .tkn--step {
   list-style-type: none;
 
   &:hover > .tkn--step-link,
   &:hover > .tkn--step-link:hover,
   &[data-selected] > .tkn--step-link:hover {
-    background-color: $hover-ui;
+    // background-color: $hover-ui;
     text-decoration: none;
   }
 
   &:hover > .tkn--step-link,
   > .tkn--step-link:hover {
-    border-inline-start-color: $hover-ui;
+    // border-inline-start-color: $hover-ui;
   }
 
   &[data-selected] > .tkn--step-link {
-    border-inline-start: 3px solid $interactive-04;
+    // border-inline-start: 3px solid $interactive-04;
   }
 
   > .tkn--step-link {
@@ -42,7 +44,7 @@ limitations under the License.
     font-size: 0.78rem;
     letter-spacing: 0.02rem;
     text-decoration: none;
-    border-inline-start: 3px solid $ui-01;
+    // border-inline-start: 3px solid $ui-01;
   }
 
   .tkn--status-icon {
@@ -52,7 +54,7 @@ limitations under the License.
   }
 
   .tkn--step-name {
-    color: $text-01;
+    // color: $text-01;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

@@ -11,6 +11,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+@use '@carbon/react/scss/config';
+
 .tkn--step-details {
   display: flex;
   flex-direction: column;
@@ -18,15 +20,15 @@ limitations under the License.
   align-items: stretch;
   overflow: hidden;
 
-  .#{$prefix}--content-switcher {
+  .#{config.$prefix}--content-switcher {
     margin-block-end: 1rem;
   }
 
   /*
     Allow columns in the params and results tables to grow to better fit their content
   */
-  .#{$prefix}--data-table td {
-    &:not(.cell-actions):not(.#{$prefix}--table-column-checkbox) {
+  .#{config.$prefix}--data-table td {
+    &:not(.cell-actions):not(.#{config.$prefix}--table-column-checkbox) {
       max-inline-size: none;
     }
   }

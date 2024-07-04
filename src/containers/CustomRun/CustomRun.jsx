@@ -15,7 +15,7 @@ limitations under the License.
 import { useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useIntl } from 'react-intl';
-import { UndefinedFilled20 as UndefinedIcon } from '@carbon/icons-react';
+import { UndefinedFilled as UndefinedIcon } from '@carbon/react/icons';
 import {
   Actions,
   FormattedDuration,
@@ -30,7 +30,7 @@ import {
   urls,
   useTitleSync
 } from '@tektoncd/dashboard-utils';
-import { InlineNotification } from 'carbon-components-react';
+import { InlineNotification } from '@carbon/react';
 
 import {
   deleteCustomRun,
@@ -75,7 +75,7 @@ function getRunStatusIcon(run) {
   const { reason, status } = getStatus(run);
   return (
     <StatusIcon
-      DefaultIcon={UndefinedIcon}
+      DefaultIcon={props => <UndefinedIcon size={20} {...props} />}
       isCustomTask
       reason={reason}
       status={status}
@@ -284,6 +284,7 @@ function CustomRun() {
     );
   }
 
+  // TODO: carbon11 - InlineNotification actions prop removed, use ActionableNotification instead
   return (
     <>
       {showNotification && (

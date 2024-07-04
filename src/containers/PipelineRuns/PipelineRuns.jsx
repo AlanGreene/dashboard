@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import keyBy from 'lodash.keyby';
-import { RadioTile, TileGroup } from 'carbon-components-react';
+import { RadioTile, TileGroup } from '@carbon/react';
 import {
   DeleteModal,
   PipelineRuns as PipelineRunsList,
@@ -37,7 +37,7 @@ import {
   urls,
   useTitleSync
 } from '@tektoncd/dashboard-utils';
-import { Add16 as Add, TrashCan32 as Delete } from '@carbon/icons-react';
+import { Add, TrashCan as Delete } from '@carbon/react/icons';
 
 import ListPageLayout from '../ListPageLayout';
 import { sortRunsByStartTime } from '../../utils';

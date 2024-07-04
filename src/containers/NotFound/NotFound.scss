@@ -11,6 +11,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// TODO: carbon11 - convert to Carbon 11 mixins and tokens
+
 .tkn--not-found {
   display: flex;
   flex-direction: column;
@@ -24,23 +26,23 @@ limitations under the License.
   }
 
   h1 {
-    @include type-style('productive-heading-05');
-    color: $text-01;
-    margin-block-start: $spacing-07;
-    margin-block-end: $spacing-05;
+    // @include type-style('productive-heading-05');
+    // color: $text-01;
+    // margin-block-start: $spacing-07;
+    // margin-block-end: $spacing-05;
   }
 
   p {
-    @include type-style('body-long-01');
-    color: $text-02;
+    // @include type-style('body-long-01');
+    // color: $text-02;
   }
 
   p + p {
-    margin-block-start: $spacing-05;
+    // margin-block-start: $spacing-05;
   }
 
   ul li {
-    margin-block-start: $spacing-03;
+    // margin-block-start: $spacing-03;
 
     &::before {
       content: '↳ ';
@@ -48,7 +50,7 @@ limitations under the License.
     }
 
     a {
-      @include type-style('body-short-02');
+      // @include type-style('body-short-02');
     }
   }
 }

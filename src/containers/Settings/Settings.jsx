@@ -13,12 +13,12 @@ limitations under the License.
 
 import { useIntl } from 'react-intl';
 import { useTitleSync } from '@tektoncd/dashboard-utils';
-import { RadioTile, TileGroup, Toggle } from 'carbon-components-react';
+import { RadioTile, TileGroup, Toggle } from '@carbon/react';
 import {
-  Asleep16 as DarkIcon,
-  Light16 as LightIcon,
-  Devices16 as SystemIcon
-} from '@carbon/icons-react';
+  Asleep as DarkIcon,
+  Light as LightIcon,
+  Devices as SystemIcon
+} from '@carbon/react/icons';
 
 import { getTheme, setTheme } from '../../utils';
 import {

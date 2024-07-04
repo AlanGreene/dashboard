@@ -11,6 +11,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+@use '@carbon/react/scss/config';
+
+// TODO: carbon11 - convert to Carbon 11 mixins and tokens
+
 .tkn--tasks {
   display: flex;
   flex-wrap: nowrap;
@@ -22,22 +26,22 @@ limitations under the License.
   }
 
   .tkn--step-details {
-    background-color: $ui-01;
+    // background-color: $ui-01;
     flex-grow: 1;
     padding-inline-start: 1rem;
   }
 
-  .#{$prefix}--data-table {
+  .#{config.$prefix}--data-table {
     td {
-      background-color: $ui-02;
-      border-block-start-color: $ui-02;
+      // background-color: $ui-02;
+      // border-block-start-color: $ui-02;
     }
     tr:hover td {
-      background-color: $hover-ui;
+      // background-color: $hover-ui;
     }
   }
 }
 
-.#{$prefix}--snippet--multi {
+.#{config.$prefix}--snippet--multi {
   overflow-x: auto
 }

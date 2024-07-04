@@ -17,7 +17,7 @@ import {
   AccordionItem,
   ListItem,
   UnorderedList
-} from 'carbon-components-react';
+} from '@carbon/react';
 import { getCarbonPrefix, urls } from '@tektoncd/dashboard-utils';
 
 import Link from '../Link';

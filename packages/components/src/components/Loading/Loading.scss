@@ -11,17 +11,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.#{$prefix}--loading-overlay.tkn--loading-overlay {
+@use '@carbon/react/scss/config';
+
+// TODO: carbon11 - convert to Carbon 11 mixins and tokens
+
+.#{config.$prefix}--loading-overlay.tkn--loading-overlay {
   inset-block-start: 3rem;
   flex-direction: column;
 
-  .#{$prefix}--loading {
+  .#{config.$prefix}--loading {
     margin-block-start: -3rem;
-    margin-block-end: $spacing-05;
+    // margin-block-end: $spacing-05;
   }
 
   .tkn--loading-text {
-    color: $text-01;
+    // color: $text-01;
     z-index: 10000; // need to put this in front of the overlay
   }
 }

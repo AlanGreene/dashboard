@@ -15,7 +15,7 @@ limitations under the License.
 import { Fragment, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { InlineNotification, SkeletonText } from 'carbon-components-react';
+import { InlineNotification, SkeletonText } from '@carbon/react';
 import {
   Actions,
   Log,
@@ -428,6 +428,7 @@ export function TaskRunContainer() {
     podDetails = (events || pod) && { events, resource: pod };
   }
 
+  // TODO: carbon11 - InlineNotification actions prop removed, use ActionableNotification instead
   return (
     <>
       <div id="tkn--maximized-logs-container" ref={maximizedLogsContainer} />

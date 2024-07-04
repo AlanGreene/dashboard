@@ -12,7 +12,7 @@ limitations under the License.
 */
 
 import { useIntl } from 'react-intl';
-import { ComboBox, DropdownSkeleton } from 'carbon-components-react';
+import { ComboBox, DropdownSkeleton } from '@carbon/react';
 import { getCarbonPrefix, getTranslateWithId } from '@tektoncd/dashboard-utils';
 
 const carbonPrefix = getCarbonPrefix();
@@ -72,7 +72,7 @@ const TooltipDropdown = ({
 
   return (
     <ComboBox
-      className={className}
+      className={className} // carbon11 - className now place on outermost element
       disabled={disabled}
       id={id}
       inline={inline}

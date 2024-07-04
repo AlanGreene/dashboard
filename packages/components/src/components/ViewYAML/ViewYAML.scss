@@ -11,9 +11,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.#{$prefix}--snippet--multi.tkn--view-yaml--dark {
-  background-color: $gray-90; // TODO: $inverse-02 - see Log.scss
-  color: $gray-10;            //       $inverse-01
+@use '@carbon/react/scss/config';
+@use '@carbon/react/scss/colors';
+
+.#{config.$prefix}--snippet--multi.tkn--view-yaml--dark {
+  background-color: colors.$gray-90; // TODO: $inverse-02 - see Log.scss
+  color: colors.$gray-10;            //       $inverse-01
 }
 
 .tkn--view-yaml--title {
@@ -49,7 +52,7 @@ pre.tkn--syntax-highlighter {
   flex-grow: 1;
 }
 
-.#{$prefix}--snippet--multi {
+.#{config.$prefix}--snippet--multi {
   max-inline-size: none;
 
   // Styles based on a11y-dark by @ericwbailey

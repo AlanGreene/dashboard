@@ -21,10 +21,10 @@ import {
   Form,
   InlineNotification,
   TextInput,
-  ToastNotification,
-  TooltipIcon
-} from 'carbon-components-react';
-import { Information16 } from '@carbon/icons-react';
+  ToastNotification
+  // TooltipIcon // TODO: carbon11 - find replacement
+} from '@carbon/react';
+import { Information } from '@carbon/react/icons';
 import { Link } from 'react-router-dom';
 import {
   ALL_NAMESPACES,
@@ -59,9 +59,9 @@ function isValidGitURL(url) {
 const initialMethod = 'apply';
 
 const HelpIcon = ({ title }) => (
-  <TooltipIcon direction="top" align="start" tooltipText={title}>
-    <Information16 />
-  </TooltipIcon>
+  // <TooltipIcon direction="top" align="start" tooltipText={title}>
+    <Information />
+  // </TooltipIcon>
 );
 
 export function ImportResources() {
@@ -410,6 +410,7 @@ export function ImportResources() {
           </AccordionItem>
         </Accordion>
         {submitSuccess && (
+          // TODO: carbon11 - no longer accepts interactive content, see ActionableNotification instead
           <ToastNotification
             caption={<Link to={logsURL}>View status of this run</Link>}
             kind="success"

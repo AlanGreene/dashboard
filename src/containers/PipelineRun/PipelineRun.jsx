@@ -25,11 +25,7 @@ import {
   urls,
   useTitleSync
 } from '@tektoncd/dashboard-utils';
-import {
-  InlineNotification,
-  RadioTile,
-  TileGroup
-} from 'carbon-components-react';
+import { InlineNotification, RadioTile, TileGroup } from '@carbon/react';
 
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useIntl } from 'react-intl';
@@ -501,6 +497,7 @@ export /* istanbul ignore next */ function PipelineRunContainer() {
 
   const runActions = pipelineRunActions();
 
+  // TODO: carbon11 - InlineNotification actions prop removed, use ActionableNotification instead
   return (
     <>
       <div id="tkn--maximized-logs-container" ref={maximizedLogsContainer} />

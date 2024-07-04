@@ -12,8 +12,8 @@ limitations under the License.
 */
 
 import { useIntl } from 'react-intl';
-import { Button, TextInput } from 'carbon-components-react';
-import { AddAlt24 as Add, SubtractAlt16 as Remove } from '@carbon/icons-react';
+import { Button, TextInput } from '@carbon/react';
+import { AddAlt as Add, SubtractAlt as Remove } from '@carbon/react/icons';
 
 const KeyValueList = ({
   invalidFields,
@@ -76,7 +76,7 @@ const KeyValueList = ({
               kind="ghost"
               onClick={() => onRemove(index)}
               renderIcon={Remove}
-              size="field"
+              size="md"
               tooltipAlignment="center"
               tooltipPosition="bottom"
             />
@@ -95,7 +95,7 @@ const KeyValueList = ({
         iconDescription={addText}
         kind="ghost"
         onClick={onAdd}
-        renderIcon={Add}
+        renderIcon={props => <Add size={24} {...props} />}
       >
         {addText}
       </Button>

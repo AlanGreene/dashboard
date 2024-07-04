@@ -15,8 +15,8 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import { getParams, taskRunHasWarning } from '@tektoncd/dashboard-utils';
-import { ContentSwitcher, Switch, Tooltip } from 'carbon-components-react';
-import { Information16 } from '@carbon/icons-react';
+import { ContentSwitcher, Switch, Tooltip } from '@carbon/react';
+import { Information } from '@carbon/react/icons';
 
 import DetailsHeader from '../DetailsHeader';
 import Param from '../Param';
@@ -40,7 +40,7 @@ function HelpIcon({ title }) {
         id: 'dashboard.resourceDetails.description',
         defaultMessage: 'Description'
       })}
-      renderIcon={Information16}
+      renderIcon={Information}
       showIcon
     >
       {title}
@@ -169,6 +169,8 @@ const TaskRunDetails = ({
   if (selectedTabIndex === -1) {
     selectedTabIndex = 0;
   }
+
+  // TODO: carbon11 - Tabs composition changed
 
   return (
     <div className="tkn--step-details">

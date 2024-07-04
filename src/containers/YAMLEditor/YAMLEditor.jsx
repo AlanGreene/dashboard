@@ -11,12 +11,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 import { useIntl } from 'react-intl';
-import {
-  Button,
-  Form,
-  FormGroup,
-  InlineNotification
-} from 'carbon-components-react';
+import { Button, Form, FormGroup, InlineNotification } from '@carbon/react';
 import yaml from 'js-yaml';
 import { useEffect, useState } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
@@ -156,6 +151,7 @@ export default function YAMLEditor({
             lowContrast
           />
         )}
+        {/* TODO: carbon11 - className now applied to outermost element */}
         <FormGroup legendText="" className="tkn--codemirror--form">
           {loading ? (
             <Loading message={loadingMessage} />

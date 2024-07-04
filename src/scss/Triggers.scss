@@ -11,6 +11,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+@use '@carbon/react/scss/config';
+
 .tkn--resourcedetails {
   .tkn--resourcedetails--header {
     display: flex;
@@ -20,23 +22,24 @@ limitations under the License.
       margin-inline-end: 1rem;
     }
   }
+  // TODO: carbon11 - convert to Carbon 11 mixins and tokens
   .tkn--details {
     li:not(:empty), p:not(:empty) {
-      @include type-style('body-short-02');
-      margin-block-start: $spacing-03;
+      // @include type-style('body-short-02');
+      // margin-block-start: $spacing-03;
       span:first-child {
         font-weight: bold;
-        margin-inline-end: $spacing-02;
+        // margin-inline-end: $spacing-02;
       }
 
-      .#{$prefix}--link span {
+      .#{config.$prefix}--link span {
         font-weight: normal;
       }
     }
 
     .tkn--table {
-      .#{$prefix}--data-table-container {
-        .#{$prefix}--data-table {
+      .#{config.$prefix}--data-table-container {
+        .#{config.$prefix}--data-table {
           .cell-description {
             max-inline-size: 30vi;
           }
@@ -45,12 +48,12 @@ limitations under the License.
     }
   }
 
-  .#{$prefix}--snippet--multi {
-    margin-block-start: $spacing-03
+  .#{config.$prefix}--snippet--multi {
+    // margin-block-start: $spacing-03
   }
 
   .tkn--trigger-details {
-    .#{$prefix}--list--unordered {
+    .#{config.$prefix}--list--unordered {
       position: relative;
       inset-block-start: 2px;
     }
@@ -58,11 +61,11 @@ limitations under the License.
 }
 
 .tkn--resourcedetails-metadata {
-  margin-block-end: $spacing-05;
-  padding: $spacing-05;
-  background-color: $ui-01;
+  // margin-block-end: $spacing-05;
+  // padding: $spacing-05;
+  // background-color: $ui-01;
 
-  .#{$prefix}--tag {
+  .#{config.$prefix}--tag {
     margin-block-start: 0;
   }
 

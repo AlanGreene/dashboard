@@ -13,7 +13,7 @@ limitations under the License.
 /* istanbul ignore file */
 
 import { useIntl } from 'react-intl';
-import { Loading as CarbonLoading } from 'carbon-components-react';
+import { Loading as CarbonLoading } from '@carbon/react';
 import { getCarbonPrefix } from '@tektoncd/dashboard-utils';
 
 const carbonPrefix = getCarbonPrefix();

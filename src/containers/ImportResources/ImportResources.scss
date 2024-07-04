@@ -11,52 +11,56 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+@use '@carbon/react/scss/config';
+
+// TODO: carbon11 - convert to Carbon 11 mixins and tokens
+
 .tkn--importresources {
-  .#{$prefix}--form__helper-text,
-  .#{$prefix}--label--disabled {
-    color: $text-05; // Since by default the contrast/colour choice is barely readable.
+  .#{config.$prefix}--form__helper-text,
+  .#{config.$prefix}--label--disabled {
+    // color: $text-05; // Since by default the contrast/colour choice is barely readable.
   }
 
-  .#{$prefix}--label {
+  .#{config.$prefix}--label {
     display: flex;
     align-items: center;
 
-    .#{$prefix}--tooltip__trigger {
+    .#{config.$prefix}--tooltip__trigger {
       margin-inline-start: 0.5rem;
     }
   }
 
-  .#{$prefix}--combo-box.#{$prefix}--list-box,
-  .#{$prefix}--dropdown.#{$prefix}--list-box,
-  .#{$prefix}--text-input__field-wrapper {
+  .#{config.$prefix}--combo-box.#{config.$prefix}--list-box,
+  .#{config.$prefix}--dropdown.#{config.$prefix}--list-box,
+  .#{config.$prefix}--text-input__field-wrapper {
     inline-size: 50%;
     min-inline-size: 300px;
   }
 
-  .#{$prefix}--combo-box.#{$prefix}--list-box {
+  .#{config.$prefix}--combo-box.#{config.$prefix}--list-box {
     max-inline-size: 350px;
   }
 
-  .#{$prefix}--toast-notification {
+  .#{config.$prefix}--toast-notification {
     margin-block-start: 2rem;
     margin-block-end: 1rem;
     margin-inline: 0;
   }
 
-  .#{$prefix}--form-item,
-  .#{$prefix}--list-box__wrapper {
+  .#{config.$prefix}--form-item,
+  .#{config.$prefix}--list-box__wrapper {
     margin-block-end: 1.5rem;
   }
 
-  .#{$prefix}--btn {
+  .#{config.$prefix}--btn {
     margin-block-start: 1rem;
   }
 
-  .#{$prefix}--accordion {
+  .#{config.$prefix}--accordion {
     margin-block-end: 1rem;
 
-    .#{$prefix}--accordion__content,
-    .#{$prefix}--accordion__item--active .#{$prefix}--accordion__content {
+    .#{config.$prefix}--accordion__content,
+    .#{config.$prefix}--accordion__item--active .#{config.$prefix}--accordion__content {
       padding-block: 0.5rem;
       padding-inline: 0;
       margin-inline-start: 0;

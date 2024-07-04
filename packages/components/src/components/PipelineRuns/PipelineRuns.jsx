@@ -14,11 +14,11 @@ limitations under the License.
 import { useIntl } from 'react-intl';
 import { getStatus, urls } from '@tektoncd/dashboard-utils';
 import {
-  Calendar16 as CalendarIcon,
-  Pending24 as DefaultIcon,
-  Time16 as TimeIcon,
-  Lightning16 as TriggersIcon
-} from '@carbon/icons-react';
+  Calendar as CalendarIcon,
+  Pending as DefaultIcon,
+  Time as TimeIcon,
+  Lightning as TriggersIcon
+} from '@carbon/react/icons';
 
 import Actions from '../Actions';
 import FormattedDate from '../FormattedDate';
@@ -77,7 +77,11 @@ const PipelineRuns = ({
     const { reason, status } = getStatus(pipelineRun);
 
     return (
-      <StatusIcon DefaultIcon={DefaultIcon} reason={reason} status={status} />
+      <StatusIcon
+        DefaultIcon={props => <DefaultIcon size={24} {...props} />}
+        reason={reason}
+        status={status}
+      />
     );
   },
   getPipelineRunStatusTooltip = (pipelineRun, intl) => {
