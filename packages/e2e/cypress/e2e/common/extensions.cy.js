@@ -24,7 +24,7 @@ describe('Extensions', () => {
   });
 
   it('should display namespaces extension', () => {
-    cy.visit('/');
+    cy.visit('./');
     cy.hash().should('equal', '#/about');
     cy.contains('h1', 'About Tekton');
 

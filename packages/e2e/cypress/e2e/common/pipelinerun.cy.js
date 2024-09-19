@@ -44,7 +44,7 @@ spec:
     `;
     cy.applyResource(pipelineRun);
 
-    cy.visit(`/#/pipelineruns`);
+    cy.visit(`./#/pipelineruns`);
 
     cy.contains('h1', 'PipelineRuns');
     cy.get(`[title=${pipelineRunName}]`).click();

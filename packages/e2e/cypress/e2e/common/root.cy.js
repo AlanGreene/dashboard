@@ -13,7 +13,7 @@ limitations under the License.
 
 describe('Default page', () => {
   it('should redirect to the About page if no path specified', function () {
-    cy.visit('/');
+    cy.visit('./');
     cy.hash().should('equal', '#/about');
     cy.contains('h1', 'About Tekton');
   });

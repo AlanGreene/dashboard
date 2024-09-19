@@ -39,7 +39,7 @@ spec:
         echo "Hello World!"
     `;
     cy.applyResource(task);
-    cy.visit(`/#/taskruns/create?namespace=${namespace}&taskName=${taskName}`);
+    cy.visit(`./#/taskruns/create?namespace=${namespace}&taskName=${taskName}`);
     cy.get('[id=create-taskrun--namespaces-dropdown]').should(
       'have.value',
       namespace
@@ -81,7 +81,7 @@ spec:
         echo "Hello World!"
       `;
     cy.applyResource(task);
-    cy.visit(`/#/taskruns/create?namespace=${namespace}&taskName=${taskName}`);
+    cy.visit(`./#/taskruns/create?namespace=${namespace}&taskName=${taskName}`);
     cy.get('[id=create-taskrun--namespaces-dropdown]').should(
       'have.value',
       namespace
@@ -133,7 +133,7 @@ spec:
           #!/bin/ash
           echo "Hello World!"
       `;
-    cy.visit(`/#/taskruns/create`);
+    cy.visit(`./#/taskruns/create`);
 
     cy.contains('button', 'YAML Mode').click();
     cy.url().should('include', 'mode=yaml');
@@ -172,7 +172,7 @@ spec:
           #!/bin/ash
           echo "Hello World!"
       `;
-    cy.visit(`/#/taskruns/create?mode=yaml`);
+    cy.visit(`./#/taskruns/create?mode=yaml`);
 
     cy.get('.cm-content').clear();
     cy.get('.cm-content').type(taskRun, { preserveIndentation: true });

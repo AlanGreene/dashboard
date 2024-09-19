@@ -13,7 +13,7 @@ limitations under the License.
 
 describe('Translations', () => {
   it('should display translated content for a supported language', () => {
-    cy.visit('/#/about', {
+    cy.visit('./#/about', {
       onBeforeLoad(win) {
         Object.defineProperty(win.navigator, 'language', {
           configurable: true,
@@ -27,7 +27,7 @@ describe('Translations', () => {
   });
 
   it('should fallback to English content for an unsupported language', () => {
-    cy.visit('/#/about', {
+    cy.visit('./#/about', {
       onBeforeLoad(win) {
         Object.defineProperty(win.navigator, 'language', {
           value: 'zz'

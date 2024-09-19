@@ -40,7 +40,7 @@ spec:
         echo "Hello World!"
     `;
     cy.applyResource(task);
-    cy.visit(`/#/taskruns/create?namespace=${namespace}&taskName=${taskName}`);
+    cy.visit(`./#/taskruns/create?namespace=${namespace}&taskName=${taskName}`);
     cy.get('[id=create-taskrun--namespaces-dropdown]').should(
       'have.value',
       namespace

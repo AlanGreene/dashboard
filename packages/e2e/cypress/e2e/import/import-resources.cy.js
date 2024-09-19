@@ -59,7 +59,7 @@ subjects:
 
     cy.applyResource(role);
 
-    cy.visit('/#/importresources');
+    cy.visit('./#/importresources');
     cy.get('#import-repository-url').type(
       'https://github.com/tektoncd/dashboard'
     );
@@ -74,10 +74,10 @@ subjects:
       .find('span[class="tkn--status-label"]', { timeout: 60000 })
       .should('have.text', 'Succeeded');
 
-    cy.visit(`/#/namespaces/${namespace}/pipelines`);
+    cy.visit(`./#/namespaces/${namespace}/pipelines`);
     cy.contains('a', 'hello-goodbye');
 
-    cy.visit(`/#/namespaces/${namespace}/tasks`);
+    cy.visit(`./#/namespaces/${namespace}/tasks`);
     cy.contains('a', 'hello');
     cy.contains('a', 'goodbye');
   });

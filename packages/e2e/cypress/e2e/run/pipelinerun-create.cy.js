@@ -43,7 +43,7 @@ spec:
     `;
     cy.applyResource(pipeline);
     cy.visit(
-      `/#/pipelineruns/create?namespace=${namespace}&pipelineName=${pipelineName}`
+      `./#/pipelineruns/create?namespace=${namespace}&pipelineName=${pipelineName}`
     );
     cy.get('[id=create-pipelinerun--namespaces-dropdown]').should(
       'have.value',
@@ -90,7 +90,7 @@ spec:
     `;
     cy.applyResource(pipeline);
     cy.visit(
-      `/#/pipelineruns/create?namespace=${namespace}&pipelineName=${pipelineName}`
+      `./#/pipelineruns/create?namespace=${namespace}&pipelineName=${pipelineName}`
     );
     cy.get('[id=create-pipelinerun--namespaces-dropdown]').should(
       'have.value',
@@ -146,7 +146,7 @@ spec:
                 #!/bin/ash
                 echo "Hello World!"
     `;
-    cy.visit(`/#/pipelineruns/create`);
+    cy.visit(`./#/pipelineruns/create`);
 
     cy.contains('button', 'YAML Mode').click();
     cy.url().should('include', 'mode=yaml');
@@ -188,7 +188,7 @@ spec:
                 #!/bin/ash
                 echo "Hello World!"
     `;
-    cy.visit(`/#/pipelineruns/create?mode=yaml`);
+    cy.visit(`./#/pipelineruns/create?mode=yaml`);
 
     cy.get('.cm-content').clear();
     cy.get('.cm-content').type(pipelineRun, { preserveIndentation: true });

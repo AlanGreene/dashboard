@@ -17,7 +17,7 @@ const carbonPrefix = Cypress.env('carbonPrefix');
 
 describe('Read permissions', { testIsolation: false }, () => {
   before(() => {
-    cy.visit('/');
+    cy.visit('./');
     cy.hash().should('equal', '#/about');
     cy.contains('h1', 'About Tekton');
   });
@@ -38,8 +38,8 @@ describe('Read permissions', { testIsolation: false }, () => {
 
   it('should display error for resources missing permissions', () => {
     const groupVersionKind = 'tekton.dev/v1alpha1/fake-kind';
-    cy.visit(`/#/${groupVersionKind}`);
+    cy.visit(`./#/${groupVersionKind}`);
     cy.contains('h1', groupVersionKind);
-    cy.contains('Forbidden');
+    cy.contains('Error loading fake-kind');
   });
 });

@@ -44,7 +44,7 @@ spec:
     `;
     cy.applyResource(pipeline);
     cy.visit(
-      `/#/pipelineruns/create?namespace=${namespace}&pipelineName=${pipelineName}`
+      `./#/pipelineruns/create?namespace=${namespace}&pipelineName=${pipelineName}`
     );
     cy.get('[id=create-pipelinerun--namespaces-dropdown]').should(
       'have.value',

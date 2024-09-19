@@ -18,7 +18,8 @@ const isCI = process.env.CI === 'true';
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: 'http://localhost:8000',
+    // baseUrl: 'http://localhost:9097',
+    baseUrl: 'http://localhost:8001/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/',
     experimentalRunAllSpecs: true,
     experimentalStudio: true,
     setupNodeEvents(on, config) {
