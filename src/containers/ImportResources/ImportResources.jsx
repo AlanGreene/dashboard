@@ -59,7 +59,7 @@ function isValidGitURL(url) {
 const initialMethod = 'apply';
 
 const HelpIcon = ({ title }) => (
-  <Tooltip align="top-left" label={title}>
+  <Tooltip align="top-start" label={title}>
     <button className="tkn--tooltip-trigger" type="button">
       <Information />
     </button>
@@ -330,6 +330,7 @@ export function ImportResources() {
             id: 'dashboard.namespacesDropdown.invalidText',
             defaultMessage: 'Please select a Namespace'
           })}
+          key={invalidNamespace}
           onChange={handleNamespace}
           required
           selectedItem={selectedNamespace}
@@ -361,6 +362,7 @@ export function ImportResources() {
                 id: 'dashboard.namespacesDropdown.invalidText',
                 defaultMessage: 'Please select a Namespace'
               })}
+              key={invalidImporterNamespace}
               onChange={handleImporterNamespace}
               required
               selectedItem={selectedImporterNamespace}

@@ -29,6 +29,7 @@ describe('App', () => {
     vi.spyOn(API, 'useNamespaces').mockImplementation(() => ({ data: [] }));
   });
 
+  // TODO: investigate why this hangs
   it('renders successfully in full cluster mode', async () => {
     vi.spyOn(API, 'useTenantNamespaces').mockImplementation(() => []);
     const { findAllByText, queryAllByText, queryByText } = render(

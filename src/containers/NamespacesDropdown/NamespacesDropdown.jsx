@@ -11,6 +11,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { ALL_NAMESPACES } from '@tektoncd/dashboard-utils';
 import { TooltipDropdown } from '@tektoncd/dashboard-components';
@@ -24,7 +25,7 @@ const NamespacesDropdown = ({
   emptyText,
   isSideNavExpanded,
   label,
-  selectedItem: originalSelectedItem,
+  selectedItem: selectedItemProp,
   showAllNamespaces = false,
   titleText = 'Namespace',
   ...rest
@@ -50,15 +51,35 @@ const NamespacesDropdown = ({
       defaultMessage: 'All Namespaces'
     });
 
+  function getSelectedItemObject(value) {
+    if (value.id === ALL_NAMESPACES && value.text !== allNamespacesString) {
+      value.text = allNamespacesString;
+    }
+    return value;
+  }
+  const prevSelectedItemProp = useRef(selectedItemProp);
+  const [selectedItem, setSelectedItem] = useState(() => getSelectedItemObject(selectedItemProp));
+  useEffect(() => {
+    console.log('useEffect2', JSON.stringify(selectedItemProp));
+    if (
+      JSON.stringify(prevSelectedItemProp.current) !==
+      JSON.stringify(selectedItemProp)
+    ) {
+      const updatedSelectedItem = getSelectedItemObject(selectedItemProp);
+      console.log('setting selectedItem', { updatedSelectedItem });
+      setSelectedItem(updatedSelectedItem);
+    }
+  }, [JSON.stringify(selectedItemProp)]);
+
   const tenantNamespaces = useTenantNamespaces();
   const { data: namespaces = [], isFetching } = useNamespaces({
     disableWebSocket: true
   });
 
-  const selectedItem = { ...originalSelectedItem };
-  if (selectedItem && selectedItem.id === ALL_NAMESPACES) {
-    selectedItem.text = allNamespacesString;
-  }
+  // const selectedItem = { ...selectedItemProp };
+  // if (selectedItem && selectedItem.id === ALL_NAMESPACES) {
+  //   selectedItem.text = allNamespacesString;
+  // }
 
   const items = tenantNamespaces.length
     ? tenantNamespaces
@@ -72,6 +93,7 @@ const NamespacesDropdown = ({
       {...rest}
       emptyText={emptyString}
       items={items}
+      // key={JSON.stringify(selectedItem)}
       label={labelString}
       loading={isFetching}
       selectedItem={selectedItem}

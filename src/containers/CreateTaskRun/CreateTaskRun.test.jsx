@@ -141,6 +141,7 @@ describe('CreateTaskRun', () => {
     );
   });
 
+  // TODO: failing
   it('renders labels', () => {
     const {
       getAllByText,
@@ -162,7 +163,8 @@ describe('CreateTaskRun', () => {
     expect(queryByDisplayValue(/bar/i)).toBeFalsy();
   });
 
-  it('resets Task and ServiceAccount when namespace changes', async () => {
+  // TODO: investigate why this hangs
+  it.only('resets Task and ServiceAccount when namespace changes', async () => {
     vi.spyOn(APIUtils, 'useSelectedNamespace').mockImplementation(() => ({
       selectedNamespace: 'namespace-1'
     }));

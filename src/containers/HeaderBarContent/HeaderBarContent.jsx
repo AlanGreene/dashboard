@@ -10,7 +10,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   generatePath,
   useLocation,
@@ -25,6 +25,7 @@ import NamespacesDropdown from '../NamespacesDropdown';
 import { useSelectedNamespace, useTenantNamespaces } from '../../api';
 
 export default function HeaderBarContent() {
+  console.log('HeaderBarContent');
   const location = useLocation();
   const matches = useMatches();
   const match = matches.at(-1);
@@ -36,7 +37,16 @@ export default function HeaderBarContent() {
   const { selectedNamespace: namespace, selectNamespace } =
     useSelectedNamespace();
 
+  const [selectedItem, setSelectedItem] = useState({
+    id: namespace,
+    text: namespace
+  });
   useEffect(() => {
+    setSelectedItem({ id: namespace, text: namespace });
+  }, [namespace]);
+
+  useEffect(() => {
+    console.log('useEffect', { namespace: params.namespace, tenantNamespaces });
     if (params.namespace) {
       selectNamespace(params.namespace);
     } else if (tenantNamespaces.length) {
@@ -49,6 +59,7 @@ export default function HeaderBarContent() {
   }
 
   function handleNamespaceSelected(event) {
+    console.log('handleNamespaceSelected', { event });
     const newNamespace =
       event.selectedItem?.id || tenantNamespaces[0] || ALL_NAMESPACES;
     selectNamespace(newNamespace);
@@ -93,7 +104,7 @@ export default function HeaderBarContent() {
       <NamespacesDropdown
         id="header-namespace-dropdown"
         onChange={handleNamespaceSelected}
-        selectedItem={{ id: namespace, text: namespace }}
+        selectedItem={selectedItem}
         showAllNamespaces
         size="sm"
         titleText=""
