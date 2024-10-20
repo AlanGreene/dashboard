@@ -84,7 +84,7 @@ const linkify = (str, styleObj, classNameString) => {
   return elements;
 };
 
-const LogFormat = ({ children }) => {
+const LogFormat = ({ children, parseLogLine = line => line }) => {
   let properties = {
     classes: {},
     foregroundColor: null,
@@ -277,7 +277,8 @@ const LogFormat = ({ children }) => {
     ansi.split(/\r?\n/).map((part, index) => {
       text = '';
       line = [];
-      return parse(part, index);
+      const logLine = parseLogLine(part);
+      return parse(logLine, index);
     });
 
   return <code>{convert(children)}</code>;

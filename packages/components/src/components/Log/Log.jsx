@@ -27,12 +27,6 @@ import {
 import DotSpinner from '../DotSpinner';
 import LogFormat from '../LogFormat';
 
-const LogLine = ({ data, index, style }) => (
-  <div style={style}>
-    <LogFormat>{`${data[index]}\n`}</LogFormat>
-  </div>
-);
-
 const itemSize = 15; // This should be kept in sync with the line-height in SCSS
 const defaultHeight = itemSize * 100 + itemSize / 2;
 
@@ -244,7 +238,7 @@ export class LogContainer extends Component {
   };
 
   getLogList = () => {
-    const { stepStatus, intl } = this.props;
+    const { intl, parseLogLine, stepStatus } = this.props;
     const { reason } = (stepStatus && stepStatus.terminated) || {};
     const {
       logs = [
@@ -256,7 +250,7 @@ export class LogContainer extends Component {
     } = this.state;
 
     if (logs.length < 20000) {
-      return <LogFormat>{logs.join('\n')}</LogFormat>;
+      return <LogFormat parseLogLine={parseLogLine}>{logs.join('\n')}</LogFormat>;
     }
 
     const height = reason
@@ -271,7 +265,13 @@ export class LogContainer extends Component {
         itemSize={itemSize}
         width="100%"
       >
-        {LogLine}
+        {
+          ({ data, index, style }) => (
+            <div style={style}>
+              <LogFormat parseLogLine={parseLogLine}>{`${data[index]}\n`}</LogFormat>
+            </div>
+          )
+        }
       </List>
     );
   };
