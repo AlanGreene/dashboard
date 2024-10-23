@@ -250,7 +250,9 @@ export class LogContainer extends Component {
     } = this.state;
 
     if (logs.length < 20000) {
-      return <LogFormat parseLogLine={parseLogLine}>{logs.join('\n')}</LogFormat>;
+      return (
+        <LogFormat parseLogLine={parseLogLine}>{logs.join('\n')}</LogFormat>
+      );
     }
 
     const height = reason
@@ -265,13 +267,13 @@ export class LogContainer extends Component {
         itemSize={itemSize}
         width="100%"
       >
-        {
-          ({ data, index, style }) => (
-            <div style={style}>
-              <LogFormat parseLogLine={parseLogLine}>{`${data[index]}\n`}</LogFormat>
-            </div>
-          )
-        }
+        {({ data, index, style }) => (
+          <div style={style}>
+            <LogFormat
+              parseLogLine={parseLogLine}
+            >{`${data[index]}\n`}</LogFormat>
+          </div>
+        )}
       </List>
     );
   };
