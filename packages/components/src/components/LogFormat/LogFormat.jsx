@@ -24,6 +24,31 @@ const linkifyIt = LinkifyIt().tlds(tlds);
 const ansiRegex = /^\u001b([@-_])(.*?)([@-~])/;
 const characterRegex = /[^]/m;
 
+const levelClassName = {
+  error: 'tkn--ansi--color-fg--bright-red',
+  warning: 'tkn--ansi--color-fg--bright-yellow',
+  notice: 'tkn--ansi--color-fg--cyan',
+  debug: 'tkn--ansi--color-fg--bright-magenta'
+};
+
+const levelBgClassName = {
+  error: 'tkn--log-level--error'
+};
+
+const getDecoratedLevel = level => {
+  if (!level) {
+    return null;
+  }
+
+  return (
+    <span
+      className={`tkn--log-line--level tkn--log-level--${level} ${levelClassName[level] || ''}`}
+    >
+      [{level.toUpperCase()}]
+    </span>
+  );
+};
+
 const getXtermColor = commandStack => {
   if (commandStack.length >= 2 && commandStack[0] === '5') {
     commandStack.shift();
@@ -84,7 +109,11 @@ const linkify = (str, styleObj, classNameString) => {
   return elements;
 };
 
-const LogFormat = ({ children, parseLogLine = line => line }) => {
+const LogFormat = ({
+  children,
+  fields = { message: true },
+  parseLogLine = line => ({ message: line })
+}) => {
   let properties = {
     classes: {},
     foregroundColor: null,
@@ -240,13 +269,14 @@ const LogFormat = ({ children, parseLogLine = line => line }) => {
     };
   };
 
-  const parse = (ansi, index) => {
-    if (ansi.length === 0) {
+  const parse = (log, index) => {
+    const { timestamp, level, message } = parseLogLine(log);
+    if (!message?.length) {
       return <br key={index} />;
     }
     let offset = 0;
-    while (offset !== ansi.length) {
-      const str = ansi.substring(offset);
+    while (offset !== message.length) {
+      const str = message.substring(offset);
       const controlSequence = str.match(ansiRegex);
       if (controlSequence) {
         offset += controlSequence.index + controlSequence[0].length;
@@ -270,15 +300,25 @@ const LogFormat = ({ children, parseLogLine = line => line }) => {
         )
       );
     }
-    return <div key={index}>{line}</div>;
+    return (
+      <div
+        className={`tkn--log-line ${levelBgClassName[level] || ''}`}
+        key={index}
+      >
+        {fields.timestamp && (
+          <span className="tkn--log-line--timestamp">{timestamp}</span>
+        )}
+        {fields.level && getDecoratedLevel(level)}
+        {line}
+      </div>
+    );
   };
 
-  const convert = ansi =>
-    ansi.split(/\r?\n/).map((part, index) => {
+  const convert = logs =>
+    logs.split(/\r?\n/).map((part, index) => {
       text = '';
       line = [];
-      const logLine = parseLogLine(part);
-      return parse(logLine, index);
+      return parse(part, index);
     });
 
   return <code>{convert(children)}</code>;

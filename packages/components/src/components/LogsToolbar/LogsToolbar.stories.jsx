@@ -11,6 +11,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { Toggle } from '@carbon/react';
+
 import LogsToolbar from './LogsToolbar';
 
 export default {
@@ -22,5 +24,12 @@ export const Default = {
   args: {
     name: 'some_filename.txt',
     url: '/some/logs/url'
+  }
+};
+
+export const Custom = {
+  args: {
+    ...Default.args,
+    children: <Toggle size="sm" hideLabel labelText="Show timestamps" />
   }
 };

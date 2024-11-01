@@ -15,11 +15,12 @@ import { useIntl } from 'react-intl';
 import { Download, Launch, Maximize, Minimize } from '@carbon/react/icons';
 import { usePrefix } from '@carbon/react';
 
-const LogsToolbar = ({ isMaximized, name, toggleMaximized, url }) => {
+const LogsToolbar = ({ children, isMaximized, name, toggleMaximized, url }) => {
   const carbonPrefix = usePrefix();
   const intl = useIntl();
   return (
     <div className={`${carbonPrefix}--btn-set`}>
+      {children}
       {toggleMaximized ? (
         <button
           className={`${carbonPrefix}--btn ${carbonPrefix}--btn--icon-only ${carbonPrefix}--copy-btn`}

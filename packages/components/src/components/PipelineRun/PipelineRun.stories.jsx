@@ -320,8 +320,10 @@ export const WithPodDetails = args => {
           }
         }
       }}
+      selectedTaskId="task1"
       taskRuns={[taskRun]}
       tasks={[task]}
+      view="pod"
     />
   );
 };

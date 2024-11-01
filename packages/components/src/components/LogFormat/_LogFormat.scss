@@ -68,3 +68,11 @@ $colors: (
     text-decoration: line-through;
   }
 }
+
+.tkn--log-line--timestamp {
+  color: hsl(180 0 60%);
+}
+
+.tkn--log-line.tkn--log-level--error {
+  background-color: rgba(187, 0, 0, 0.3);
+}

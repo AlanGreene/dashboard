@@ -30,6 +30,9 @@ import LogFormat from '../LogFormat';
 const itemSize = 15; // This should be kept in sync with the line-height in SCSS
 const defaultHeight = itemSize * 100 + itemSize / 2;
 
+const logFormatRegex =
+  /^((?<timestamp>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z)\s?)?(::(?<level>error|warning|info|notice|debug)::)?(?<message>.*)?$/s;
+
 export class LogContainer extends Component {
   constructor(props) {
     super(props);
@@ -238,7 +241,20 @@ export class LogContainer extends Component {
   };
 
   getLogList = () => {
-    const { intl, parseLogLine, stepStatus } = this.props;
+    const {
+      intl,
+      parseLogLine = line => {
+        if (!line?.length) {
+          return { message: line };
+        }
+
+        const { groups } = logFormatRegex.exec(line);
+        return groups;
+      },
+      showLevel,
+      showTimestamp,
+      stepStatus
+    } = this.props;
     const { reason } = (stepStatus && stepStatus.terminated) || {};
     const {
       logs = [
@@ -251,7 +267,12 @@ export class LogContainer extends Component {
 
     if (logs.length < 20000) {
       return (
-        <LogFormat parseLogLine={parseLogLine}>{logs.join('\n')}</LogFormat>
+        <LogFormat
+          fields={{ level: showLevel, timestamp: showTimestamp }}
+          parseLogLine={parseLogLine}
+        >
+          {logs.join('\n')}
+        </LogFormat>
       );
     }
 
@@ -270,6 +291,7 @@ export class LogContainer extends Component {
         {({ data, index, style }) => (
           <div style={style}>
             <LogFormat
+              fields={{ level: showLevel, timestamp: showTimestamp }}
               parseLogLine={parseLogLine}
             >{`${data[index]}\n`}</LogFormat>
           </div>
