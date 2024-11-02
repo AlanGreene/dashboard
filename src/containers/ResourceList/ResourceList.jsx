@@ -150,7 +150,7 @@ export function ResourceListContainer() {
       resources={resources}
       title={title || `${group}/${version}/${kind}`}
     >
-      {({ resources: paginatedResources }) => (
+      {({ labelFilter, resources: paginatedResources }) => (
         <Table
           emptyTextAllNamespaces={intl.formatMessage(
             {
@@ -167,6 +167,7 @@ export function ResourceListContainer() {
             },
             { kind: title || kind, selectedNamespace: namespace }
           )}
+          filters={labelFilter}
           headers={[
             {
               key: 'name',

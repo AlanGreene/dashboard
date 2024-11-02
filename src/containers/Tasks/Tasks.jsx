@@ -262,11 +262,12 @@ function Tasks() {
       resources={tasks}
       title="Tasks"
     >
-      {({ resources }) => (
+      {({ labelFilter, resources }) => (
         <>
           <Table
             batchActionButtons={batchActionButtons}
             className="tkn--table--inline-actions"
+            filters={labelFilter}
             headers={initialHeaders}
             rows={getFormattedResources({
               intl,

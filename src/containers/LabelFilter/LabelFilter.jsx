@@ -12,17 +12,8 @@ limitations under the License.
 */
 
 import { LabelFilter } from '@tektoncd/dashboard-components';
-import {
-  getAddFilterHandler,
-  getClearFiltersHandler,
-  getDeleteFilterHandler
-} from '@tektoncd/dashboard-utils';
+import { getSetFiltersHandler } from '@tektoncd/dashboard-utils';
 
 export default props => (
-  <LabelFilter
-    {...props}
-    handleAddFilter={getAddFilterHandler(props)}
-    handleClearFilters={getClearFiltersHandler(props)}
-    handleDeleteFilter={getDeleteFilterHandler(props)}
-  />
+  <LabelFilter {...props} handleSetFilters={getSetFiltersHandler(props)} />
 );

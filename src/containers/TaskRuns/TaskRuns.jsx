@@ -299,15 +299,20 @@ function TaskRuns() {
         }
       ];
 
-  const statusFilters = (
-    <StatusFilterDropdown
-      id={generateId('status-filter-')}
-      initialSelectedStatus={statusFilter}
-      onChange={({ selectedItem }) => {
-        setStatusFilter(selectedItem.id);
-      }}
-    />
-  );
+  function getFiltersUI(labelFilter) {
+    return (
+      <>
+        <StatusFilterDropdown
+          id={generateId('status-filter-')}
+          initialSelectedStatus={statusFilter}
+          onChange={({ selectedItem }) => {
+            setStatusFilter(selectedItem.id);
+          }}
+        />
+        {labelFilter}
+      </>
+    );
+  }
 
   return (
     <ListPageLayout
@@ -318,11 +323,11 @@ function TaskRuns() {
       })}
       title="TaskRuns"
     >
-      {({ resources }) => (
+      {({ labelFilter, resources }) => (
         <>
           <TaskRunsList
             batchActionButtons={batchActionButtons}
-            filters={statusFilters}
+            filters={getFiltersUI(labelFilter)}
             getRunActions={taskRunActions}
             loading={isLoading}
             selectedNamespace={namespace}

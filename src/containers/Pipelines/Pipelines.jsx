@@ -261,11 +261,12 @@ export function Pipelines() {
       resources={pipelines}
       title="Pipelines"
     >
-      {({ resources }) => (
+      {({ labelFilter, resources }) => (
         <>
           <Table
             batchActionButtons={batchActionButtons}
             className="tkn--table--inline-actions"
+            filters={labelFilter}
             headers={initialHeaders}
             rows={getFormattedResources({
               intl,
