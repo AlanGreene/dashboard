@@ -381,7 +381,7 @@ function CustomRuns() {
       resources={runs}
       title="CustomRuns"
     >
-      {({ resources }) => {
+      {({ labelFilter, resources }) => {
         const runsFormatted = resources.map(run => {
           const { creationTimestamp } = run.metadata;
 
@@ -519,6 +519,7 @@ function CustomRuns() {
         return (
           <>
             <Table
+              filters={labelFilter}
               toolbarButtons={toolbarButtons}
               batchActionButtons={batchActionButtons}
               emptyTextAllNamespaces={intl.formatMessage(

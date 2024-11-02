@@ -247,40 +247,14 @@ export function getFilters({ search }) {
   return filters;
 }
 
-export function getAddFilterHandler({ location, navigate }) {
-  return function handleAddFilter(labelFilters) {
+export function getSetFiltersHandler({ location, navigate }) {
+  return function handleSetFilters(labelFilters) {
     const queryParams = new URLSearchParams(location.search);
-    queryParams.set('labelSelector', labelFilters);
-    const browserURL = location.pathname.concat(`?${queryParams.toString()}`);
-    navigate(browserURL);
-  };
-}
-
-export function getDeleteFilterHandler({ location, navigate }) {
-  return function handleDeleteFilter(filter) {
-    const queryParams = new URLSearchParams(location.search);
-    const labelFilters = queryParams.getAll('labelSelector');
-    const labelFiltersArray = labelFilters.toString().split(',');
-    const index = labelFiltersArray.indexOf(filter);
-    labelFiltersArray.splice(index, 1);
-
-    if (labelFiltersArray.length === 0) {
+    if (labelFilters.length === 0) {
       queryParams.delete('labelSelector');
     } else {
-      queryParams.set('labelSelector', labelFiltersArray);
+      queryParams.set('labelSelector', labelFilters);
     }
-    const queryString = queryParams.toString();
-    const browserURL = location.pathname.concat(
-      queryString ? `?${queryString}` : ''
-    );
-    navigate(browserURL);
-  };
-}
-
-export function getClearFiltersHandler({ location, navigate }) {
-  return function handleClearFilters() {
-    const queryParams = new URLSearchParams(location.search);
-    queryParams.delete('labelSelector');
     const browserURL = location.pathname.concat(`?${queryParams.toString()}`);
     navigate(browserURL);
   };

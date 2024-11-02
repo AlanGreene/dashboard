@@ -382,33 +382,38 @@ export function PipelineRuns() {
         }
       ];
 
-  const filtersUI = (
-    <StatusFilterDropdown
-      id={generateId('status-filter-')}
-      initialSelectedStatus={statusFilter}
-      onChange={({ selectedItem }) => {
-        setStatusFilter(selectedItem.id);
-      }}
-    />
+  const pipelineRunsMatchingStatusFilter = pipelineRuns.filter(run => {
+    return runMatchesStatusFilter({
+      run,
+      statusFilter
+    });
+  });
+
+  const getFiltersUI = labelFilter => (
+    <>
+      <StatusFilterDropdown
+        id={generateId('status-filter-')}
+        initialSelectedStatus={statusFilter}
+        onChange={({ selectedItem }) => {
+          setStatusFilter(selectedItem.id);
+        }}
+      />
+      {labelFilter}
+    </>
   );
 
   return (
     <ListPageLayout
       error={getError()}
       filters={filters}
-      resources={pipelineRuns.filter(run => {
-        return runMatchesStatusFilter({
-          run,
-          statusFilter
-        });
-      })}
+      resources={pipelineRunsMatchingStatusFilter}
       title="PipelineRuns"
     >
-      {({ resources }) => (
+      {({ labelFilter, resources }) => (
         <>
           <PipelineRunsList
             batchActionButtons={batchActionButtons}
-            filters={filtersUI}
+            filters={getFiltersUI(labelFilter)}
             getRunActions={pipelineRunActions}
             loading={isLoading}
             pipelineRuns={resources}

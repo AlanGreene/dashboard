@@ -50,18 +50,20 @@ export const ListPageLayout = ({
     page * pageSize
   );
 
+  const labelFilter = filters && (
+    <LabelFilter
+      filters={filters}
+      location={location}
+      navigate={navigate}
+      resources={resourcesForCurrentPage}
+    />
+  );
+
   return (
     <>
       <div className="tkn--list-page--header">
         <h1 id="main-content-header">{title}</h1>
       </div>
-      {filters && (
-        <LabelFilter
-          filters={filters}
-          location={location}
-          navigate={navigate}
-        />
-      )}
       {error && (
         <InlineNotification
           iconDescription={intl.formatMessage({
@@ -81,7 +83,7 @@ export const ListPageLayout = ({
           }
         />
       )}
-      {children({ resources: resourcesForCurrentPage })}
+      {children({ labelFilter, resources: resourcesForCurrentPage })}
       {resources.length > 10 && (
         <Pagination
           backwardText={intl.formatMessage({
