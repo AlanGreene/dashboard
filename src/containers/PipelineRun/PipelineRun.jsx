@@ -578,6 +578,7 @@ export /* istanbul ignore next */ function PipelineRunContainer() {
         })}
         handleTaskSelected={handleTaskSelected}
         loading={isLoading}
+        logLevels={logLevels}
         getLogsToolbar={toolbarParams =>
           getLogsToolbar({
             ...toolbarParams,

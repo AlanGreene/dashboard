@@ -243,6 +243,7 @@ export class LogContainer extends Component {
   getLogList = () => {
     const {
       intl,
+      logLevels,
       parseLogLine = line => {
         if (!line?.length) {
           return { message: line };
@@ -269,6 +270,7 @@ export class LogContainer extends Component {
       return (
         <LogFormat
           fields={{ level: showLevel, timestamp: showTimestamps }}
+          logLevels={logLevels}
           parseLogLine={parseLogLine}
         >
           {logs.join('\n')}
@@ -284,7 +286,7 @@ export class LogContainer extends Component {
       <List
         height={height}
         itemCount={logs.length}
-        itemData={logs}
+        itemData={logs} // TODO: logs - filter on logLevels here?
         itemSize={itemSize}
         width="100%"
       >
@@ -292,6 +294,7 @@ export class LogContainer extends Component {
           <div style={style}>
             <LogFormat
               fields={{ level: showLevel, timestamp: showTimestamps }}
+              logLevels={logLevels}
               parseLogLine={parseLogLine}
             >{`${data[index]}\n`}</LogFormat>
           </div>

@@ -35,8 +35,7 @@ const levelBgClassName = {
   error: 'tkn--log-level--error'
 };
 
-const getDecoratedLevel = logLevel => {
-  const level = logLevel || 'info';
+const getDecoratedLevel = level => {
   return (
     <span
       className={`tkn--log-line--level tkn--log-level--${level} ${levelClassName[level] || ''}`}
@@ -109,6 +108,13 @@ const linkify = (str, styleObj, classNameString) => {
 const LogFormat = ({
   children,
   fields = { message: true },
+  logLevels = {
+    error: true,
+    warning: true,
+    info: true,
+    notice: true,
+    debug: true
+  },
   parseLogLine = line => ({ message: line })
 }) => {
   let properties = {
@@ -267,7 +273,11 @@ const LogFormat = ({
   };
 
   const parse = (log, index) => {
-    const { timestamp, level, message } = parseLogLine(log);
+    const { timestamp, level = 'info', message } = parseLogLine(log);
+    if (!logLevels[level]) {
+      console.log('skipping', { logLevels, level, message, log });
+      return null;
+    }
     if (!message?.length) {
       return <br key={index} />;
     }
@@ -312,13 +322,16 @@ const LogFormat = ({
   };
 
   const convert = logs =>
-    logs.split(/\r?\n/).map((part, index) => {
-      text = '';
-      line = [];
-      return parse(part, index);
-    });
-
-  return <code>{convert(children)}</code>;
+    logs
+      .split(/\r?\n/)
+      .map((part, index) => {
+        text = '';
+        line = [];
+        return parse(part, index);
+      })
+      .filter(Boolean);
+  const formattedLines = convert(children);
+  return formattedLines.length ? <code>{formattedLines}</code> : null;
 };
 
 LogFormat.propTypes = {

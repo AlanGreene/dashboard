@@ -51,9 +51,9 @@ export default /* istanbul ignore next */ function PipelineRun({
   handleTaskSelected = /* istanbul ignore next */ () => {},
   icon,
   loading,
+  logLevels,
   maximizedLogsContainer,
   onRetryChange,
-  onToggleShowTimestamps,
   onViewChange = /* istanbul ignore next */ () => {},
   pipeline,
   pipelineRun,
@@ -114,8 +114,6 @@ export default /* istanbul ignore next */ function PipelineRun({
               isMaximized: isLogsMaximized,
               onToggleMaximized:
                 !!maximizedLogsContainer && onToggleLogsMaximized,
-              onToggleShowTimestamps,
-              showTimestamps,
               stepStatus,
               taskRun
             })
@@ -123,11 +121,13 @@ export default /* istanbul ignore next */ function PipelineRun({
           fetchLogs={() => fetchLogs(stepName, stepStatus, taskRun)}
           forcePolling={forceLogPolling}
           key={`${selectedTaskId}:${selectedStepId}:${selectedRetry}`}
+          logLevels={logLevels}
           pollingInterval={pollingInterval}
           stepStatus={stepStatus}
           isLogsMaximized={isLogsMaximized}
           enableLogAutoScroll={enableLogAutoScroll}
           enableLogScrollButtons={enableLogScrollButtons}
+          showLevel
           showTimestamps={showTimestamps}
         />
       </LogsRoot>
