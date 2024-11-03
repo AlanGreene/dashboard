@@ -11,7 +11,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { Toggle } from '@carbon/react';
+import { useArgs } from '@storybook/preview-api';
 
 import LogsToolbar from './LogsToolbar';
 
@@ -23,13 +23,39 @@ export default {
 export const Default = {
   args: {
     name: 'some_filename.txt',
+    showTimestamps: false,
+    logLevels: {
+      error: true,
+      warning: true,
+      info: true,
+      notice: true,
+      debug: false
+    },
     url: '/some/logs/url'
-  }
-};
+  },
+  render: args => {
+    const [, updateArgs] = useArgs();
 
-export const Custom = {
-  args: {
-    ...Default.args,
-    children: <Toggle size="sm" hideLabel labelText="Show timestamps" />
+    return (
+      <LogsToolbar
+        {...args}
+        onToggleLogLevel={logLevel =>
+          // ignore duplicate synthetic event, need same fix as https://github.com/carbon-design-system/carbon/pull/17754 for MenuItemSelectable
+          typeof logLevel.error === 'boolean' ||
+          typeof logLevel.warning === 'boolean' ||
+          typeof logLevel.info === 'boolean' ||
+          typeof logLevel.notice === 'boolean' ||
+          typeof logLevel.debug === 'boolean'
+            ? updateArgs({ logLevels: { ...args.logLevels, ...logLevel } })
+            : null
+        }
+        onToggleShowTimestamps={showTimestamps =>
+          // ignore duplicate synthetic event, need same fix as https://github.com/carbon-design-system/carbon/pull/17754 for MenuItemSelectable
+          typeof showTimestamps === 'boolean'
+            ? updateArgs({ showTimestamps })
+            : null
+        }
+      />
+    );
   }
 };

@@ -252,7 +252,7 @@ export class LogContainer extends Component {
         return groups;
       },
       showLevel,
-      showTimestamp,
+      showTimestamps,
       stepStatus
     } = this.props;
     const { reason } = (stepStatus && stepStatus.terminated) || {};
@@ -268,7 +268,7 @@ export class LogContainer extends Component {
     if (logs.length < 20000) {
       return (
         <LogFormat
-          fields={{ level: showLevel, timestamp: showTimestamp }}
+          fields={{ level: showLevel, timestamp: showTimestamps }}
           parseLogLine={parseLogLine}
         >
           {logs.join('\n')}
@@ -291,7 +291,7 @@ export class LogContainer extends Component {
         {({ data, index, style }) => (
           <div style={style}>
             <LogFormat
-              fields={{ level: showLevel, timestamp: showTimestamp }}
+              fields={{ level: showLevel, timestamp: showTimestamps }}
               parseLogLine={parseLogLine}
             >{`${data[index]}\n`}</LogFormat>
           </div>

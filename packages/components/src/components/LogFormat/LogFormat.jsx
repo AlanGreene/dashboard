@@ -35,11 +35,12 @@ const levelBgClassName = {
   error: 'tkn--log-level--error'
 };
 
-const getDecoratedLevel = level => {
-  if (!level) {
-    return null;
-  }
+const getDecoratedLevel = logLevel => {
+  // if (!level) {
+  //   return null;
+  // }
 
+  const level = logLevel || 'info';
   return (
     <span
       className={`tkn--log-line--level tkn--log-level--${level} ${levelClassName[level] || ''}`}

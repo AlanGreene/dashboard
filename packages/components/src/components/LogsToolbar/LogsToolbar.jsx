@@ -12,19 +12,40 @@ limitations under the License.
 */
 /* istanbul ignore file */
 import { useIntl } from 'react-intl';
-import { Download, Launch, Maximize, Minimize } from '@carbon/react/icons';
-import { usePrefix } from '@carbon/react';
+import {
+  Download,
+  Launch,
+  Maximize,
+  Minimize,
+  Settings
+} from '@carbon/react/icons';
+import {
+  unstable_FeatureFlags as FeatureFlags,
+  MenuItemDivider,
+  MenuItemGroup,
+  MenuItemSelectable,
+  OverflowMenu,
+  usePrefix
+} from '@carbon/react';
 
-const LogsToolbar = ({ children, isMaximized, name, toggleMaximized, url }) => {
+const LogsToolbar = ({
+  isMaximized,
+  name,
+  logLevels = {},
+  onToggleShowTimestamps,
+  onToggleLogLevel,
+  onToggleMaximized,
+  showTimestamps,
+  url
+}) => {
   const carbonPrefix = usePrefix();
   const intl = useIntl();
   return (
     <div className={`${carbonPrefix}--btn-set`}>
-      {children}
-      {toggleMaximized ? (
+      {onToggleMaximized ? (
         <button
           className={`${carbonPrefix}--btn ${carbonPrefix}--btn--icon-only ${carbonPrefix}--copy-btn`}
-          onClick={toggleMaximized}
+          onClick={onToggleMaximized}
           type="button"
         >
           {isMaximized ? (
@@ -77,6 +98,43 @@ const LogsToolbar = ({ children, isMaximized, name, toggleMaximized, url }) => {
           </title>
         </Download>
       </a>
+      <FeatureFlags enableV12Overflowmenu>
+        <OverflowMenu renderIcon={Settings}>
+          <MenuItemSelectable
+            label="Show timestamps"
+            onChange={onToggleShowTimestamps}
+            selected={showTimestamps}
+          />
+          <MenuItemDivider />
+          <MenuItemGroup label="Log levels">
+            <MenuItemSelectable
+              label="Error"
+              onChange={error => onToggleLogLevel({ error })}
+              selected={logLevels.error}
+            />
+            <MenuItemSelectable
+              label="Warning"
+              onChange={warning => onToggleLogLevel({ warning })}
+              selected={logLevels.warning}
+            />
+            <MenuItemSelectable
+              label="Info"
+              onChange={info => onToggleLogLevel({ info })}
+              selected={logLevels.info}
+            />
+            <MenuItemSelectable
+              label="Notice"
+              onChange={notice => onToggleLogLevel({ notice })}
+              selected={logLevels.notice}
+            />
+            <MenuItemSelectable
+              label="Debug"
+              onChange={debug => onToggleLogLevel({ debug })}
+              selected={logLevels.debug}
+            />
+          </MenuItemGroup>
+        </OverflowMenu>
+      </FeatureFlags>
     </div>
   );
 };

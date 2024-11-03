@@ -99,7 +99,7 @@ export const Windowed = {
   args: {
     fetchLogs: () => long,
     showLevel: true,
-    showTimestamp: true,
+    showTimestamps: true,
     stepStatus: { terminated: { reason: 'Completed', exitCode: 0 } }
   }
 };
@@ -108,7 +108,7 @@ export const Performance = {
   args: {
     fetchLogs: () => performanceTest,
     showLevel: true,
-    showTimestamp: true,
+    showTimestamps: true,
     stepStatus: { terminated: { reason: 'Completed', exitCode: 0 } }
   },
   name: 'performance test (<20,000 lines with ANSI)'
@@ -126,49 +126,44 @@ export const Skipped = {
 
 export const Toolbar = {
   args: {
-    fetchLogs: () => 'A log message',
-    stepStatus: { terminated: { reason: 'Completed', exitCode: 0 } },
-    toolbar: <LogsToolbar name="step_log_filename.txt" url="/step/log/url" />
-  }
-};
-
-export const ToolbarLogFields = {
-  args: {
     fetchLogs: () => long,
+    logLevels: {
+      error: true,
+      warning: true,
+      info: true,
+      notice: true,
+      debug: false
+    },
     showLevel: true,
-    showTimestamp: true,
+    showTimestamps: true,
     stepStatus: { terminated: { reason: 'Completed', exitCode: 0 } }
   },
-  name: 'Toolbar - log fields',
   render: args => {
     const [, updateArgs] = useArgs();
     return (
       <Log
         {...args}
         toolbar={
-          <LogsToolbar name="step_log_filename.txt" url="/step/log/url">
-            {/* <Dropdown
-              initialSelectedItem="all"
-              items={['all', 'debug', 'info']}
-              onChange={({ selectedItem }) =>
-                updateArgs({ showLevel: selectedItem === 'all' })
-              }
-              size="sm"
-              titleText="Log level"
-              type="inline"
-            /> */}
-            <Toggle
-              hideLabel
-              id="log-show-timestamp"
-              labelText="Show timestamps"
-              onToggle={showTimestamp => {
-                updateArgs({ showTimestamp });
-              }}
-              size="sm"
-              style={{ marginBlockStart: '0.25rem' }}
-              toggled={args.showTimestamp}
-            />
-          </LogsToolbar>
+          <LogsToolbar
+            logLevels={args.logLevels}
+            name="step_log_filename.txt"
+            onToggleLogLevel={logLevel =>
+              typeof logLevel.error === 'boolean' ||
+              typeof logLevel.warning === 'boolean' ||
+              typeof logLevel.info === 'boolean' ||
+              typeof logLevel.notice === 'boolean' ||
+              typeof logLevel.debug === 'boolean'
+                ? updateArgs({ logLevels: { ...args.logLevels, ...logLevel } })
+                : null
+            }
+            onToggleShowTimestamps={showTimestamps =>
+              typeof showTimestamps === 'boolean'
+                ? updateArgs({ showTimestamps })
+                : null
+            }
+            showTimestamps={args.showTimestamps}
+            url="/step/log/url"
+          />
         }
       />
     );
