@@ -134,7 +134,7 @@ export function TaskRunContainer() {
     { enabled: !!podName && view === 'pod' }
   );
 
-  function toggleLogsMaximized() {
+  function onToggleLogsMaximized() {
     setIsLogsMaximized(state => !state);
   }
 
@@ -162,9 +162,11 @@ export function TaskRunContainer() {
             externalLogsURL,
             isMaximized: isLogsMaximized,
             isUsingExternalLogs,
+            onToggleMaximized:
+              !!maximizedLogsContainer && onToggleLogsMaximized,
+            // TODO: wire up timestamps + log levels toggles
             stepStatus,
-            taskRun: run,
-            toggleMaximized: !!maximizedLogsContainer && toggleLogsMaximized
+            taskRun: run
           })}
           fetchLogs={() => logsRetriever(stepName, stepStatus, run)}
           key={`${stepName}:${currentRetry}`}

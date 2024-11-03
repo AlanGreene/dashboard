@@ -36,10 +36,6 @@ const levelBgClassName = {
 };
 
 const getDecoratedLevel = logLevel => {
-  // if (!level) {
-  //   return null;
-  // }
-
   const level = logLevel || 'info';
   return (
     <span

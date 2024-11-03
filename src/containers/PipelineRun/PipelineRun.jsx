@@ -55,6 +55,12 @@ import {
   getViewChangeHandler
 } from '../../utils';
 import NotFound from '../NotFound';
+import {
+  getLogLevels,
+  isLogTimestampsEnabled,
+  setLogLevels,
+  setLogTimestampsEnabled
+} from '../../api/utils';
 
 const { PIPELINE_TASK, RETRY, STEP, TASK_RUN_NAME, VIEW } = queryParamConstants;
 
@@ -63,6 +69,47 @@ export /* istanbul ignore next */ function PipelineRunContainer() {
   const location = useLocation();
   const navigate = useNavigate();
   const params = useParams();
+
+  const [logLevels, setLogLevelsState] = useState(getLogLevels());
+  const [showTimestamps, setShowTimestamps] = useState(
+    isLogTimestampsEnabled()
+  );
+
+  function onToggleLogLevel(logLevel) {
+    if (
+      !(
+        typeof logLevel.error === 'boolean' ||
+        typeof logLevel.warning === 'boolean' ||
+        typeof logLevel.info === 'boolean' ||
+        typeof logLevel.notice === 'boolean' ||
+        typeof logLevel.debug === 'boolean'
+      )
+    ) {
+      // TODO: Carbon bug
+      return;
+    }
+
+    setLogLevelsState(levels => {
+      const newLevels = { ...levels, ...logLevel };
+      if (!Object.values(newLevels).filter(Boolean).length) {
+        // TODO: notification
+        alert('must have at least 1 log level enabled');
+        return levels;
+      }
+      setLogLevels(newLevels);
+      return newLevels;
+    });
+  }
+
+  function onToggleShowTimestamps(show) {
+    // TODO: Carbon bug duplicating onChange event for MenuItemSelectable
+    if (typeof show !== 'boolean') {
+      return;
+    }
+
+    setShowTimestamps(show);
+    setLogTimestampsEnabled(show);
+  }
 
   const { name, namespace } = params;
 
@@ -535,7 +582,11 @@ export /* istanbul ignore next */ function PipelineRunContainer() {
           getLogsToolbar({
             ...toolbarParams,
             externalLogsURL,
-            isUsingExternalLogs
+            isUsingExternalLogs,
+            logLevels,
+            onToggleLogLevel,
+            onToggleShowTimestamps,
+            showTimestamps
           })
         }
         maximizedLogsContainer={maximizedLogsContainer.current}
@@ -562,6 +613,7 @@ export /* istanbul ignore next */ function PipelineRunContainer() {
         selectedStepId={currentSelectedStepId}
         selectedTaskId={selectedTaskId}
         selectedTaskRunName={currentTaskRunName}
+        showTimestamps={showTimestamps}
         taskRuns={taskRuns}
         tasks={tasks.concat(clusterTasks)}
         view={view}

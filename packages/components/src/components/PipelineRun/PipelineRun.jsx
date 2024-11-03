@@ -53,6 +53,7 @@ export default /* istanbul ignore next */ function PipelineRun({
   loading,
   maximizedLogsContainer,
   onRetryChange,
+  onToggleShowTimestamps,
   onViewChange = /* istanbul ignore next */ () => {},
   pipeline,
   pipelineRun,
@@ -63,6 +64,7 @@ export default /* istanbul ignore next */ function PipelineRun({
   selectedStepId = null,
   selectedTaskId = null,
   selectedTaskRunName,
+  showTimestamps,
   taskRuns,
   tasks,
   triggerHeader,
@@ -88,7 +90,7 @@ export default /* istanbul ignore next */ function PipelineRun({
     );
   }
 
-  function toggleLogsMaximized() {
+  function onToggleLogsMaximized() {
     setIsLogsMaximized(prevIsLogsMaximized => !prevIsLogsMaximized);
   }
 
@@ -110,9 +112,12 @@ export default /* istanbul ignore next */ function PipelineRun({
             stepStatus &&
             getLogsToolbar({
               isMaximized: isLogsMaximized,
+              onToggleMaximized:
+                !!maximizedLogsContainer && onToggleLogsMaximized,
+              onToggleShowTimestamps,
+              showTimestamps,
               stepStatus,
-              taskRun,
-              toggleMaximized: !!maximizedLogsContainer && toggleLogsMaximized
+              taskRun
             })
           }
           fetchLogs={() => fetchLogs(stepName, stepStatus, taskRun)}
@@ -123,6 +128,7 @@ export default /* istanbul ignore next */ function PipelineRun({
           isLogsMaximized={isLogsMaximized}
           enableLogAutoScroll={enableLogAutoScroll}
           enableLogScrollButtons={enableLogScrollButtons}
+          showTimestamps={showTimestamps}
         />
       </LogsRoot>
     );

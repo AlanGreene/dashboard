@@ -31,7 +31,7 @@ const itemSize = 15; // This should be kept in sync with the line-height in SCSS
 const defaultHeight = itemSize * 100 + itemSize / 2;
 
 const logFormatRegex =
-  /^((?<timestamp>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z)\s?)?(::(?<level>error|warning|info|notice|debug)::)?(?<message>.*)?$/s;
+  /^((?<timestamp>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3,9}Z)\s?)?(::(?<level>error|warning|info|notice|debug)::)?(?<message>.*)?$/s;
 
 export class LogContainer extends Component {
   constructor(props) {

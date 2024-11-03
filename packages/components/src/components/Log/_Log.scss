@@ -85,6 +85,7 @@ pre.tkn--log {
     inset-block-end: var(--tkn-scroll-button-bottom);
   }
 
+  .#{$prefix}--btn--ghost,
   .#{$prefix}--copy-btn {
     inline-size: 2rem;
     block-size: 2rem;

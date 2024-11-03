@@ -154,9 +154,13 @@ export function getLogsToolbar({
   externalLogsURL,
   isMaximized,
   isUsingExternalLogs,
+  logLevels,
+  onToggleLogLevel,
+  onToggleMaximized,
+  onToggleShowTimestamps,
+  showTimestamps,
   stepStatus,
   taskRun,
-  toggleMaximized
 }) {
   const { container } = stepStatus;
   const { namespace } = taskRun.metadata;
@@ -173,8 +177,12 @@ export function getLogsToolbar({
   return (
     <LogsToolbar
       isMaximized={isMaximized}
+      logLevels={logLevels}
       name={`${podName}__${container}__log.txt`}
-      toggleMaximized={toggleMaximized}
+      showTimestamps={showTimestamps}
+      onToggleLogLevel={onToggleLogLevel}
+      onToggleMaximized={onToggleMaximized}
+      onToggleShowTimestamps={onToggleShowTimestamps}
       url={logURL}
     />
   );
