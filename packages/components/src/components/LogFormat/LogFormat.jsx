@@ -11,7 +11,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import PropTypes from 'prop-types';
 import tlds from 'tlds';
 import LinkifyIt from 'linkify-it';
 import { classNames } from '@tektoncd/dashboard-utils';
@@ -105,18 +104,7 @@ const linkify = (str, styleObj, classNameString) => {
   return elements;
 };
 
-const LogFormat = ({
-  children,
-  fields = { message: true },
-  logLevels = {
-    error: true,
-    warning: true,
-    info: true,
-    notice: true,
-    debug: true
-  },
-  parseLogLine = line => ({ message: line })
-}) => {
+const LogFormat = ({ fields = { message: true }, logs = [] }) => {
   let properties = {
     classes: {},
     foregroundColor: null,
@@ -273,11 +261,7 @@ const LogFormat = ({
   };
 
   const parse = (log, index) => {
-    const { timestamp, level = 'info', message } = parseLogLine(log);
-    if (!logLevels[level]) {
-      console.log('skipping', { logLevels, level, message, log });
-      return null;
-    }
+    const { level = 'info', message, timestamp } = log;
     if (!message?.length) {
       return <br key={index} />;
     }
@@ -321,21 +305,13 @@ const LogFormat = ({
     );
   };
 
-  const convert = logs =>
-    logs
-      .split(/\r?\n/)
-      .map((part, index) => {
-        text = '';
-        line = [];
-        return parse(part, index);
-      })
-      .filter(Boolean);
-  const formattedLines = convert(children);
-  return formattedLines.length ? <code>{formattedLines}</code> : null;
-};
-
-LogFormat.propTypes = {
-  children: PropTypes.string.isRequired
+  const convert = () =>
+    logs.map((part, index) => {
+      text = '';
+      line = [];
+      return parse(part, index);
+    });
+  return <code>{convert()}</code>;
 };
 
 export default LogFormat;

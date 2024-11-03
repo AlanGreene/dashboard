@@ -98,7 +98,7 @@ export const ANSICodes = {
 export const Windowed = {
   args: {
     fetchLogs: () => long,
-    showLevel: true,
+    showLevels: true,
     showTimestamps: true,
     stepStatus: { terminated: { reason: 'Completed', exitCode: 0 } }
   }
@@ -107,7 +107,7 @@ export const Windowed = {
 export const Performance = {
   args: {
     fetchLogs: () => performanceTest,
-    showLevel: true,
+    showLevels: true,
     showTimestamps: true,
     stepStatus: { terminated: { reason: 'Completed', exitCode: 0 } }
   },
@@ -134,7 +134,7 @@ export const Toolbar = {
       notice: true,
       debug: false
     },
-    showLevel: true,
+    showLevels: true,
     showTimestamps: true,
     stepStatus: { terminated: { reason: 'Completed', exitCode: 0 } }
   },
@@ -170,5 +170,4 @@ export const Toolbar = {
       />
     );
   }
-
 };

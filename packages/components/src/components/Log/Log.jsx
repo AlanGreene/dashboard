@@ -36,7 +36,7 @@ const logFormatRegex =
 export class LogContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = { loading: true };
+    this.state = { loading: true, logs: [] };
     this.logRef = createRef();
     this.textRef = createRef();
   }
@@ -250,9 +250,12 @@ export class LogContainer extends Component {
         }
 
         const { groups } = logFormatRegex.exec(line);
-        return groups;
+        return {
+          level: 'info',
+          ...groups
+        };
       },
-      showLevel,
+      showLevels,
       showTimestamps,
       stepStatus
     } = this.props;
@@ -266,15 +269,19 @@ export class LogContainer extends Component {
       ]
     } = this.state;
 
-    if (logs.length < 20000) {
+    const parsedLogs = logs.reduce((acc, line) => {
+      const parsedLogLine = parseLogLine(line);
+      if (!logLevels || logLevels[parsedLogLine.level]) {
+        acc.push(parsedLogLine);
+      }
+      return acc;
+    }, []);
+    if (parsedLogs.length < 20_000) {
       return (
         <LogFormat
-          fields={{ level: showLevel, timestamp: showTimestamps }}
-          logLevels={logLevels}
-          parseLogLine={parseLogLine}
-        >
-          {logs.join('\n')}
-        </LogFormat>
+          fields={{ level: showLevels, timestamp: showTimestamps }}
+          logs={parsedLogs}
+        />
       );
     }
 
@@ -285,18 +292,17 @@ export class LogContainer extends Component {
     return (
       <List
         height={height}
-        itemCount={logs.length}
-        itemData={logs} // TODO: logs - filter on logLevels here?
+        itemCount={parsedLogs.length}
+        itemData={parsedLogs}
         itemSize={itemSize}
         width="100%"
       >
         {({ data, index, style }) => (
           <div style={style}>
             <LogFormat
-              fields={{ level: showLevel, timestamp: showTimestamps }}
-              logLevels={logLevels}
-              parseLogLine={parseLogLine}
-            >{`${data[index]}\n`}</LogFormat>
+              fields={{ level: showLevels, timestamp: showTimestamps }}
+              logs={[data[index]]}
+            />
           </div>
         )}
       </List>
@@ -360,7 +366,7 @@ export class LogContainer extends Component {
       logs += decoder.decode(value, { stream: !done });
       this.setState({
         loading: false,
-        logs: logs.split('\n')
+        logs: logs.split(/\r?\n/)
       });
     } else {
       this.setState({
@@ -403,7 +409,7 @@ export class LogContainer extends Component {
       } else {
         this.setState({
           loading: false,
-          logs: logs ? logs.split('\n') : undefined
+          logs: logs ? logs.split(/\r?\n/) : undefined
         });
         if (continuePolling) {
           clearTimeout(this.timer);

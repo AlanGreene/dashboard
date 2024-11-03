@@ -64,7 +64,8 @@ export default /* istanbul ignore next */ function PipelineRun({
   selectedStepId = null,
   selectedTaskId = null,
   selectedTaskRunName,
-  showTimestamps,
+  showLogLevels,
+  showLogTimestamps,
   taskRuns,
   tasks,
   triggerHeader,
@@ -127,8 +128,8 @@ export default /* istanbul ignore next */ function PipelineRun({
           isLogsMaximized={isLogsMaximized}
           enableLogAutoScroll={enableLogAutoScroll}
           enableLogScrollButtons={enableLogScrollButtons}
-          showLevel
-          showTimestamps={showTimestamps}
+          showLevels={showLogLevels}
+          showTimestamps={showLogTimestamps}
         />
       </LogsRoot>
     );
