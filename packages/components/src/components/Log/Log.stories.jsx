@@ -171,3 +171,12 @@ export const Toolbar = {
     );
   }
 };
+
+export const ToolbarPerformance = {
+  args: {
+    ...Toolbar.args,
+    fetchLogs: () => performanceTest
+  },
+  name: 'Toolbar - performance test (<20,000 lines with ANSI)',
+  render: Toolbar.render
+};
