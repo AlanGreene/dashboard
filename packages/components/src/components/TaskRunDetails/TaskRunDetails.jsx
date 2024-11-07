@@ -161,116 +161,12 @@ const TaskRunDetails = ({
     />
   ) : null;
 
-  const tabs = [
-    paramsTable && 'params',
-    resultsTable && 'results',
-    'status',
-    !skippedTask && pod && 'pod'
-  ].filter(Boolean);
+  const tabs = ['params', 'results', 'status', 'pod'];
 
   let selectedTabIndex = tabs.indexOf(view);
   if (selectedTabIndex === -1) {
-    selectedTabIndex = 0;
-  }
-
-  const tabList = [];
-  const tabPanels = [];
-  if (paramsTable) {
-    tabList.push(
-      <Tab key="params">
-        {intl.formatMessage({
-          id: 'dashboard.taskRun.params',
-          defaultMessage: 'Parameters'
-        })}
-      </Tab>
-    );
-    tabPanels.push(
-      <TabPanel key="params">
-        {selectedTabIndex === tabPanels.length && (
-          <div className="tkn--step-status">{paramsTable}</div>
-        )}
-      </TabPanel>
-    );
-  }
-  if (resultsTable) {
-    tabList.push(
-      <Tab key="results">
-        {intl.formatMessage({
-          id: 'dashboard.taskRun.results',
-          defaultMessage: 'Results'
-        })}
-      </Tab>
-    );
-    tabPanels.push(
-      <TabPanel key="results">
-        {selectedTabIndex === tabPanels.length && (
-          <div className="tkn--step-status">{resultsTable}</div>
-        )}
-      </TabPanel>
-    );
-  }
-  tabList.push(
-    <Tab key="status">
-      {intl.formatMessage({
-        id: 'dashboard.taskRun.status',
-        defaultMessage: 'Status'
-      })}
-    </Tab>
-  );
-  tabPanels.push(
-    <TabPanel key="status">
-      {selectedTabIndex === tabPanels.length && (
-        <div className="tkn--step-status">
-          <ViewYAML
-            dark
-            enableSyntaxHighlighting
-            resource={
-              skippedTask ||
-              taskRun.status ||
-              intl.formatMessage({
-                id: 'dashboard.taskRun.status.pending',
-                defaultMessage: 'Pending'
-              })
-            }
-          />
-        </div>
-      )}
-    </TabPanel>
-  );
-  if (!skippedTask && pod) {
-    tabList.push(<Tab key="pod">Pod</Tab>);
-    tabPanels.push(
-      <TabPanel key="pod">
-        {selectedTabIndex === tabPanels.length && (
-          <div className="tkn--step-status">
-            {hasEvents ? (
-              <ContentSwitcher onChange={({ name }) => setPodContent(name)}>
-                <Switch
-                  name="resource"
-                  text={intl.formatMessage({
-                    id: 'dashboard.pod.resource',
-                    defaultMessage: 'Resource'
-                  })}
-                />
-                <Switch
-                  name="events"
-                  text={intl.formatMessage({
-                    id: 'dashboard.pod.events',
-                    defaultMessage: 'Events'
-                  })}
-                />
-              </ContentSwitcher>
-            ) : null}
-            {podContent === 'resource' ? (
-              <ViewYAML dark enableSyntaxHighlighting resource={podResource} />
-            ) : null}
-            {hasEvents && podContent === 'events' ? (
-              <ViewYAML dark enableSyntaxHighlighting resource={podEvents} />
-            ) : null}
-          </div>
-        )}
-      </TabPanel>
-    );
+    // eslint-disable-next-line no-nested-ternary
+    selectedTabIndex = paramsTable ? 0 : resultsTable ? 1 : 2;
   }
 
   return (
@@ -287,9 +183,106 @@ const TaskRunDetails = ({
         selectedIndex={selectedTabIndex}
       >
         <TabList activation="manual" aria-label="TaskRun details">
-          {tabList}
+          {paramsTable ? (
+            <Tab>
+              {intl.formatMessage({
+                id: 'dashboard.taskRun.params',
+                defaultMessage: 'Parameters'
+              })}
+            </Tab>
+          ) : null}
+          {resultsTable ? (
+            <Tab>
+              {intl.formatMessage({
+                id: 'dashboard.taskRun.results',
+                defaultMessage: 'Results'
+              })}
+            </Tab>
+          ) : null}
+          <Tab>
+            {intl.formatMessage({
+              id: 'dashboard.taskRun.status',
+              defaultMessage: 'Status'
+            })}
+          </Tab>
+          {!skippedTask && pod ? <Tab>Pod</Tab> : null}
         </TabList>
-        <TabPanels>{tabPanels}</TabPanels>
+        <TabPanels>
+          {paramsTable ? (
+            <TabPanel>
+              {tabs[selectedTabIndex] === 'params' && (
+                <div className="tkn--step-status">{paramsTable}</div>
+              )}
+            </TabPanel>
+          ) : null}
+          {resultsTable ? (
+            <TabPanel>
+              {tabs[selectedTabIndex] === 'results' && (
+                <div className="tkn--step-status">{resultsTable}</div>
+              )}
+            </TabPanel>
+          ) : null}
+          <TabPanel>
+            {tabs[selectedTabIndex] === 'status' && (
+              <div className="tkn--step-status">
+                <ViewYAML
+                  dark
+                  enableSyntaxHighlighting
+                  resource={
+                    skippedTask ||
+                    taskRun.status ||
+                    intl.formatMessage({
+                      id: 'dashboard.taskRun.status.pending',
+                      defaultMessage: 'Pending'
+                    })
+                  }
+                />
+              </div>
+            )}
+          </TabPanel>
+          {!skippedTask && pod ? (
+            <TabPanel>
+              {tabs[selectedTabIndex] === 'pod' && (
+                <div className="tkn--step-status">
+                  {hasEvents ? (
+                    <ContentSwitcher
+                      onChange={({ name }) => setPodContent(name)}
+                    >
+                      <Switch
+                        name="resource"
+                        text={intl.formatMessage({
+                          id: 'dashboard.pod.resource',
+                          defaultMessage: 'Resource'
+                        })}
+                      />
+                      <Switch
+                        name="events"
+                        text={intl.formatMessage({
+                          id: 'dashboard.pod.events',
+                          defaultMessage: 'Events'
+                        })}
+                      />
+                    </ContentSwitcher>
+                  ) : null}
+                  {podContent === 'resource' ? (
+                    <ViewYAML
+                      dark
+                      enableSyntaxHighlighting
+                      resource={podResource}
+                    />
+                  ) : null}
+                  {hasEvents && podContent === 'events' ? (
+                    <ViewYAML
+                      dark
+                      enableSyntaxHighlighting
+                      resource={podEvents}
+                    />
+                  ) : null}
+                </div>
+              )}
+            </TabPanel>
+          ) : null}
+        </TabPanels>
       </Tabs>
     </div>
   );
