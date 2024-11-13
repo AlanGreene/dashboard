@@ -31,7 +31,7 @@ import {
 const LogsToolbar = ({
   isMaximized,
   name,
-  logLevels = {},
+  logLevels,
   onToggleShowTimestamps,
   onToggleLogLevel,
   onToggleMaximized,
@@ -108,54 +108,58 @@ const LogsToolbar = ({
             onChange={onToggleShowTimestamps}
             selected={showTimestamps}
           />
-          <MenuItemDivider />
-          <MenuItemGroup
-            label={intl.formatMessage({
-              id: 'dashboard.logs.logLevels.label',
-              defaultMessage: 'Log levels'
-            })}
-          >
-            <MenuItemSelectable
-              label={intl.formatMessage({
-                id: 'dashboard.logs.logLevels.error',
-                defaultMessage: 'Error'
-              })}
-              onChange={error => onToggleLogLevel({ error })}
-              selected={logLevels.error}
-            />
-            <MenuItemSelectable
-              label={intl.formatMessage({
-                id: 'dashboard.logs.logLevels.warning',
-                defaultMessage: 'Warning'
-              })}
-              onChange={warning => onToggleLogLevel({ warning })}
-              selected={logLevels.warning}
-            />
-            <MenuItemSelectable
-              label={intl.formatMessage({
-                id: 'dashboard.logs.logLevels.info',
-                defaultMessage: 'Info'
-              })}
-              onChange={info => onToggleLogLevel({ info })}
-              selected={logLevels.info}
-            />
-            <MenuItemSelectable
-              label={intl.formatMessage({
-                id: 'dashboard.logs.logLevels.notice',
-                defaultMessage: 'Notice'
-              })}
-              onChange={notice => onToggleLogLevel({ notice })}
-              selected={logLevels.notice}
-            />
-            <MenuItemSelectable
-              label={intl.formatMessage({
-                id: 'dashboard.logs.logLevels.debug',
-                defaultMessage: 'Debug'
-              })}
-              onChange={debug => onToggleLogLevel({ debug })}
-              selected={logLevels.debug}
-            />
-          </MenuItemGroup>
+          {logLevels && onToggleLogLevel ? (
+            <>
+              <MenuItemDivider />
+              <MenuItemGroup
+                label={intl.formatMessage({
+                  id: 'dashboard.logs.logLevels.label',
+                  defaultMessage: 'Log levels'
+                })}
+              >
+                <MenuItemSelectable
+                  label={intl.formatMessage({
+                    id: 'dashboard.logs.logLevels.error',
+                    defaultMessage: 'Error'
+                  })}
+                  onChange={error => onToggleLogLevel({ error })}
+                  selected={logLevels.error}
+                />
+                <MenuItemSelectable
+                  label={intl.formatMessage({
+                    id: 'dashboard.logs.logLevels.warning',
+                    defaultMessage: 'Warning'
+                  })}
+                  onChange={warning => onToggleLogLevel({ warning })}
+                  selected={logLevels.warning}
+                />
+                <MenuItemSelectable
+                  label={intl.formatMessage({
+                    id: 'dashboard.logs.logLevels.notice',
+                    defaultMessage: 'Notice'
+                  })}
+                  onChange={notice => onToggleLogLevel({ notice })}
+                  selected={logLevels.notice}
+                />
+                <MenuItemSelectable
+                  label={intl.formatMessage({
+                    id: 'dashboard.logs.logLevels.info',
+                    defaultMessage: 'Info'
+                  })}
+                  onChange={info => onToggleLogLevel({ info })}
+                  selected={logLevels.info}
+                />
+                <MenuItemSelectable
+                  label={intl.formatMessage({
+                    id: 'dashboard.logs.logLevels.debug',
+                    defaultMessage: 'Debug'
+                  })}
+                  onChange={debug => onToggleLogLevel({ debug })}
+                  selected={logLevels.debug}
+                />
+              </MenuItemGroup>
+            </>
+          ) : null}
         </OverflowMenu>
       </FeatureFlags>
     </div>

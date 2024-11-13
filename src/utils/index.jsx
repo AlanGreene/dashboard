@@ -160,7 +160,7 @@ export function getLogsToolbar({
   onToggleShowTimestamps,
   showTimestamps,
   stepStatus,
-  taskRun,
+  taskRun
 }) {
   const { container } = stepStatus;
   const { namespace } = taskRun.metadata;

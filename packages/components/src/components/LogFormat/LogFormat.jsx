@@ -293,7 +293,9 @@ const LogFormat = ({ fields = { message: true }, logs = [] }) => {
     }
     return (
       <div
-        className={`tkn--log-line ${levelBgClassName[level] || ''}`}
+        className={classNames('tkn--log-line', {
+          [levelBgClassName[level]]: fields.level && levelBgClassName[level]
+        })}
         key={index}
       >
         {fields.timestamp && (

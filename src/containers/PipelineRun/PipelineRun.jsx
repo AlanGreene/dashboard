@@ -614,7 +614,7 @@ export /* istanbul ignore next */ function PipelineRunContainer() {
         selectedStepId={currentSelectedStepId}
         selectedTaskId={selectedTaskId}
         selectedTaskRunName={currentTaskRunName}
-        showLogLevels
+        showLogLevels={false}
         showLogTimestamps={showTimestamps}
         taskRuns={taskRuns}
         tasks={tasks.concat(clusterTasks)}
