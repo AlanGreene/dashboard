@@ -56,14 +56,64 @@ import {
   useTaskRun
 } from '../../api';
 import NotFound from '../NotFound';
+import {
+  getLogLevels,
+  isLogTimestampsEnabled,
+  setLogLevels,
+  setLogTimestampsEnabled
+} from '../../api/utils';
 
 const { STEP, RETRY, TASK_RUN_DETAILS, VIEW } = queryParamConstants;
 
-export function TaskRunContainer() {
+export function TaskRunContainer({
+  // deliberately disabled for now, needs discussion of log format
+  showLogLevels = false
+}) {
   const intl = useIntl();
   const location = useLocation();
   const navigate = useNavigate();
   const params = useParams();
+
+  const [logLevels, setLogLevelsState] = useState(getLogLevels());
+  const [showTimestamps, setShowTimestamps] = useState(
+    isLogTimestampsEnabled()
+  );
+
+  function onToggleLogLevel(logLevel) {
+    if (
+      !(
+        typeof logLevel.error === 'boolean' ||
+        typeof logLevel.warning === 'boolean' ||
+        typeof logLevel.notice === 'boolean' ||
+        typeof logLevel.info === 'boolean' ||
+        typeof logLevel.debug === 'boolean'
+      )
+    ) {
+      // TODO: Carbon bug
+      return;
+    }
+
+    setLogLevelsState(levels => {
+      const newLevels = { ...levels, ...logLevel };
+      if (!Object.values(newLevels).filter(Boolean).at.length) {
+        // TODO: notification
+        alert('must have at least 1 log level enabled');
+        return levels;
+      }
+      setLogLevels(newLevels);
+      return newLevels;
+    });
+  }
+
+  function onToggleShowTimestamps(show) {
+    // TODO: Carbon bug duplicating onChange event for MenuItemSelectable
+    if (typeof show !== 'boolean') {
+      return;
+    }
+
+    setShowTimestamps(show);
+    setLogTimestampsEnabled(show);
+  }
 
   const { name, namespace: namespaceParam } = params;
 
@@ -158,22 +208,28 @@ export function TaskRunContainer() {
           : null)}
       >
         <Log
+          fetchLogs={() => logsRetriever(stepName, stepStatus, run)}
+          isLogsMaximized={isLogsMaximized}
+          enableLogAutoScroll
+          enableLogScrollButtons
+          key={`${stepName}:${currentRetry}`}
+          logLevels={logLevels}
+          showLevels={showLogLevels}
+          showTimestamps={showTimestamps}
+          stepStatus={stepStatus}
           toolbar={getLogsToolbar({
             externalLogsURL,
             isMaximized: isLogsMaximized,
             isUsingExternalLogs,
+            logLevels: showLogLevels && logLevels,
+            onToggleLogLevel,
             onToggleMaximized:
               !!maximizedLogsContainer && onToggleLogsMaximized,
-            // TODO: wire up timestamps + log levels toggles
+            onToggleShowTimestamps,
+            showTimestamps,
             stepStatus,
             taskRun: run
           })}
-          fetchLogs={() => logsRetriever(stepName, stepStatus, run)}
-          key={`${stepName}:${currentRetry}`}
-          stepStatus={stepStatus}
-          isLogsMaximized={isLogsMaximized}
-          enableLogAutoScroll
-          enableLogScrollButtons
         />
       </LogsRoot>
     );

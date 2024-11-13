@@ -64,7 +64,10 @@ import {
 
 const { PIPELINE_TASK, RETRY, STEP, TASK_RUN_NAME, VIEW } = queryParamConstants;
 
-export /* istanbul ignore next */ function PipelineRunContainer() {
+export /* istanbul ignore next */ function PipelineRunContainer({
+  // deliberately disabled for now, needs discussion of log format
+  showLogLevels = false
+}) {
   const intl = useIntl();
   const location = useLocation();
   const navigate = useNavigate();
@@ -584,7 +587,7 @@ export /* istanbul ignore next */ function PipelineRunContainer() {
             ...toolbarParams,
             externalLogsURL,
             isUsingExternalLogs,
-            logLevels,
+            logLevels: showLogLevels && logLevels,
             onToggleLogLevel,
             onToggleShowTimestamps,
             showTimestamps
@@ -614,7 +617,7 @@ export /* istanbul ignore next */ function PipelineRunContainer() {
         selectedStepId={currentSelectedStepId}
         selectedTaskId={selectedTaskId}
         selectedTaskRunName={currentTaskRunName}
-        showLogLevels={false}
+        showLogLevels={showLogLevels}
         showLogTimestamps={showTimestamps}
         taskRuns={taskRuns}
         tasks={tasks.concat(clusterTasks)}

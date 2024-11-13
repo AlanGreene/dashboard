@@ -115,7 +115,6 @@ export default /* istanbul ignore next */ function PipelineRun({
               isMaximized: isLogsMaximized,
               onToggleMaximized:
                 !!maximizedLogsContainer && onToggleLogsMaximized,
-              showLogLevels,
               stepStatus,
               taskRun
             })

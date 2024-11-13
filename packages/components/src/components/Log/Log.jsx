@@ -249,10 +249,13 @@ export class LogContainer extends Component {
           return { message: line };
         }
 
-        const { groups } = logFormatRegex.exec(line);
+        const {
+          groups: { level = 'info', message, timestamp }
+        } = logFormatRegex.exec(line);
         return {
-          level: 'info',
-          ...groups
+          level,
+          message,
+          timestamp
         };
       },
       showLevels,
