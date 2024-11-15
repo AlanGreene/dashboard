@@ -1,0 +1,127 @@
+2024-11-14T14:15:28.713708091Z 
+2024-11-14T14:15:28.713792226Z  === Executing custom script for stage 'test' ===
+2024-11-14T14:15:28.713799005Z 
+2024-11-14T14:15:28.928857900Z ::debug::[pipeline_utils:23] | Using PIPELINE_WORKSPACE as /workspace/app
+2024-11-14T14:15:29.695906330Z ::debug::[get_repo_params:223] | get_repo_params called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024.
+2024-11-14T14:15:29.702488354Z ::debug::[get_repo_params:30] | get_repo_name called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024. Repository Name identified as compliance-app-28102024
+2024-11-14T14:15:29.708844904Z ::debug::[get_repo_params:18] | get_repo_owner called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024. Repository Owner identified as PIYUSH-Mundra
+2024-11-14T14:15:29.797239573Z ::debug::[get_repo_params:141] | get_repo_specific_token called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024. Reading token from environment property 
+2024-11-14T14:15:29.797541836Z ::debug::[get_repo_params:153] | get_repo_token called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024. Reading token from environment property .
+2024-11-14T14:15:29.797555338Z ::debug::[get_repo_params:162] | Unable to retreive repo_token from environment property. Attempt to fetch Personal Access Token.
+2024-11-14T14:15:29.816102286Z ::debug::[get_repo_params:116] | get_repo_pat called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024. Auth Type identified as oauth
+2024-11-14T14:15:29.816340215Z ::debug::[get_repo_params:167] | Unable to retreive Personal Access Token. Attempt to fetch token from Toolchain Broker.
+2024-11-14T14:15:29.820693252Z ::debug::[get_repo_params:89] | get_absolute_scm_type called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024. SCM Type identified as github_integrated
+2024-11-14T14:15:30.352915220Z ::debug::[get_credentials_v2:187] | Fetch Git Token for SCM Type: github_integrated, SCM ID: integrated, Repository URL: https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024.
+2024-11-14T14:15:30.354661332Z ::info::Fetch git token for https://github.ibm.com/PIYUSH-Mundra/compliance-inventory-28102024.git
+2024-11-14T14:15:30.486351336Z ::debug::[get_credentials_v2:106] | Returning git token for https://github.ibm.com/PIYUSH-Mundra/compliance-inventory-28102024.git as found in cache.
+2024-11-14T14:15:30.953262853Z ::debug::[get_repo_params:89] | get_absolute_scm_type called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024. SCM Type identified as github_integrated
+2024-11-14T14:15:31.879354078Z ::debug::[get_repo_params:223] | get_repo_params called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024.
+2024-11-14T14:15:31.884533361Z ::debug::[get_repo_params:30] | get_repo_name called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024. Repository Name identified as compliance-app-28102024
+2024-11-14T14:15:31.889010980Z ::debug::[get_repo_params:18] | get_repo_owner called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024. Repository Owner identified as PIYUSH-Mundra
+2024-11-14T14:15:31.989144028Z ::debug::[get_repo_params:141] | get_repo_specific_token called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024. Reading token from environment property 
+2024-11-14T14:15:31.989638591Z ::debug::[get_repo_params:153] | get_repo_token called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024. Reading token from environment property .
+2024-11-14T14:15:31.989975326Z ::debug::[get_repo_params:162] | Unable to retreive repo_token from environment property. Attempt to fetch Personal Access Token.
+2024-11-14T14:15:31.994609169Z ::debug::[get_repo_params:116] | get_repo_pat called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024. Auth Type identified as oauth
+2024-11-14T14:15:31.995019732Z ::debug::[get_repo_params:167] | Unable to retreive Personal Access Token. Attempt to fetch token from Toolchain Broker.
+2024-11-14T14:15:32.000062376Z ::debug::[get_repo_params:89] | get_absolute_scm_type called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024. SCM Type identified as github_integrated
+2024-11-14T14:15:32.647092773Z ::debug::[get_credentials_v2:187] | Fetch Git Token for SCM Type: github_integrated, SCM ID: integrated, Repository URL: https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024.
+2024-11-14T14:15:32.654851100Z ::info::Fetch git token for https://github.ibm.com/PIYUSH-Mundra/compliance-inventory-28102024.git
+2024-11-14T14:15:32.763844281Z ::debug::[get_credentials_v2:106] | Returning git token for https://github.ibm.com/PIYUSH-Mundra/compliance-inventory-28102024.git as found in cache.
+2024-11-14T14:15:33.136711849Z ::debug::[get_repo_params:89] | get_absolute_scm_type called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024. SCM Type identified as github_integrated
+2024-11-14T14:15:36.120601870Z ::debug::[check-evidence-for-reuse:25] | Evidence reuse is not enabled. To enable, set the environment property evidence-reuse=1 in the pipeline.
+2024-11-14T14:15:36.121999870Z ::debug::[collect_evidence_helpers:72] | Please ensure that 'check-evidence-for-reuse' command is called in a subshell to prevent pipeline stage from exiting on error.
+2024-11-14T14:15:40.447948793Z ::debug::[get_repo_params:223] | get_repo_params called for https://github.ibm.com/PIYUSH-Mundra/compliance-evidence-28102024.
+2024-11-14T14:15:40.456688527Z ::debug::[get_repo_params:30] | get_repo_name called for https://github.ibm.com/PIYUSH-Mundra/compliance-evidence-28102024. Repository Name identified as compliance-evidence-28102024
+2024-11-14T14:15:40.463751775Z ::debug::[get_repo_params:18] | get_repo_owner called for https://github.ibm.com/PIYUSH-Mundra/compliance-evidence-28102024. Repository Owner identified as PIYUSH-Mundra
+2024-11-14T14:15:40.555545715Z ::debug::[get_repo_params:141] | get_repo_specific_token called for https://github.ibm.com/PIYUSH-Mundra/compliance-evidence-28102024. Reading token from environment property 
+2024-11-14T14:15:40.557432330Z ::debug::[get_repo_params:153] | get_repo_token called for https://github.ibm.com/PIYUSH-Mundra/compliance-evidence-28102024. Reading token from environment property .
+2024-11-14T14:15:40.557964335Z ::debug::[get_repo_params:162] | Unable to retreive repo_token from environment property. Attempt to fetch Personal Access Token.
+2024-11-14T14:15:40.574054758Z ::debug::[get_repo_params:116] | get_repo_pat called for https://github.ibm.com/PIYUSH-Mundra/compliance-evidence-28102024. Auth Type identified as oauth
+2024-11-14T14:15:40.574117400Z ::debug::[get_repo_params:167] | Unable to retreive Personal Access Token. Attempt to fetch token from Toolchain Broker.
+2024-11-14T14:15:40.579895778Z ::debug::[get_repo_params:89] | get_absolute_scm_type called for https://github.ibm.com/PIYUSH-Mundra/compliance-evidence-28102024. SCM Type identified as github_integrated
+2024-11-14T14:15:41.160738308Z ::debug::[get_credentials_v2:187] | Fetch Git Token for SCM Type: github_integrated, SCM ID: integrated, Repository URL: https://github.ibm.com/PIYUSH-Mundra/compliance-evidence-28102024.
+2024-11-14T14:15:41.167817900Z ::info::Fetch git token for https://github.ibm.com/PIYUSH-Mundra/compliance-inventory-28102024.git
+2024-11-14T14:15:41.262492234Z ::debug::[get_credentials_v2:106] | Returning git token for https://github.ibm.com/PIYUSH-Mundra/compliance-inventory-28102024.git as found in cache.
+2024-11-14T14:15:41.801014396Z ::info::Collect evidence based on the following data:
+2024-11-14T14:15:41.801598898Z ::debug::[collect_evidence_helpers:842] | Asset info:
+2024-11-14T14:15:41.801605363Z ::debug::[collect_evidence_helpers:861] |   repo:\n    app-repo
+2024-11-14T14:15:41.802997712Z ::debug::[collect_evidence_helpers:863] | Evidence info:
+2024-11-14T14:15:41.803239547Z ::debug::[collect_evidence_helpers:864] |   Type: com.ibm.unit_tests
+2024-11-14T14:15:41.803255963Z ::debug::[collect_evidence_helpers:865] |   Tool: jest
+2024-11-14T14:15:41.803899793Z ::debug::[collect_evidence_helpers:866] |   Status: pending
+2024-11-14T14:15:41.806516724Z ::debug::[collect_evidence_helpers:867] |   Attachments: \n 
+2024-11-14T14:15:41.806872105Z ::debug::[collect_evidence_helpers:868] |   Additional Comment:  \n
+2024-11-14T14:15:46.199990005Z ::info::Skipping evidence collection, this is a PR pipeline without evidence collection!
+2024-11-14T14:15:46.200348306Z pending
+2024-11-14T14:15:46.861125691Z 
+2024-11-14T14:15:46.861171541Z > sample-nodeapp@1.0.0 test
+2024-11-14T14:15:46.861177842Z > jest ./test
+2024-11-14T14:15:46.861181097Z 
+2024-11-14T14:15:49.283636199Z Sample test
+2024-11-14T14:15:49.294625687Z PASS test/test.js
+2024-11-14T14:15:49.295158376Z   test
+2024-11-14T14:15:49.295874151Z     ✓ dummy test (3 ms)
+2024-11-14T14:15:49.296128451Z 
+2024-11-14T14:15:49.319913009Z Test Suites: 1 passed, 1 total
+2024-11-14T14:15:49.319951049Z Tests:       1 passed, 1 total
+2024-11-14T14:15:49.319955286Z Snapshots:   0 total
+2024-11-14T14:15:49.319958474Z Time:        1.178 s
+2024-11-14T14:15:49.319963681Z Ran all test suites matching /.\/test/i.
+2024-11-14T14:15:50.380859476Z Plug-in 'doi 0.4.6' was installed.
+2024-11-14T14:15:50.381866840Z Checking upgrades for plug-in 'doi' from repository 'IBM Cloud'...
+2024-11-14T14:15:50.568959126Z Update 'doi 0.4.6' to 'doi[doi] 0.4.7'
+2024-11-14T14:15:50.569372732Z Attempting to download the binary file...
+2024-11-14T14:15:50.733486643Z 
+ 0 B / 14.17 MiB    0.00%
+ 14.17 MiB / 14.17 MiB  100.00% 0s
+2024-11-14T14:15:50.734489857Z 14862184 bytes downloaded
+2024-11-14T14:15:50.797665543Z Updating binary...
+2024-11-14T14:15:50.968968425Z OK
+2024-11-14T14:15:50.969018634Z The plug-in was successfully upgraded.
+2024-11-14T14:15:55.573754036Z ::debug::[get_repo_params:223] | get_repo_params called for https://github.ibm.com/PIYUSH-Mundra/compliance-evidence-28102024.
+2024-11-14T14:15:55.581812228Z ::debug::[get_repo_params:30] | get_repo_name called for https://github.ibm.com/PIYUSH-Mundra/compliance-evidence-28102024. Repository Name identified as compliance-evidence-28102024
+2024-11-14T14:15:55.591100810Z ::debug::[get_repo_params:18] | get_repo_owner called for https://github.ibm.com/PIYUSH-Mundra/compliance-evidence-28102024. Repository Owner identified as PIYUSH-Mundra
+2024-11-14T14:15:55.687537215Z ::debug::[get_repo_params:141] | get_repo_specific_token called for https://github.ibm.com/PIYUSH-Mundra/compliance-evidence-28102024. Reading token from environment property 
+2024-11-14T14:15:55.687968311Z ::debug::[get_repo_params:153] | get_repo_token called for https://github.ibm.com/PIYUSH-Mundra/compliance-evidence-28102024. Reading token from environment property .
+2024-11-14T14:15:55.687985520Z ::debug::[get_repo_params:162] | Unable to retreive repo_token from environment property. Attempt to fetch Personal Access Token.
+2024-11-14T14:15:55.692839971Z ::debug::[get_repo_params:116] | get_repo_pat called for https://github.ibm.com/PIYUSH-Mundra/compliance-evidence-28102024. Auth Type identified as oauth
+2024-11-14T14:15:55.693150091Z ::debug::[get_repo_params:167] | Unable to retreive Personal Access Token. Attempt to fetch token from Toolchain Broker.
+2024-11-14T14:15:55.698772182Z ::debug::[get_repo_params:89] | get_absolute_scm_type called for https://github.ibm.com/PIYUSH-Mundra/compliance-evidence-28102024. SCM Type identified as github_integrated
+2024-11-14T14:15:56.326047917Z ::debug::[get_credentials_v2:187] | Fetch Git Token for SCM Type: github_integrated, SCM ID: integrated, Repository URL: https://github.ibm.com/PIYUSH-Mundra/compliance-evidence-28102024.
+2024-11-14T14:15:56.339172550Z ::info::Fetch git token for https://github.ibm.com/PIYUSH-Mundra/compliance-inventory-28102024.git
+2024-11-14T14:15:56.434450644Z ::debug::[get_credentials_v2:106] | Returning git token for https://github.ibm.com/PIYUSH-Mundra/compliance-inventory-28102024.git as found in cache.
+2024-11-14T14:15:56.918391432Z ::info::Collect evidence based on the following data:
+2024-11-14T14:15:56.918862770Z ::debug::[collect_evidence_helpers:842] | Asset info:
+2024-11-14T14:15:56.918880844Z ::debug::[collect_evidence_helpers:861] |   repo:\n    app-repo
+2024-11-14T14:15:56.918885556Z ::debug::[collect_evidence_helpers:863] | Evidence info:
+2024-11-14T14:15:56.918891336Z ::debug::[collect_evidence_helpers:864] |   Type: com.ibm.unit_tests
+2024-11-14T14:15:56.918908844Z ::debug::[collect_evidence_helpers:865] |   Tool: jest
+2024-11-14T14:15:56.918913471Z ::debug::[collect_evidence_helpers:866] |   Status: success
+2024-11-14T14:15:56.920670017Z ::debug::[collect_evidence_helpers:867] |   Attachments: \n unit-test-result.xml
+2024-11-14T14:15:56.920897347Z ::debug::[collect_evidence_helpers:868] |   Additional Comment:  \n
+2024-11-14T14:16:08.004148442Z ::info::Skipping evidence collection, this is a PR pipeline without evidence collection!
+2024-11-14T14:16:08.065631069Z ::info::Details of asset created:
+2024-11-14T14:16:11.849912684Z ┌─────┬──────┬────┬─────┐
+2024-11-14T14:16:11.849981080Z │ Key │ Type │ ID │ URL │
+2024-11-14T14:16:11.849987327Z └─────┴──────┴────┴─────┘
+2024-11-14T14:16:11.869437298Z ::info::Details of evidence collected:
+2024-11-14T14:16:15.892827575Z ┌─────────────────┬────────────────────┐
+2024-11-14T14:16:15.892883264Z │ Attribute       │ Value              │
+2024-11-14T14:16:15.892888519Z ├─────────────────┼────────────────────┤
+2024-11-14T14:16:15.892895717Z │ Status          │ [32msuccess[39m            │
+2024-11-14T14:16:15.892900191Z ├─────────────────┼────────────────────┤
+2024-11-14T14:16:15.892904785Z │ Tool Type       │ jest               │
+2024-11-14T14:16:15.892908480Z ├─────────────────┼────────────────────┤
+2024-11-14T14:16:15.892912390Z │ Evidence ID     │ -                  │
+2024-11-14T14:16:15.892916374Z ├─────────────────┼────────────────────┤
+2024-11-14T14:16:15.892920207Z │ Evidence Type   │ com.ibm.unit_tests │
+2024-11-14T14:16:15.892924894Z ├─────────────────┼────────────────────┤
+2024-11-14T14:16:15.892930294Z │ Issues          │ -                  │
+2024-11-14T14:16:15.892933984Z ├─────────────────┼────────────────────┤
+2024-11-14T14:16:15.892938649Z │ Attachment URLs │                    │
+2024-11-14T14:16:15.892942307Z │                 │                    │
+2024-11-14T14:16:15.892947043Z └─────────────────┴────────────────────┘
+2024-11-14T14:16:15.989838531Z success
+2024-11-14T14:16:15.990982244Z 
+2024-11-14T14:16:15.991262487Z  === Execution of custom script for stage 'test' finished. Exit Code: '0'. ===
+2024-11-14T14:16:15.991287634Z 

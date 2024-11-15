@@ -22,12 +22,13 @@ pre.tkn--log {
   padding-block-end: 1.3rem;
   padding-inline: var(--tkn-log-inline-padding);
   @include font-family('mono');
+  // @include type-style('code-01');
   font-size: 0.75rem;
   @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
     font-size: 0.6875rem;
   }
 
-  line-height: 0.95rem; // Update the react-window List itemSize if changing this
+  line-height: 1rem; // Update the react-window List itemSize if changing this
   overflow: hidden;
   background-color: $background;
   color: $text-primary;
@@ -106,7 +107,8 @@ pre.tkn--log {
   }
 
   .tkn--log-trailer {
-    font-family: ibm-plex-sans, sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
+    // @include type-style('helper-text-01');
     font-weight: bold;
 
     &[data-status='Completed'] {
@@ -126,14 +128,95 @@ pre.tkn--log {
   }
 
   .tkn--log-line {
+    transition: 0s background-color;
+    &:hover {
+      background-color: #ffffff10;
+      transition-delay: 0.5s;
+    }
+
+    &.tkn--log-level--error {
+      // background-color: rgba(187, 0, 0, 0.15);
+      // TODO: relative colours just recently hit baseline, support not quite where we need just yet
+      //       either capture resulting colour and hardcode for now, or use SASS to adjust the colour
+      // e.g.
+      // @use 'sass:color';
+      // background-color: color.change($support-error-inverse, $alpha: 15%);
+      background-color: rgb(from var(--cds-support-error-inverse) r g b / 15%);
+
+      &:hover {
+        // background-color: rgba(187, 0, 0, 0.3);
+        background-color: rgb(from var(--cds-support-error-inverse) r g b / 30%);
+      }
+    }
+
+    &.tkn--log-level--warning {
+      // background-color: #f4e61923;
+      background-color: rgb(from var(--cds-support-warning-inverse) r g b / 15%);
+
+      &:hover {
+        // background-color: #f4e61933;
+        background-color: rgb(from var(--cds-support-warning-inverse) r g b / 30%);
+      }
+    }
+
     .tkn--log-line--timestamp,
     .tkn--log-line--level {
-      margin-inline-end: 0.5rem;
+      margin-inline-end: 0.5rem; // TODO: why does Curtis see a much bigger gap?
+    }
+
+    .tkn--log-line--timestamp {
+      // color: hsl(180 0 60%);
+      color: var(--cds-text-helper);
+      font-weight: 300;
+      display: inline-block;
+      min-width: 7rem; // TODO: logs - need to account for shorter / longer translations
     }
 
     .tkn--log-line--level {
       display: inline-block;
-      min-inline-size: 4.1rem;
+      // font-weight: bold;
+      padding-inline: 4px;
+      // border-radius: 2px;
+
+      &.tkn--log-level--error {
+        // color: var(--cds-button-danger-active);
+        // background-color: var(--cds-support-error);
+        color: var(--cds-tag-color-red);
+        background-color: var(--cds-tag-background-red);
+        background-color: rgb(from var(--cds-tag-background-red) r g b / 80%);
+        // color: #981f53;
+        // background-color: #ffd6e8;
+      }
+
+      &.tkn--log-level--warning {
+        // ok ?
+        // background-color: var(--cds-support-warning);
+        // color: var(--cds-support-warning);
+        background-color: rgb(from var(--cds-support-warning) r g b / 35%);
+        color: var(--cds-text-primary);
+      }
+
+      &.tkn--log-level--notice {
+        background-color: var(--cds-tag-background-teal);
+        // background-color: rgb(from var(--cds-tag-background-teal) r g b / 60%);
+        color: var(--cds-tag-color-teal);
+      }
+
+      &.tkn--log-level--info {
+        // background-color: hsl(0, 0%, 25%);
+        // background-color: #e5e0df;
+        // background-color: #525252;
+        background-color: var(--cds-tag-background-gray);
+        // color: #171414;
+        color: var(--cds-text-primary);
+        // ok ?
+      }
+
+      &.tkn--log-level--debug {
+        // background-color: var(--cds-tag-background-purple);
+        background-color: rgb(from var(--cds-tag-background-purple) r g b / 60%);
+        color: var(--cds-tag-color-purple);
+      }
     }
   }
 }

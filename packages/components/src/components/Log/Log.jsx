@@ -27,7 +27,7 @@ import {
 import DotSpinner from '../DotSpinner';
 import LogFormat from '../LogFormat';
 
-const itemSize = 15; // This should be kept in sync with the line-height in SCSS
+const itemSize = 16; // This should be kept in sync with the line-height in SCSS
 const defaultHeight = itemSize * 100 + itemSize / 2;
 
 const logFormatRegex =
@@ -250,7 +250,7 @@ export class LogContainer extends Component {
         }
 
         const {
-          groups: { level = 'info', message, timestamp }
+          groups: { level, message, timestamp }
         } = logFormatRegex.exec(line);
         return {
           level,
@@ -274,7 +274,14 @@ export class LogContainer extends Component {
 
     const parsedLogs = logs.reduce((acc, line) => {
       const parsedLogLine = parseLogLine(line);
-      if (!logLevels || logLevels[parsedLogLine.level]) {
+      if (
+        !logLevels ||
+        // we treat lines with no log level as if they specified 'info'
+        // but we don't display a default level for these lines to avoid
+        // unnecessary noise for users not using the expected log format
+        (!parsedLogLine.level && logLevels.info) ||
+        logLevels[parsedLogLine.level]
+      ) {
         acc.push(parsedLogLine);
       }
       return acc;

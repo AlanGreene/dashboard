@@ -16,6 +16,7 @@ import LinkifyIt from 'linkify-it';
 import { classNames } from '@tektoncd/dashboard-utils';
 
 import { colors } from './defaults';
+import FormattedDate from '../FormattedDate';
 
 const linkifyIt = LinkifyIt().tlds(tlds);
 
@@ -24,22 +25,27 @@ const ansiRegex = /^\u001b([@-_])(.*?)([@-~])/;
 const characterRegex = /[^]/m;
 
 const levelClassName = {
-  error: 'tkn--ansi--color-fg--bright-red',
-  warning: 'tkn--ansi--color-fg--bright-yellow',
-  notice: 'tkn--ansi--color-fg--cyan',
-  debug: 'tkn--ansi--color-fg--bright-magenta'
+  // error: 'tkn--ansi--color-fg--bright-red',
+  // warning: 'tkn--ansi--color-fg--bright-yellow',
+  // notice: 'tkn--ansi--color-fg--cyan',
+  // debug: 'tkn--ansi--color-fg--bright-magenta'
 };
 
 const levelBgClassName = {
-  error: 'tkn--log-level--error'
+  error: 'tkn--log-level--error',
+  warning: 'tkn--log-level--warning'
 };
 
 const getDecoratedLevel = level => {
+  if (!level) {
+    return null;
+  }
+
   return (
     <span
       className={`tkn--log-line--level tkn--log-level--${level} ${levelClassName[level] || ''}`}
     >
-      [{level.toUpperCase()}]
+      {level}
     </span>
   );
 };
@@ -261,8 +267,8 @@ const LogFormat = ({ fields = { message: true }, logs = [] }) => {
   };
 
   const parse = (log, index) => {
-    const { level = 'info', message, timestamp } = log;
-    if (!message?.length) {
+    const { level, message = '', timestamp } = log;
+    if (!message?.length && !timestamp && !level) {
       return <br key={index} />;
     }
     let offset = 0;
@@ -299,7 +305,9 @@ const LogFormat = ({ fields = { message: true }, logs = [] }) => {
         key={index}
       >
         {fields.timestamp && (
-          <span className="tkn--log-line--timestamp">{timestamp}</span>
+          <span className="tkn--log-line--timestamp">
+            <FormattedDate date={timestamp} formatTooltip={() => timestamp} />
+          </span>
         )}
         {fields.level && getDecoratedLevel(level)}
         {line}
