@@ -272,8 +272,16 @@ export class LogContainer extends Component {
       ]
     } = this.state;
 
+    let previousTimestamp;
     const parsedLogs = logs.reduce((acc, line) => {
       const parsedLogLine = parseLogLine(line);
+      if (!parsedLogLine.timestamp) {
+        // multiline log, use same timestamp as previous line
+        parsedLogLine.timestamp = previousTimestamp;
+      } else {
+        previousTimestamp = parsedLogLine.timestamp;
+      }
+
       if (
         !logLevels ||
         // we treat lines with no log level as if they specified 'info'

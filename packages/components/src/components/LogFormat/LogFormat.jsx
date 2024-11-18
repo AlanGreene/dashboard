@@ -24,27 +24,13 @@ const linkifyIt = LinkifyIt().tlds(tlds);
 const ansiRegex = /^\u001b([@-_])(.*?)([@-~])/;
 const characterRegex = /[^]/m;
 
-const levelClassName = {
-  // error: 'tkn--ansi--color-fg--bright-red',
-  // warning: 'tkn--ansi--color-fg--bright-yellow',
-  // notice: 'tkn--ansi--color-fg--cyan',
-  // debug: 'tkn--ansi--color-fg--bright-magenta'
-};
-
-const levelBgClassName = {
-  error: 'tkn--log-level--error',
-  warning: 'tkn--log-level--warning'
-};
-
 const getDecoratedLevel = level => {
   if (!level) {
     return null;
   }
 
   return (
-    <span
-      className={`tkn--log-line--level tkn--log-level--${level} ${levelClassName[level] || ''}`}
-    >
+    <span className={`tkn--log-line--level tkn--log-level--${level}`}>
       {level}
     </span>
   );
@@ -299,14 +285,16 @@ const LogFormat = ({ fields = { message: true }, logs = [] }) => {
     }
     return (
       <div
-        className={classNames('tkn--log-line', {
-          [levelBgClassName[level]]: fields.level && levelBgClassName[level]
-        })}
+        className={`tkn--log-line ${level ? `tkn--log-level--${level}` : ''}`}
         key={index}
       >
         {fields.timestamp && (
           <span className="tkn--log-line--timestamp">
-            <FormattedDate date={timestamp} formatTooltip={() => timestamp} />
+            <FormattedDate
+              date={timestamp}
+              formatTooltip={() => timestamp}
+              includeSeconds
+            />
           </span>
         )}
         {fields.level && getDecoratedLevel(level)}

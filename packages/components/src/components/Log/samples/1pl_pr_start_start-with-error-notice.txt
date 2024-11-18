@@ -46,6 +46,7 @@
 2024-11-14T14:11:19.025893202Z ::debug::[clone_repo:118] | Branch master exists in https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024
 2024-11-14T14:11:19.033207058Z ::debug::[clone_repo:143] | Attempting to clone with retry using git clone -q -b master https://****:****@github.ibm.com/PIYUSH-Mundra/compliance-app-28102024
 2024-11-14T14:11:26.947198505Z ::debug::[clone_repo:185] | Origin: 
+2024-11-14T14:11:51.781922526Z ::error::This is an error message for demo purposes
 2024-11-14T14:11:26.958713232Z ::info::Successfully Cloned Repository: https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024, Branch: master, Commit: f16e5a66fa78262078d3590b75a242f311da4224 at Path: compliance-app-28102024.
 2024-11-14T14:11:29.826267156Z From https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024
 2024-11-14T14:11:29.826317883Z  * [new ref]         refs/pull/5/head -> temp_revert-4-test_test-3_temp
@@ -67,6 +68,7 @@
 2024-11-14T14:11:30.720588941Z ::debug::[get_repo_params:167] | Unable to retreive Personal Access Token. Attempt to fetch token from Toolchain Broker.
 2024-11-14T14:11:30.769049756Z ::debug::[get_repo_params:89] | get_absolute_scm_type called for https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024. SCM Type identified as github_integrated
 2024-11-14T14:11:31.563713080Z ::debug::[get_credentials_v2:187] | Fetch Git Token for SCM Type: github_integrated, SCM ID: integrated, Repository URL: https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024.
+2024-11-14T14:11:31.612290227Z ::notice::This is a notice message for demo purposes
 2024-11-14T14:11:31.612290227Z ::info::Fetch git token for https://github.ibm.com/PIYUSH-Mundra/compliance-inventory-28102024.git
 2024-11-14T14:11:31.699130184Z ::debug::[get_credentials_v2:106] | Returning git token for https://github.ibm.com/PIYUSH-Mundra/compliance-inventory-28102024.git as found in cache.
 2024-11-14T14:11:32.516948769Z ::info::Cloning Repository: https://github.ibm.com/PIYUSH-Mundra/compliance-app-28102024, Branch: master, Commit:  at Path: one-pipeline-config-repo with USE_SUBMODULES flag as: 1

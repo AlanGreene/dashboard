@@ -161,15 +161,13 @@ pre.tkn--log {
 
     .tkn--log-line--timestamp,
     .tkn--log-line--level {
-      margin-inline-end: 0.5rem; // TODO: why does Curtis see a much bigger gap?
+      margin-inline-end: 0.5rem;
     }
 
     .tkn--log-line--timestamp {
       // color: hsl(180 0 60%);
       color: var(--cds-text-helper);
       font-weight: 300;
-      display: inline-block;
-      min-width: 7rem; // TODO: logs - need to account for shorter / longer translations
     }
 
     .tkn--log-line--level {
