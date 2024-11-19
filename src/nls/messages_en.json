@@ -151,7 +151,7 @@
   "dashboard.logs.launchButtonTooltip": "Open logs in a new window",
   "dashboard.logs.logLevels.debug": "Debug",
   "dashboard.logs.logLevels.error": "Error",
-  "dashboard.logs.logLevels.info": "Info",
+  "dashboard.logs.logLevels.info": "Info (default)",
   "dashboard.logs.logLevels.label": "Log levels",
   "dashboard.logs.logLevels.notice": "Notice",
   "dashboard.logs.logLevels.warning": "Warning",

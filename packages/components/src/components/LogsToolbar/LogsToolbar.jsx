@@ -144,7 +144,7 @@ const LogsToolbar = ({
                 <MenuItemSelectable
                   label={intl.formatMessage({
                     id: 'dashboard.logs.logLevels.info',
-                    defaultMessage: 'Info'
+                    defaultMessage: 'Info (default)'
                   })}
                   onChange={info => onToggleLogLevel({ info })}
                   selected={logLevels.info}

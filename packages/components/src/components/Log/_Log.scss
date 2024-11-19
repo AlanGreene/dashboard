@@ -51,6 +51,9 @@ pre.tkn--log {
   code {
     white-space: pre;
     overflow-wrap: normal;
+    display: block;
+    inline-size: auto;
+    min-inline-size: max-content;
   }
 
   .#{$prefix}--btn-set {
@@ -128,6 +131,7 @@ pre.tkn--log {
   }
 
   .tkn--log-line {
+    min-block-size: 1rem; // explicitly set height to hold space for empty log line when timestamps disabled
     transition: 0s background-color;
     &:hover {
       background-color: #ffffff10;
