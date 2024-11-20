@@ -45,3 +45,5 @@ describe('FormattedDate', () => {
     expect(queryByText(/Dec 1, 2019/i)).toBeFalsy();
   });
 });
+
+// TODO: logs - add tests for seconds

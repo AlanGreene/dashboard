@@ -138,29 +138,39 @@ pre.tkn--log {
       transition-delay: 0.5s;
     }
 
+    // set default colours for the log level badge, this will be used for 'info'
+    --tkn-log-level-badge-background: var(--cds-tag-background-gray);
+    --tkn-log-level-badge-color: var(--cds-text-primary);
+
     &.tkn--log-level--error {
-      // background-color: rgba(187, 0, 0, 0.15);
-      // TODO: relative colours just recently hit baseline, support not quite where we need just yet
-      //       either capture resulting colour and hardcode for now, or use SASS to adjust the colour
-      // e.g.
-      // @use 'sass:color';
-      // background-color: color.change($support-error-inverse, $alpha: 15%);
+      --tkn-log-level-badge-background: rgb(from var(--cds-tag-background-red) r g b / 80%);
+      --tkn-log-level-badge-color: var(--cds-tag-color-red);
+
       background-color: rgb(from var(--cds-support-error-inverse) r g b / 15%);
 
       &:hover {
-        // background-color: rgba(187, 0, 0, 0.3);
         background-color: rgb(from var(--cds-support-error-inverse) r g b / 30%);
       }
     }
 
     &.tkn--log-level--warning {
-      // background-color: #f4e61923;
+      --tkn-log-level-badge-background: rgb(from var(--cds-support-warning) r g b / 35%);
+
       background-color: rgb(from var(--cds-support-warning-inverse) r g b / 15%);
 
       &:hover {
-        // background-color: #f4e61933;
         background-color: rgb(from var(--cds-support-warning-inverse) r g b / 30%);
       }
+    }
+
+    &.tkn--log-level--notice {
+      --tkn-log-level-badge-background: var(--cds-tag-background-teal);
+      --tkn-log-level-badge-color: var(--cds-tag-color-teal);
+    }
+
+    &.tkn--log-level--debug {
+      --tkn-log-level-badge-background: rgb(from var(--cds-tag-background-purple) r g b / 60%);
+      --tkn-log-level-badge-color: var(--cds-tag-color-purple);
     }
 
     .tkn--log-line--timestamp,
@@ -169,56 +179,15 @@ pre.tkn--log {
     }
 
     .tkn--log-line--timestamp {
-      // color: hsl(180 0 60%);
       color: var(--cds-text-helper);
       font-weight: 300;
     }
 
     .tkn--log-line--level {
       display: inline-block;
-      // font-weight: bold;
       padding-inline: 4px;
-      // border-radius: 2px;
-
-      &.tkn--log-level--error {
-        // color: var(--cds-button-danger-active);
-        // background-color: var(--cds-support-error);
-        color: var(--cds-tag-color-red);
-        background-color: var(--cds-tag-background-red);
-        background-color: rgb(from var(--cds-tag-background-red) r g b / 80%);
-        // color: #981f53;
-        // background-color: #ffd6e8;
-      }
-
-      &.tkn--log-level--warning {
-        // ok ?
-        // background-color: var(--cds-support-warning);
-        // color: var(--cds-support-warning);
-        background-color: rgb(from var(--cds-support-warning) r g b / 35%);
-        color: var(--cds-text-primary);
-      }
-
-      &.tkn--log-level--notice {
-        background-color: var(--cds-tag-background-teal);
-        // background-color: rgb(from var(--cds-tag-background-teal) r g b / 60%);
-        color: var(--cds-tag-color-teal);
-      }
-
-      &.tkn--log-level--info {
-        // background-color: hsl(0, 0%, 25%);
-        // background-color: #e5e0df;
-        // background-color: #525252;
-        background-color: var(--cds-tag-background-gray);
-        // color: #171414;
-        color: var(--cds-text-primary);
-        // ok ?
-      }
-
-      &.tkn--log-level--debug {
-        // background-color: var(--cds-tag-background-purple);
-        background-color: rgb(from var(--cds-tag-background-purple) r g b / 60%);
-        color: var(--cds-tag-color-purple);
-      }
+      background-color: var(--tkn-log-level-badge-background);
+      color: var(--tkn-log-level-badge-color);
     }
   }
 }

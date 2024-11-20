@@ -345,3 +345,6 @@ describe('LogFormat', () => {
     expect(container.childNodes[0].childNodes).toHaveLength(1);
   });
 });
+
+
+// TODO: logs - add tests for log levels and timestamps

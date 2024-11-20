@@ -149,7 +149,7 @@ export const Toolbar = {
             logLevels={args.showLevels ? args.logLevels : null}
             name="step_log_filename.txt"
             onToggleLogLevel={logLevel =>
-              // TODO: Carbon bug
+              // TODO: logs - Carbon bug
               typeof logLevel.error === 'boolean' ||
               typeof logLevel.warning === 'boolean' ||
               typeof logLevel.info === 'boolean' ||
@@ -159,7 +159,7 @@ export const Toolbar = {
                 : null
             }
             onToggleShowTimestamps={showTimestamps =>
-              // TODO: Carbon bug
+              // TODO: logs - Carbon bug
               typeof showTimestamps === 'boolean'
                 ? updateArgs({ showTimestamps })
                 : null
@@ -181,6 +181,8 @@ export const Toolbar = {
 //   name: 'Toolbar - performance test (<20,000 lines with ANSI)',
 //   render: Toolbar.render
 // };
+
+// TODO: logs - cleanup and add some actual samples
 
 export const OnePipelinePRStartStart = {
   args: {
@@ -206,6 +208,7 @@ export const OnePipelinePRSetupRunStage = {
 export const OnePipelinePRUnitTestsRunStage = {
   args: {
     ...Toolbar.args,
+    showTimestamps: true,
     fetchLogs: async () =>
       (await import('./samples/1pl_pr_unitTests_runStage.txt?raw')).default
   },
@@ -216,6 +219,7 @@ export const OnePipelinePRUnitTestsRunStage = {
 export const OnePipelinePRComplianceChecksRunStage = {
   args: {
     ...Toolbar.args,
+    showTimestamps: true,
     fetchLogs: async () =>
       (await import('./samples/1pl_pr_complianceChecks_runStage.txt?raw'))
         .default

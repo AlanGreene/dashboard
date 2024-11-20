@@ -92,3 +92,5 @@ export const URLDetection = {
       .map(message => ({ message }))
   }
 };
+
+// TODO: logs - add examples of log levels and timestamps

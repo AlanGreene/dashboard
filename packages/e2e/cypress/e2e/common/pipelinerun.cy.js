@@ -54,3 +54,5 @@ spec:
       .should('have.text', 'Succeeded');
   });
 });
+
+// TODO: logs - test timestamps and log levels

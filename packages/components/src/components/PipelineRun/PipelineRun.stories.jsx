@@ -331,3 +331,5 @@ export const WithPodDetails = args => {
 export const Empty = {};
 
 export const Error = { args: { error: 'Internal server error' } };
+
+// TODO: logs - include timestamps + log levels in at least one of the examples

@@ -40,7 +40,7 @@ export const Default = {
       <LogsToolbar
         {...args}
         onToggleLogLevel={logLevel =>
-          // TODO: Carbon bug
+          // TODO: logs - Carbon bug
           // ignore duplicate synthetic event, need same fix as https://github.com/carbon-design-system/carbon/pull/17754 for MenuItemSelectable
           typeof logLevel.error === 'boolean' ||
           typeof logLevel.warning === 'boolean' ||
@@ -51,7 +51,7 @@ export const Default = {
             : null
         }
         onToggleShowTimestamps={showTimestamps =>
-          // TODO: Carbon bug
+          // TODO: logs - Carbon bug
           // ignore duplicate synthetic event, need same fix as https://github.com/carbon-design-system/carbon/pull/17754 for MenuItemSelectable
           typeof showTimestamps === 'boolean'
             ? updateArgs({ showTimestamps })
@@ -61,3 +61,5 @@ export const Default = {
     );
   }
 };
+
+// TODO: logs - new stories to cover the levels + timestamps config?

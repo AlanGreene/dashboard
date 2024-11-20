@@ -65,7 +65,7 @@ import {
 const { PIPELINE_TASK, RETRY, STEP, TASK_RUN_NAME, VIEW } = queryParamConstants;
 
 export /* istanbul ignore next */ function PipelineRunContainer({
-  // deliberately disabled for now, needs discussion of log format
+  // TODO: logs - deliberately disabled for now, needs discussion of log format
   showLogLevels = false
 }) {
   const intl = useIntl();
@@ -95,7 +95,7 @@ export /* istanbul ignore next */ function PipelineRunContainer({
     setLogLevelsState(levels => {
       const newLevels = { ...levels, ...logLevel };
       if (!Object.values(newLevels).filter(Boolean).length) {
-        // TODO: notification
+        // TODO: logs - notification
         alert('must have at least 1 log level enabled');
         return levels;
       }
@@ -105,7 +105,7 @@ export /* istanbul ignore next */ function PipelineRunContainer({
   }
 
   function onToggleShowTimestamps(show) {
-    // TODO: Carbon bug duplicating onChange event for MenuItemSelectable
+    // TODO: logs - Carbon bug duplicating onChange event for MenuItemSelectable
     if (typeof show !== 'boolean') {
       return;
     }

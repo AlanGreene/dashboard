@@ -66,7 +66,7 @@ import {
 const { STEP, RETRY, TASK_RUN_DETAILS, VIEW } = queryParamConstants;
 
 export function TaskRunContainer({
-  // deliberately disabled for now, needs discussion of log format
+  // TODO: logs - deliberately disabled for now, needs discussion of log format
   showLogLevels = false
 }) {
   const intl = useIntl();
@@ -89,14 +89,14 @@ export function TaskRunContainer({
         typeof logLevel.debug === 'boolean'
       )
     ) {
-      // TODO: Carbon bug
+      // TODO: logs - Carbon bug
       return;
     }
 
     setLogLevelsState(levels => {
       const newLevels = { ...levels, ...logLevel };
       if (!Object.values(newLevels).filter(Boolean).at.length) {
-        // TODO: notification
+        // TODO: logs - notification
         alert('must have at least 1 log level enabled');
         return levels;
       }
@@ -106,7 +106,7 @@ export function TaskRunContainer({
   }
 
   function onToggleShowTimestamps(show) {
-    // TODO: Carbon bug duplicating onChange event for MenuItemSelectable
+    // TODO: logs - Carbon bug duplicating onChange event for MenuItemSelectable
     if (typeof show !== 'boolean') {
       return;
     }
