@@ -344,7 +344,35 @@ describe('LogFormat', () => {
     const { container } = render(<LogFormat logs={logs} />);
     expect(container.childNodes[0].childNodes).toHaveLength(1);
   });
+
+  it('handles timestamps', () => {
+    const timestamp = '2024-11-20 12:13:14';
+    const logs = [{ timestamp, message: 'Hello' }];
+    const { container, rerender } = render(
+      <LogFormat fields={{ timestamp: false }} logs={logs} />
+    );
+    expect(container.childNodes[0].innerHTML).toBe(
+      '<div class="tkn--log-line">Hello</div>'
+    );
+    rerender(<LogFormat fields={{ timestamp: true }} logs={logs} />);
+    expect(container.childNodes[0].innerHTML).toMatch(
+      // uses raw timestamp from input as title attribute
+      // contains formatted timestamp for display
+      // accept anything (`.*`) for test purposes as it may be localised
+      // and we're more concerned with the structure here
+      new RegExp(
+        `<div class="tkn--log-line"><span class="tkn--log-line--timestamp"><span title="${timestamp}">.*</span></span>Hello</div>`
+      )
+    );
+  });
+
+  it('handles levels', () => {
+    const logs = [{ level: 'debug', message: 'Hello' }];
+    const { queryByText, rerender } = render(
+      <LogFormat fields={{ level: false }} logs={logs} />
+    );
+    expect(queryByText('debug')).toBeFalsy();
+    rerender(<LogFormat fields={{ level: true }} logs={logs} />);
+    expect(queryByText('debug')).toBeTruthy();
+  });
 });
-
-
-// TODO: logs - add tests for log levels and timestamps

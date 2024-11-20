@@ -93,4 +93,62 @@ export const URLDetection = {
   }
 };
 
-// TODO: logs - add examples of log levels and timestamps
+export const LogLevelsAndTimestamps = {
+  args: {
+    fields: {
+      level: true,
+      timestamp: true
+    },
+    logs: [
+      {
+        timestamp: '2024-11-14T14:10:53.354144861Z',
+        level: 'info',
+        message: 'Cloning repo'
+      },
+      {
+        timestamp: '2024-11-14T14:10:56.300268594Z',
+        level: 'debug',
+        message:
+          '[get_repo_params:30] | get_repo_name called for https://github.com/example-org/example-app. Repository Name identified as example-app'
+      },
+      {
+        timestamp: '2024-11-14T14:10:56.307088791Z',
+        level: 'debug',
+        message:
+          '[get_repo_params:18] | get_repo_owner called for https://github.com/example-org/example-app. Repository Owner identified as example-org'
+      },
+      {
+        timestamp: '2024-11-14T14:10:56.815017386Z',
+        level: 'debug',
+        message:
+          '[get_repo_params:212] | Unable to locate repository parameters for key https://github.com/example-org/example-app in the cache. Attempt to fetch repository parameters.'
+      },
+      {
+        timestamp: '2024-11-14T14:10:56.819937688Z',
+        level: 'debug',
+        message:
+          '[get_repo_params:39] | get_repo_server_name called for https://github.com/example-org/example-app. Repository Server Name identified as github.com'
+      },
+      {
+        timestamp: '2024-11-14T14:10:56.869719012Z',
+        level: null,
+        message: 'Sample with no log level'
+      },
+      {
+        timestamp: '2024-11-14T14:10:56.869719012Z',
+        level: 'error',
+        message: 'Sample error'
+      },
+      {
+        timestamp: '2024-11-14T14:10:56.869719012Z',
+        level: 'warning',
+        message: 'Sample warning'
+      },
+      {
+        timestamp: '2024-11-14T14:10:56.869719012Z',
+        level: 'notice',
+        message: 'Sample notice'
+      }
+    ]
+  }
+};

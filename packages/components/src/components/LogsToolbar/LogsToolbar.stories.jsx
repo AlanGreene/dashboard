@@ -61,5 +61,3 @@ export const Default = {
     );
   }
 };
-
-// TODO: logs - new stories to cover the levels + timestamps config?

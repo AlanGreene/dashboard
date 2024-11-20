@@ -94,11 +94,11 @@ export /* istanbul ignore next */ function PipelineRunContainer({
 
     setLogLevelsState(levels => {
       const newLevels = { ...levels, ...logLevel };
-      if (!Object.values(newLevels).filter(Boolean).length) {
-        // TODO: logs - notification
-        alert('must have at least 1 log level enabled');
-        return levels;
-      }
+      // if (!Object.values(newLevels).filter(Boolean).length) {
+      //   // TODO: logs - notification
+      //   alert('must have at least 1 log level enabled');
+      //   return levels;
+      // }
       setLogLevels(newLevels);
       return newLevels;
     });

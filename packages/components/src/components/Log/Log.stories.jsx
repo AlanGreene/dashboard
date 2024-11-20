@@ -19,24 +19,14 @@ import LogsToolbar from '../LogsToolbar';
 const ansiLog =
   '\n=== demo-pipeline-run-1-build-skaffold-app-2mrdg-pod-59e217: build-step-git-source-skaffold-git-ml8j4 ===\n{"level":"info","ts":1553865693.943092,"logger":"fallback-logger","caller":"git-init/main.go:100","msg":"Successfully cloned https://github.com/GoogleContainerTools/skaffold @ \\"master\\" in path \\"/workspace\\""}\n\n=== demo-pipeline-run-1-build-skaffold-app-2mrdg-pod-59e217: build-step-build-and-push ===\n\u001b[36mINFO\u001b[0m[0000] Downloading base image golang:1.10.1-alpine3.7\n2019/03/29 13:21:34 No matching credentials were found, falling back on anonymous\n\u001b[36mINFO\u001b[0m[0001] Executing 0 build triggers\n\u001b[36mINFO\u001b[0m[0001] Unpacking rootfs as cmd RUN go build -o /app . requires it.\n\u001b[36mINFO\u001b[0m[0010] Taking snapshot of full filesystem...\n\u001b[36mINFO\u001b[0m[0015] Using files from context: [/workspace/examples/microservices/leeroy-app/app.go]\n\u001b[36mINFO\u001b[0m[0015] COPY app.go .\n\u001b[36mINFO\u001b[0m[0015] Taking snapshot of files...\n\u001b[36mINFO\u001b[0m[0015] RUN go build -o /app .\n\u001b[36mINFO\u001b[0m[0015] cmd: /bin/sh\n\u001b[36mINFO\u001b[0m[0015] args: [-c go build -o /app .]\n\u001b[36mINFO\u001b[0m[0016] Taking snapshot of full filesystem...\n\u001b[36mINFO\u001b[0m[0036] CMD ["./app"]\n\u001b[36mINFO\u001b[0m[0036] COPY --from=builder /app .\n\u001b[36mINFO\u001b[0m[0036] Taking snapshot of files...\nerror pushing image: failed to push to destination gcr.io/christiewilson-catfactory/leeroy-app:latest: Get https://gcr.io/v2/token?scope=repository%3Achristiewilson-catfactory%2Fleeroy-app%3Apush%2Cpull\u0026scope=repository%3Alibrary%2Falpine%3Apull\u0026service=gcr.io exit status 1\n\n=== demo-pipeline-run-1-build-skaffold-app-2mrdg-pod-59e217: nop ===\nBuild successful\n\r\r\n';
 
-const levels = ['', 'error', 'warning', 'notice', 'info', 'debug'];
+const long = Array.from({ length: 60000 }, (v, i) => `Line ${i + 1}`).join(
+  '\n'
+);
 
-const long = Array.from({ length: 60000 }, (v, i) => {
-  const level = levels[Math.floor(Math.random() * levels.length)];
-  return `${new Date().toISOString()} ${level ? `::${level}::` : ''}Line ${i + 1}`;
-}).join('\n');
-
-// const performanceTest = Array.from(
-//   { length: 700 },
-//   (v, i) => `Batch ${i + 1}\n${ansiLog}\n`
-// )
-//   .join('')
-//   .split('\n')
-//   .map(message => {
-//     const level = levels[Math.floor(Math.random() * levels.length)];
-//     return `${new Date().toISOString()} ${level ? `::${level}::` : ''}${message}`;
-//   })
-//   .join('\n');
+const performanceTest = Array.from(
+  { length: 700 },
+  (v, i) => `Batch ${i + 1}\n${ansiLog}\n`
+).join('');
 
 export default {
   component: Log,
@@ -52,81 +42,81 @@ export default {
       themeOverride: 'dark'
     }
   },
-  // title: 'Log'
-  title: '1PL PR pipeline'
+  title: 'Log'
 };
 
-// export const Loading = {};
+export const Loading = {};
 
-// export const Pending = {
-//   args: {
-//     fetchLogs: () => 'partial logs',
-//     forcePolling: true,
-//     stepStatus: { terminated: { reason: 'Completed' } }
-//   }
-// };
+export const Pending = {
+  args: {
+    fetchLogs: () => 'partial logs',
+    forcePolling: true,
+    stepStatus: { terminated: { reason: 'Completed' } }
+  }
+};
 
-// export const Completed = {
-//   args: {
-//     fetchLogs: () => 'A log message',
-//     stepStatus: { terminated: { reason: 'Completed', exitCode: 0 } }
-//   }
-// };
+export const Completed = {
+  args: {
+    fetchLogs: () => 'A log message',
+    stepStatus: { terminated: { reason: 'Completed', exitCode: 0 } }
+  }
+};
 
-// export const CompletedNonZero = {
-//   args: {
-//     fetchLogs: () => 'A log message',
-//     stepStatus: { terminated: { reason: 'Completed', exitCode: 1 } }
-//   },
-//   name: 'Completed: non-zero exit code'
-// };
+export const CompletedNonZero = {
+  args: {
+    fetchLogs: () => 'A log message',
+    stepStatus: { terminated: { reason: 'Completed', exitCode: 1 } }
+  },
+  name: 'Completed: non-zero exit code'
+};
 
-// export const Failed = {
-//   args: {
-//     fetchLogs: () => 'A log message',
-//     stepStatus: { terminated: { reason: 'Error' } }
-//   }
-// };
+export const Failed = {
+  args: {
+    fetchLogs: () => 'A log message',
+    stepStatus: { terminated: { reason: 'Error' } }
+  }
+};
 
-// export const ANSICodes = {
-//   args: {
-//     fetchLogs: () => ansiLog,
-//     stepStatus: { terminated: { reason: 'Completed', exitCode: 0 } }
-//   }
-// };
+export const ANSICodes = {
+  args: {
+    fetchLogs: () => ansiLog,
+    stepStatus: { terminated: { reason: 'Completed', exitCode: 0 } }
+  }
+};
 
-// export const Windowed = {
-//   args: {
-//     fetchLogs: () => long,
-//     showLevels: true,
-//     showTimestamps: true,
-//     stepStatus: { terminated: { reason: 'Completed', exitCode: 0 } }
-//   }
-// };
+export const Windowed = {
+  args: {
+    fetchLogs: () => long,
+    showLevels: true,
+    showTimestamps: true,
+    stepStatus: { terminated: { reason: 'Completed', exitCode: 0 } }
+  }
+};
 
-// export const Performance = {
-//   args: {
-//     fetchLogs: () => performanceTest,
-//     showLevels: true,
-//     showTimestamps: true,
-//     stepStatus: { terminated: { reason: 'Completed', exitCode: 0 } }
-//   },
-//   name: 'performance test (<20,000 lines with ANSI)'
-// };
+export const Performance = {
+  args: {
+    fetchLogs: () => performanceTest,
+    showLevels: true,
+    showTimestamps: true,
+    stepStatus: { terminated: { reason: 'Completed', exitCode: 0 } }
+  },
+  name: 'performance test (<20,000 lines with ANSI)'
+};
 
-// export const Skipped = {
-//   args: {
-//     fetchLogs: () => 'This step was skipped',
-//     stepStatus: {
-//       terminated: { reason: 'Completed', exitCode: 0 },
-//       terminationReason: 'Skipped'
-//     }
-//   }
-// };
+export const Skipped = {
+  args: {
+    fetchLogs: () => 'This step was skipped',
+    stepStatus: {
+      terminated: { reason: 'Completed', exitCode: 0 },
+      terminationReason: 'Skipped'
+    }
+  }
+};
 
 export const Toolbar = {
   args: {
-    fetchLogs: () => long,
+    fetchLogs: async () =>
+      (await import('./samples/timestamps_log_levels.txt?raw')).default,
     logLevels: {
       error: true,
       warning: true,
@@ -138,7 +128,6 @@ export const Toolbar = {
     showTimestamps: false,
     stepStatus: { terminated: { reason: 'Completed', exitCode: 0 } }
   },
-  tags: ['!dev'],
   render: args => {
     const [, updateArgs] = useArgs();
     return (
@@ -171,69 +160,4 @@ export const Toolbar = {
       />
     );
   }
-};
-
-// export const ToolbarPerformance = {
-//   args: {
-//     ...Toolbar.args,
-//     fetchLogs: () => performanceTest
-//   },
-//   name: 'Toolbar - performance test (<20,000 lines with ANSI)',
-//   render: Toolbar.render
-// };
-
-// TODO: logs - cleanup and add some actual samples
-
-export const OnePipelinePRStartStart = {
-  args: {
-    ...Toolbar.args,
-    fetchLogs: async () =>
-      (await import('./samples/1pl_pr_start_start.txt?raw')).default
-      // (await import('./samples/1pl_pr_start_start-with-error-notice.txt?raw')).default
-  },
-  name: 'code-pr-start/start',
-  render: Toolbar.render
-};
-
-export const OnePipelinePRSetupRunStage = {
-  args: {
-    ...Toolbar.args,
-    fetchLogs: async () =>
-      (await import('./samples/1pl_pr_setup_runStage.txt?raw')).default
-  },
-  name: 'code-setup/run-stage',
-  render: Toolbar.render
-};
-
-export const OnePipelinePRUnitTestsRunStage = {
-  args: {
-    ...Toolbar.args,
-    showTimestamps: true,
-    fetchLogs: async () =>
-      (await import('./samples/1pl_pr_unitTests_runStage.txt?raw')).default
-  },
-  name: 'code-unit-tests/run-stage',
-  render: Toolbar.render
-};
-
-export const OnePipelinePRComplianceChecksRunStage = {
-  args: {
-    ...Toolbar.args,
-    showTimestamps: true,
-    fetchLogs: async () =>
-      (await import('./samples/1pl_pr_complianceChecks_runStage.txt?raw'))
-        .default
-  },
-  name: 'code-compliance-checks/run-stage',
-  render: Toolbar.render
-};
-
-export const OnePipelinePRFinishEvaluate = {
-  args: {
-    ...Toolbar.args,
-    fetchLogs: async () =>
-      (await import('./samples/1pl_pr_finish_evaluate.txt?raw')).default
-  },
-  name: 'code-pr-finish/evaluate',
-  render: Toolbar.render
 };
