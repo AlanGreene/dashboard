@@ -65,8 +65,8 @@ import {
 const { PIPELINE_TASK, RETRY, STEP, TASK_RUN_NAME, VIEW } = queryParamConstants;
 
 export /* istanbul ignore next */ function PipelineRunContainer({
-  // TODO: logs - deliberately disabled for now, needs discussion of log format
-  showLogLevels = false
+  // we may consider customisation of the log format in future
+  showLogLevels = true
 }) {
   const intl = useIntl();
   const location = useLocation();
@@ -82,7 +82,7 @@ export /* istanbul ignore next */ function PipelineRunContainer({
     setLogLevelsState(levels => {
       const newLevels = { ...levels, ...logLevel };
       // if (!Object.values(newLevels).filter(Boolean).length) {
-      //   // TODO: logs - notification
+      //   // TODO: logs - notification or allow?
       //   alert('must have at least 1 log level enabled');
       //   return levels;
       // }

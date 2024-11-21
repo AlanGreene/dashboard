@@ -66,8 +66,8 @@ import {
 const { STEP, RETRY, TASK_RUN_DETAILS, VIEW } = queryParamConstants;
 
 export function TaskRunContainer({
-  // TODO: logs - deliberately disabled for now, needs discussion of log format
-  showLogLevels = false
+  // we may consider customisation of the log format in future
+  showLogLevels = true
 }) {
   const intl = useIntl();
   const location = useLocation();
@@ -83,7 +83,7 @@ export function TaskRunContainer({
     setLogLevelsState(levels => {
       const newLevels = { ...levels, ...logLevel };
       // if (!Object.values(newLevels).filter(Boolean).length) {
-      //   // TODO: logs - notification
+      //   // TODO: logs - notification or allow?
       //   alert('must have at least 1 log level enabled');
       //   return levels;
       // }

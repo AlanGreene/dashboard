@@ -40,6 +40,7 @@ const LogsToolbar = ({
 }) => {
   const carbonPrefix = usePrefix();
   const intl = useIntl();
+
   return (
     <div className={`${carbonPrefix}--btn-set`}>
       {onToggleMaximized ? (
@@ -99,7 +100,11 @@ const LogsToolbar = ({
         </Download>
       </a>
       <FeatureFlags enableV12Overflowmenu>
-        <OverflowMenu renderIcon={Settings} size="sm">
+        <OverflowMenu
+          className="tkn--log-settings-menu"
+          renderIcon={Settings}
+          size="sm"
+        >
           <MenuItemSelectable
             label={intl.formatMessage({
               id: 'dashboard.logs.showTimestamps.label',

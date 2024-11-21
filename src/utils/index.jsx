@@ -150,6 +150,7 @@ export function getViewChangeHandler({ location, navigate }) {
   };
 }
 
+// TODO: logs - move this to a container + rename file extension to .js since this is the only JSX included here
 export function getLogsToolbar({
   externalLogsURL,
   isMaximized,
