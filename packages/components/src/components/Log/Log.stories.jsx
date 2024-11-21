@@ -138,20 +138,10 @@ export const Toolbar = {
             logLevels={args.showLevels ? args.logLevels : null}
             name="step_log_filename.txt"
             onToggleLogLevel={logLevel =>
-              // TODO: logs - Carbon bug
-              typeof logLevel.error === 'boolean' ||
-              typeof logLevel.warning === 'boolean' ||
-              typeof logLevel.info === 'boolean' ||
-              typeof logLevel.notice === 'boolean' ||
-              typeof logLevel.debug === 'boolean'
-                ? updateArgs({ logLevels: { ...args.logLevels, ...logLevel } })
-                : null
+              updateArgs({ logLevels: { ...args.logLevels, ...logLevel } })
             }
             onToggleShowTimestamps={showTimestamps =>
-              // TODO: logs - Carbon bug
-              typeof showTimestamps === 'boolean'
-                ? updateArgs({ showTimestamps })
-                : null
+              updateArgs({ showTimestamps })
             }
             showTimestamps={args.showTimestamps}
             url="/step/log/url"

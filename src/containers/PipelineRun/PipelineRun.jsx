@@ -79,19 +79,6 @@ export /* istanbul ignore next */ function PipelineRunContainer({
   );
 
   function onToggleLogLevel(logLevel) {
-    if (
-      !(
-        typeof logLevel.error === 'boolean' ||
-        typeof logLevel.warning === 'boolean' ||
-        typeof logLevel.info === 'boolean' ||
-        typeof logLevel.notice === 'boolean' ||
-        typeof logLevel.debug === 'boolean'
-      )
-    ) {
-      // TODO: Carbon bug
-      return;
-    }
-
     setLogLevelsState(levels => {
       const newLevels = { ...levels, ...logLevel };
       // if (!Object.values(newLevels).filter(Boolean).length) {
@@ -105,11 +92,6 @@ export /* istanbul ignore next */ function PipelineRunContainer({
   }
 
   function onToggleShowTimestamps(show) {
-    // TODO: logs - Carbon bug duplicating onChange event for MenuItemSelectable
-    if (typeof show !== 'boolean') {
-      return;
-    }
-
     setShowTimestamps(show);
     setLogTimestampsEnabled(show);
   }

@@ -12,8 +12,8 @@ limitations under the License.
 */
 
 @use '@carbon/react/scss/config' with (
-  // $font-path: '~@ibm/plex', // TODO: logs - remove `~`, adding to deliberately break loading of Plex for demo only, workaround issue with font not being applied properly
-  $use-akamai-cdn: true
+  $font-path: '@ibm/plex',
+  $use-per-family-plex: true
 );
 
 @use '@carbon/react/scss/reset';
