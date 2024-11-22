@@ -11,9 +11,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { LogsToolbar } from '@tektoncd/dashboard-components';
+import { getExternalLogURL, getPodLog } from '../api';
 
-import { getExternalLogURL, getPodLog, getPodLogURL } from '../api';
 import { get } from '../api/comms';
 
 const buildLocales = import.meta.env.VITE_LOCALES_BUILD.split(',');
@@ -148,45 +147,6 @@ export function getViewChangeHandler({ location, navigate }) {
     const browserURL = location.pathname.concat(`?${queryParams.toString()}`);
     navigate(browserURL);
   };
-}
-
-// TODO: logs - move this to a container + rename file extension to .js since this is the only JSX included here
-export function getLogsToolbar({
-  externalLogsURL,
-  isMaximized,
-  isUsingExternalLogs,
-  logLevels,
-  onToggleLogLevel,
-  onToggleMaximized,
-  onToggleShowTimestamps,
-  showTimestamps,
-  stepStatus,
-  taskRun
-}) {
-  const { container } = stepStatus;
-  const { namespace } = taskRun.metadata;
-  const { podName } = taskRun.status;
-
-  const logURL = isUsingExternalLogs
-    ? getExternalLogURL({ container, externalLogsURL, namespace, podName })
-    : getPodLogURL({
-        container,
-        name: podName,
-        namespace
-      });
-
-  return (
-    <LogsToolbar
-      isMaximized={isMaximized}
-      logLevels={logLevels}
-      name={`${podName}__${container}__log.txt`}
-      showTimestamps={showTimestamps}
-      onToggleLogLevel={onToggleLogLevel}
-      onToggleMaximized={onToggleMaximized}
-      onToggleShowTimestamps={onToggleShowTimestamps}
-      url={logURL}
-    />
-  );
 }
 
 export function formatLocale(locale) {

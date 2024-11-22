@@ -70,35 +70,39 @@ const LogsToolbar = ({
           )}
         </button>
       ) : null}
-      <a
-        className={`${carbonPrefix}--btn ${carbonPrefix}--btn--icon-only ${carbonPrefix}--copy-btn`}
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Launch>
-          <title>
-            {intl.formatMessage({
-              id: 'dashboard.logs.launchButtonTooltip',
-              defaultMessage: 'Open logs in a new window'
-            })}
-          </title>
-        </Launch>
-      </a>
-      <a
-        className={`${carbonPrefix}--btn ${carbonPrefix}--btn--icon-only ${carbonPrefix}--copy-btn`}
-        download={name}
-        href={url}
-      >
-        <Download>
-          <title>
-            {intl.formatMessage({
-              id: 'dashboard.logs.downloadButtonTooltip',
-              defaultMessage: 'Download logs'
-            })}
-          </title>
-        </Download>
-      </a>
+      {url ? (
+        <>
+          <a
+            className={`${carbonPrefix}--btn ${carbonPrefix}--btn--icon-only ${carbonPrefix}--copy-btn`}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Launch>
+              <title>
+                {intl.formatMessage({
+                  id: 'dashboard.logs.launchButtonTooltip',
+                  defaultMessage: 'Open logs in a new window'
+                })}
+              </title>
+            </Launch>
+          </a>
+          <a
+            className={`${carbonPrefix}--btn ${carbonPrefix}--btn--icon-only ${carbonPrefix}--copy-btn`}
+            download={name}
+            href={url}
+          >
+            <Download>
+              <title>
+                {intl.formatMessage({
+                  id: 'dashboard.logs.downloadButtonTooltip',
+                  defaultMessage: 'Download logs'
+                })}
+              </title>
+            </Download>
+          </a>
+        </>
+      ) : null}
       <FeatureFlags enableV12Overflowmenu>
         <OverflowMenu
           className="tkn--log-settings-menu"

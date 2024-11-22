@@ -17,20 +17,89 @@ import LogsToolbar from './LogsToolbar';
 
 export default {
   component: LogsToolbar,
+  decorators: [
+    Story => (
+      <pre className="tkn--log" style={{ width: '300px' }}>
+        <Story />
+      </pre>
+    )
+  ],
   title: 'LogsToolbar'
 };
 
 export const Default = {
   args: {
-    name: 'some_filename.txt',
-    showTimestamps: false,
+    showTimestamps: false
+  },
+  render: args => {
+    const [, updateArgs] = useArgs();
+
+    return (
+      <LogsToolbar
+        {...args}
+        onToggleShowTimestamps={showTimestamps =>
+          updateArgs({ showTimestamps })
+        }
+      />
+    );
+  }
+};
+
+export const WithLogLevels = {
+  args: {
+    ...Default.args,
     logLevels: {
       error: true,
       warning: true,
       info: true,
       notice: true,
       debug: false
-    },
+    }
+  },
+  render: args => {
+    const [, updateArgs] = useArgs();
+
+    return (
+      <LogsToolbar
+        {...args}
+        onToggleLogLevel={logLevel =>
+          updateArgs({ logLevels: { ...args.logLevels, ...logLevel } })
+        }
+        onToggleShowTimestamps={showTimestamps =>
+          updateArgs({ showTimestamps })
+        }
+      />
+    );
+  }
+};
+
+export const WithMaximize = {
+  args: {
+    ...WithLogLevels.args,
+    isMaximized: false
+  },
+  render: args => {
+    const [, updateArgs] = useArgs();
+
+    return (
+      <LogsToolbar
+        {...args}
+        onToggleLogLevel={logLevel =>
+          updateArgs({ logLevels: { ...args.logLevels, ...logLevel } })
+        }
+        onToggleMaximized={() => updateArgs({ isMaximized: !args.isMaximized })}
+        onToggleShowTimestamps={showTimestamps =>
+          updateArgs({ showTimestamps })
+        }
+      />
+    );
+  }
+};
+
+export const WithURL = {
+  args: {
+    ...WithMaximize.args,
+    name: 'some_filename.txt',
     url: '/some/logs/url'
   },
   render: args => {
@@ -42,6 +111,7 @@ export const Default = {
         onToggleLogLevel={logLevel =>
           updateArgs({ logLevels: { ...args.logLevels, ...logLevel } })
         }
+        onToggleMaximized={() => updateArgs({ isMaximized: !args.isMaximized })}
         onToggleShowTimestamps={showTimestamps =>
           updateArgs({ showTimestamps })
         }

@@ -33,6 +33,7 @@ import { InlineNotification, RadioTile, TileGroup } from '@carbon/react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 
+import LogsToolbar from '../LogsToolbar';
 import {
   cancelPipelineRun,
   deletePipelineRun,
@@ -49,11 +50,7 @@ import {
   useTaskRuns,
   useTasks
 } from '../../api';
-import {
-  getLogsRetriever,
-  getLogsToolbar,
-  getViewChangeHandler
-} from '../../utils';
+import { getLogsRetriever, getViewChangeHandler } from '../../utils';
 import NotFound from '../NotFound';
 import {
   getLogLevels,
@@ -564,17 +561,17 @@ export /* istanbul ignore next */ function PipelineRunContainer({
         handleTaskSelected={handleTaskSelected}
         loading={isLoading}
         logLevels={logLevels}
-        getLogsToolbar={toolbarParams =>
-          getLogsToolbar({
-            ...toolbarParams,
-            externalLogsURL,
-            isUsingExternalLogs,
-            logLevels: showLogLevels && logLevels,
-            onToggleLogLevel,
-            onToggleShowTimestamps,
-            showTimestamps
-          })
-        }
+        getLogsToolbar={toolbarProps => (
+          <LogsToolbar
+            {...toolbarProps}
+            externalLogsURL={externalLogsURL}
+            isUsingExternalLogs={isUsingExternalLogs}
+            logLevels={showLogLevels && logLevels}
+            onToggleLogLevel={onToggleLogLevel}
+            onToggleShowTimestamps={onToggleShowTimestamps}
+            showTimestamps={showTimestamps}
+          />
+        )}
         maximizedLogsContainer={maximizedLogsContainer.current}
         onRetryChange={retry => {
           if (Number.isInteger(retry)) {

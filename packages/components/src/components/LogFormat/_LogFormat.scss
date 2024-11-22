@@ -125,7 +125,14 @@ $colors: (
   }
 }
 
-.tkn--log-line--timestamp,
+// only add margin after timestamp if there's at least one log line with a
+// visible timestamp so we don't add unnecessary space when 'Show timestamps' is
+// enabled but for some reason there are no timestamps to show (maybe external
+// logs that didn't capture timestamps at runtime)
+.tkn--log:has(.tkn--log-line--timestamp:not(:empty)) .tkn--log-line--timestamp {
+  margin-inline-end: 0.5rem;
+}
+
 .tkn--log-line--level {
   margin-inline-end: 0.5rem;
 }

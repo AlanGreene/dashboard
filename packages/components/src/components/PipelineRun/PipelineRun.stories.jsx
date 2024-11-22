@@ -15,6 +15,7 @@ import { useArgs } from '@storybook/preview-api';
 import { labels as labelConstants } from '@tektoncd/dashboard-utils';
 
 import PipelineRun from '.';
+import LogsToolbar from '../LogsToolbar';
 
 const task = {
   metadata: {
@@ -363,6 +364,13 @@ export const WithPodDetails = args => {
 export const LogsWithTimestampsAndLevels = {
   args: {
     fetchLogs: () => logsWithTimestampsAndLevels,
+    logLevels: {
+      error: true,
+      warning: true,
+      notice: true,
+      info: true,
+      debug: false
+    },
     pipelineRun: pipelineRunWithMinimalStatus,
     selectedStepId: 'build',
     selectedTaskId: task.metadata.name,
@@ -370,6 +378,43 @@ export const LogsWithTimestampsAndLevels = {
     showLogTimestamps: true,
     taskRuns: [taskRun],
     tasks: [task]
+  },
+  render: args => {
+    const [, updateArgs] = useArgs();
+
+    return (
+      <PipelineRun
+        {...args}
+        getLogsToolbar={toolbarProps => (
+          <LogsToolbar
+            {...toolbarProps}
+            logLevels={args.logLevels}
+            onToggleLogLevel={level =>
+              updateArgs({ logLevels: { ...args.logLevels, ...level } })
+            }
+            onToggleShowTimestamps={showLogTimestamps =>
+              updateArgs({ showLogTimestamps })
+            }
+            showTimestamps={args.showLogTimestamps}
+          />
+        )}
+        handleTaskSelected={({
+          selectedStepId: stepId,
+          selectedTaskId: taskId
+        }) => {
+          updateArgs({ selectedStepId: stepId, selectedTaskId: taskId });
+        }}
+        onViewChange={selectedView => updateArgs({ view: selectedView })}
+        pipelineRun={pipelineRun}
+        taskRuns={[
+          taskRun,
+          taskRunWithWarning,
+          taskRunSkipped,
+          taskRunWithSkippedStep
+        ]}
+        tasks={[task]}
+      />
+    );
   }
 };
 

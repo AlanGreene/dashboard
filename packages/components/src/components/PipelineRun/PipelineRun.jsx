@@ -47,7 +47,7 @@ export default /* istanbul ignore next */ function PipelineRun({
   error,
   fetchLogs,
   forceLogPolling,
-  getLogsToolbar, // TODO: logs - change how this is used so we can provide the standard timestamps / log levels toggles to all consumers while still supporting custom toolbar items and custom action handlers for built-in actions
+  getLogsToolbar,
   handleTaskSelected = /* istanbul ignore next */ () => {},
   icon,
   loading,

@@ -37,11 +37,8 @@ import {
   useTitleSync
 } from '@tektoncd/dashboard-utils';
 
-import {
-  getLogsRetriever,
-  getLogsToolbar,
-  getViewChangeHandler
-} from '../../utils';
+import LogsToolbar from '../LogsToolbar';
+import { getLogsRetriever, getViewChangeHandler } from '../../utils';
 import {
   cancelTaskRun,
   deleteTaskRun,
@@ -199,19 +196,22 @@ export function TaskRunContainer({
           showLevels={showLogLevels}
           showTimestamps={showTimestamps}
           stepStatus={stepStatus}
-          toolbar={getLogsToolbar({
-            externalLogsURL,
-            isMaximized: isLogsMaximized,
-            isUsingExternalLogs,
-            logLevels: showLogLevels && logLevels,
-            onToggleLogLevel,
-            onToggleMaximized:
-              !!maximizedLogsContainer && onToggleLogsMaximized,
-            onToggleShowTimestamps,
-            showTimestamps,
-            stepStatus,
-            taskRun: run
-          })}
+          toolbar={
+            <LogsToolbar
+              externalLogsURL={externalLogsURL}
+              isMaximized={isLogsMaximized}
+              isUsingExternalLogs={isUsingExternalLogs}
+              logLevels={showLogLevels && logLevels}
+              onToggleLogLevel={onToggleLogLevel}
+              onToggleMaximized={
+                !!maximizedLogsContainer && onToggleLogsMaximized
+              }
+              onToggleShowTimestamps={onToggleShowTimestamps}
+              showTimestamps={showTimestamps}
+              stepStatus={stepStatus}
+              taskRun={run}
+            />
+          }
         />
       </LogsRoot>
     );
