@@ -1,0 +1,1 @@
+import{j as n}from"./jsx-runtime-Bzbk6Sx8.js";import{c as e}from"./index-CfoIBI3E.js";function o({className:s}){return n.jsx("span",{className:e("tkn--dot-spinner",s)})}o.__docgenInfo={description:"",methods:[],displayName:"Spinner"};export{o as S};

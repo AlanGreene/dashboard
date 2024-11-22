@@ -1,0 +1,1 @@
+import{S as e}from"./DotSpinner-DlxYwwxQ.js";import"./jsx-runtime-Bzbk6Sx8.js";import"./index-DoYbGmCh.js";import"./index-CfoIBI3E.js";const p={component:e,title:"DotSpinner"},r={};r.parameters={...r.parameters,docs:{...r.parameters?.docs,source:{originalSource:"{}",...r.parameters?.docs?.source}}};const n=["Default"];export{r as Default,n as __namedExportsOrder,p as default};
