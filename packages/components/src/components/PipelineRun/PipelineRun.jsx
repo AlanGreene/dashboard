@@ -12,7 +12,7 @@ limitations under the License.
 */
 
 import { Fragment, useState } from 'react';
-import { InlineNotification, SkeletonText } from '@carbon/react';
+import { InlineNotification, SkeletonText, TabsVertical } from '@carbon/react';
 import { useIntl } from 'react-intl';
 import {
   getErrorMessage,
@@ -27,6 +27,8 @@ import Portal from '../Portal';
 import RunHeader from '../RunHeader';
 import StepDetails from '../StepDetails';
 import TaskRunDetails from '../TaskRunDetails';
+import TaskRunTabPanels from '../TaskRunTabPanels';
+import TaskRunTabs from '../TaskRunTabs';
 import TaskTree from '../TaskTree';
 
 function getPipelineTask({ pipeline, pipelineRun, selectedTaskId, taskRun }) {
@@ -322,6 +324,12 @@ export default /* istanbul ignore next */ function PipelineRun({
     skipped => skipped.name === selectedTaskId
   );
 
+  const preTaskRun = {
+    content: 'agent log content…', // TOOD: content
+    icon: () => <span>icon…</span>, // TODO: icon
+    title: 'Agent setup' // TODO: title
+  };
+
   return (
     <>
       <RunHeader
@@ -337,42 +345,54 @@ export default /* istanbul ignore next */ function PipelineRun({
         {runActions}
       </RunHeader>
       {customNotification}
-      {taskRunsToUse.length > 0 && (
-        <div className="tkn--tasks">
-          <TaskTree
-            isSelectedTaskMatrix={!!pipelineTask?.matrix}
-            onRetryChange={onRetryChange}
-            onSelect={onTaskSelected}
-            selectedRetry={selectedRetry}
-            selectedStepId={selectedStepId}
-            selectedTaskId={selectedTaskId}
-            selectedTaskRunName={selectedTaskRunName}
-            skippedTasks={skippedTasks}
-            taskRuns={taskRunsToUse}
-          />
-          {(selectedStepId && (
-            <StepDetails
-              definition={definition}
-              logContainer={logContainer}
-              onViewChange={onViewChange}
-              skippedTask={skippedTask}
-              stepName={selectedStepId}
-              stepStatus={stepStatus}
-              taskRun={taskRun}
-              view={view}
+      {(taskRunsToUse.length > 0 || preTaskRun) && (
+        <>
+          <div className="tkn--tasks">
+            {/* TODO: */}
+            <TabsVertical _selectedIndex={0} onChange={() => {}}>
+              <TaskRunTabs preTaskRun={preTaskRun} taskRuns={taskRunsToUse} />
+              <TaskRunTabPanels
+                preTaskRun={preTaskRun}
+                taskRuns={taskRunsToUse}
+              />
+            </TabsVertical>
+          </div>
+          <div className="tkn--tasks">
+            <TaskTree
+              isSelectedTaskMatrix={!!pipelineTask?.matrix}
+              onRetryChange={onRetryChange}
+              onSelect={onTaskSelected}
+              selectedRetry={selectedRetry}
+              selectedStepId={selectedStepId}
+              selectedTaskId={selectedTaskId}
+              selectedTaskRunName={selectedTaskRunName}
+              skippedTasks={skippedTasks}
+              taskRuns={taskRunsToUse}
             />
-          )) ||
-            (selectedTaskId && (
-              <TaskRunDetails
+            {(selectedStepId && (
+              <StepDetails
+                definition={definition}
+                logContainer={logContainer}
                 onViewChange={onViewChange}
-                pod={pod}
                 skippedTask={skippedTask}
-                task={task}
+                stepName={selectedStepId}
+                stepStatus={stepStatus}
                 taskRun={taskRun}
                 view={view}
               />
-            ))}
-        </div>
+            )) ||
+              (selectedTaskId && (
+                <TaskRunDetails
+                  onViewChange={onViewChange}
+                  pod={pod}
+                  skippedTask={skippedTask}
+                  task={task}
+                  taskRun={taskRun}
+                  view={view}
+                />
+              ))}
+          </div>
+        </>
       )}
     </>
   );
