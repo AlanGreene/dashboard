@@ -11,10 +11,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { defineConfig, splitVendorChunkPlugin } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import svgr from 'vite-plugin-svgr';
 import yaml from '@rollup/plugin-yaml';
+import splitVendorChunkPlugin from './config_frontend/splitVendorChunkPlugin';
 
 const customAPIDomain = process.env.API_DOMAIN;
 
@@ -31,6 +32,20 @@ export default defineConfig(({ mode }) => ({
     assetsDir: '.',
     // Relative to the root
     outDir: 'cmd/dashboard/kodata',
+    // rollupOptions: {
+    //   output: {
+    //     manualChunks: (id, api) => viteManualChunks(id, api)
+    //   }
+    //   // output: {
+    //   //   manualChunks: id => {
+    //   //     if (id.includes('node_modules')) {
+    //   //       return 'vendor';
+    //   //     }
+
+    //   //     return null;
+    //   //   }
+    //   // }
+    // },
     target: 'es2022'
   },
   css: {
