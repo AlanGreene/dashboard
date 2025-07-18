@@ -47,7 +47,9 @@ spec:
         app: tekton-dashboard
     spec:
       serviceAccountName: tekton-dashboard
-      volumes: []
+      volumes:
+        - name: config
+          emptyDir: {}
       nodeSelector:
         kubernetes.io/os: linux
       containers:
@@ -81,3 +83,13 @@ spec:
             runAsNonRoot: true
             seccompProfile:
               type: RuntimeDefault
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx
+          # volumeMounts:
+          #   - name: nginx-logs
+          #     mountPath: /var/log/nginx
+          #   - name: nginx-cache
+          #     mountPath: /var/cache/nginx
+          #   - name: nginx-tmp
+          #     mountPath: /tmp
