@@ -43,7 +43,6 @@ function getPipelineTask({ pipeline, pipelineRun, selectedTaskId, taskRun }) {
 }
 
 export default /* istanbul ignore next */ function PipelineRun({
-  customNotification,
   description,
   displayRunHeader,
   duration,
@@ -64,6 +63,7 @@ export default /* istanbul ignore next */ function PipelineRun({
   pipelineRun,
   pod,
   pollingInterval,
+  preTaskRun,
   runActions,
   selectedRetry,
   selectedStepId = null,
@@ -189,40 +189,34 @@ export default /* istanbul ignore next */ function PipelineRun({
 
   if (error) {
     return (
-      <>
-        {customNotification}
-        <InlineNotification
-          kind="error"
-          hideCloseButton
-          lowContrast
-          title={intl.formatMessage({
-            id: 'dashboard.pipelineRun.error',
-            defaultMessage: 'Error loading PipelineRun'
-          })}
-          subtitle={getErrorMessage(error)}
-        />
-      </>
+      <InlineNotification
+        kind="error"
+        hideCloseButton
+        lowContrast
+        title={intl.formatMessage({
+          id: 'dashboard.pipelineRun.error',
+          defaultMessage: 'Error loading PipelineRun'
+        })}
+        subtitle={getErrorMessage(error)}
+      />
     );
   }
 
   if (!pipelineRun) {
     return (
-      <>
-        {customNotification}
-        <InlineNotification
-          kind="info"
-          hideCloseButton
-          lowContrast
-          title={intl.formatMessage({
-            id: 'dashboard.pipelineRun.failed',
-            defaultMessage: 'Cannot load PipelineRun'
-          })}
-          subtitle={intl.formatMessage({
-            id: 'dashboard.pipelineRun.notFound',
-            defaultMessage: 'PipelineRun not found'
-          })}
-        />
-      </>
+      <InlineNotification
+        kind="info"
+        hideCloseButton
+        lowContrast
+        title={intl.formatMessage({
+          id: 'dashboard.pipelineRun.failed',
+          defaultMessage: 'Cannot load PipelineRun'
+        })}
+        subtitle={intl.formatMessage({
+          id: 'dashboard.pipelineRun.notFound',
+          defaultMessage: 'PipelineRun not found'
+        })}
+      />
     );
   }
 
@@ -321,12 +315,6 @@ export default /* istanbul ignore next */ function PipelineRun({
     skipped => skipped.name === selectedTaskId
   );
 
-  const preTaskRun = {
-    content: 'agent log content…', // TOOD: content
-    icon: () => <span>icon…</span>, // TODO: icon
-    title: 'Agent setup' // TODO: title
-  };
-
   return (
     <>
       <RunHeader
@@ -349,12 +337,15 @@ export default /* istanbul ignore next */ function PipelineRun({
       >
         {runActions}
       </RunHeader>
-      {customNotification}
       {(taskRunsToUse.length > 0 || preTaskRun) && (
         <>
           <div className="tkn--tasks">
             {/* TODO: */}
-            <TabsVertical _selectedIndex={0} onChange={() => {}}>
+            <TabsVertical
+              defaultSelectedIndex={0}
+              _selectedIndex={0}
+              onChange={() => {}}
+            >
               <TaskRunTabs preTaskRun={preTaskRun} taskRuns={taskRunsToUse} />
               <TaskRunTabPanels
                 preTaskRun={preTaskRun}
