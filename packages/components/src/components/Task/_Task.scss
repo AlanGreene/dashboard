@@ -11,6 +11,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+@use '@carbon/react/scss/breakpoint' as *;
 @use '@carbon/react/scss/config' as *;
 @use '@carbon/react/scss/theme' as *;
 @use '@carbon/react/scss/type' as *;
@@ -204,4 +205,14 @@ limitations under the License.
   position: sticky;
   inset-block-start: var(--tkn-global-header-offset);
   max-block-size: calc(100vb - var(--tkn-global-header-offset));
+}
+
+@include breakpoint-up('max') {
+  .#{$prefix}--tabs.#{$prefix}--tabs--vertical.tkn--task-list {
+    grid-column: span 3;
+  }
+
+  .#{$prefix}--tabs--vertical.tkn--task-list ~ .#{$prefix}--tab-content {
+    grid-column: 4 / -1;
+  }
 }
