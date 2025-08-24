@@ -24,6 +24,7 @@ import {
   RunHeader,
   StepDetails,
   TaskRunDetails,
+  TaskRunTabPanels,
   TaskTree
 } from '@tektoncd/dashboard-components';
 import {
@@ -56,6 +57,7 @@ import NotFound from '../NotFound';
 import {
   getLogLevels,
   isLogTimestampsEnabled,
+  isPipelineRunTabLayoutEnabled,
   setLogLevels,
   setLogTimestampsEnabled
 } from '../../api/utils';
@@ -76,6 +78,25 @@ export function TaskRunContainer({
     isLogTimestampsEnabled()
   );
 
+  const { name, namespace: namespaceParam } = params;
+
+  const queryParams = new URLSearchParams(location.search);
+  let currentRetry = queryParams.get(RETRY);
+  if (!currentRetry || !/^[0-9]+$/.test(currentRetry)) {
+    // if retry param is specified it should contain a positive integer (or 0) only
+    // otherwise we'll default to the latest attempt
+    currentRetry = '';
+  }
+  const selectedStepId = queryParams.get(STEP);
+  const view = queryParams.get(VIEW);
+  const showTaskRunDetails = queryParams.get(TASK_RUN_DETAILS);
+
+  const [enableTabLayout] = useState(isPipelineRunTabLayoutEnabled());
+  const [isTaskRunMaximized, setIsTaskRunMaximized] = useState(false);
+  const [expandedSteps, setExpandedSteps] = useState(() =>
+    selectedStepId ? { [selectedStepId]: true } : {}
+  );
+
   function onToggleLogLevel(logLevel) {
     setLogLevelsState(levels => {
       const newLevels = { ...levels, ...logLevel };
@@ -89,18 +110,9 @@ export function TaskRunContainer({
     setLogTimestampsEnabled(show);
   }
 
-  const { name, namespace: namespaceParam } = params;
-
-  const queryParams = new URLSearchParams(location.search);
-  let currentRetry = queryParams.get(RETRY);
-  if (!currentRetry || !/^[0-9]+$/.test(currentRetry)) {
-    // if retry param is specified it should contain a positive integer (or 0) only
-    // otherwise we'll default to the latest attempt
-    currentRetry = '';
+  function onToggleTaskRunMaximized() {
+    setIsTaskRunMaximized(prevIsTaskRunMaximized => !prevIsTaskRunMaximized);
   }
-  const selectedStepId = queryParams.get(STEP);
-  const view = queryParams.get(VIEW);
-  const showTaskRunDetails = queryParams.get(TASK_RUN_DETAILS);
 
   const { selectedNamespace } = useSelectedNamespace();
   const namespace = namespaceParam || selectedNamespace;
@@ -192,7 +204,7 @@ export function TaskRunContainer({
           showLevels={showLogLevels}
           showTimestamps={showTimestamps}
           stepStatus={stepStatus}
-          toolbar={
+          toolbar={!enableTabLayout &&
             <LogsToolbar
               externalLogsURL={externalLogsURL}
               id={`${podName}-${stepName}-logs-toolbar`}
@@ -245,6 +257,28 @@ export function TaskRunContainer({
       navigate(browserURL, { replace: true });
     }
   }
+
+  function onStepSelected({
+    isOpen,
+    // selectedRetry: retry,
+    selectedStepId: stepId
+    // selectedTaskId: taskId,
+    // taskRunName
+  }) {
+    setExpandedSteps(currentExpandedSteps => ({
+      ...currentExpandedSteps,
+      [stepId]: isOpen
+    }));
+    if (isOpen) {
+      handleTaskSelected({
+        // selectedRetry: retry,
+        selectedStepId: stepId
+        // selectedTaskId: taskId,
+        // taskRunName
+      });
+    }
+  }
+
 
   function cancel() {
     cancelTaskRun({
@@ -447,7 +481,7 @@ export function TaskRunContainer({
     reason: taskRunStatusReason,
     message: taskRunStatusMessage,
     status: succeeded
-  } = getStatus(taskRunToUse);
+  } = getStatus(enableTabLayout ? taskRun : taskRunToUse);
 
   const logContainer = getLogContainer({
     stepName: selectedStepId,
@@ -460,8 +494,23 @@ export function TaskRunContainer({
   const runActions = taskRunActions();
 
   let podDetails;
-  if (!selectedStepId) {
+  if (!selectedStepId || enableTabLayout) {
     podDetails = (events || pod) && { events, resource: pod };
+  }
+
+  let duration;
+  if (taskRun.status) {
+    const createdTime = new Date(
+      // use the resource creation to include total time for all retries
+      taskRun.metadata.creationTimestamp
+    ).getTime();
+    // default to current time for end, will only update when there's a
+    // change to the task run resource so may not be 100% accurate but
+    // users have requested this so it's displayed as best-effort
+    const endTime = taskRun.status.completionTime
+      ? new Date(taskRun.status.completionTime).getTime()
+      : Date.now();
+    duration = endTime - createdTime;
   }
 
   return (
@@ -490,6 +539,7 @@ export function TaskRunContainer({
         />
       )}
       <RunHeader
+        duration={duration}
         namespace={namespace}
         resource={taskRun}
         lastTransitionTime={taskRun.status?.startTime}
@@ -503,34 +553,73 @@ export function TaskRunContainer({
         ) : null}
       </RunHeader>
       <div className="tkn--tasks">
-        <TaskTree
-          onRetryChange={handleRetryChange}
-          onSelect={handleTaskSelected}
-          selectedRetry={currentRetry}
-          selectedStepId={selectedStepId}
-          selectedTaskId={
-            taskRun.metadata.labels?.[labelConstants.PIPELINE_TASK]
-          }
-          taskRuns={[taskRun]}
-        />
-        {(selectedStepId && (
-          <StepDetails
-            definition={definition}
-            logContainer={logContainer}
-            onViewChange={onViewChange}
-            stepName={selectedStepId}
-            stepStatus={stepStatus}
-            taskRun={taskRunToUse}
-            view={view}
-          />
-        )) || (
-          <TaskRunDetails
+        {enableTabLayout ? (
+          <TaskRunTabPanels
+            expandedSteps={expandedSteps}
+            getLogContainer={getLogContainer}
+            getLogsToolbar={() => (
+              <LogsToolbar
+                // externalLogsURL={externalLogsURL}
+                id={`${podName}-${selectedStepId}-logs-toolbar`}
+                isMaximized={isLogsMaximized}
+                // isUsingExternalLogs={isUsingExternalLogs}
+                logLevels={showLogLevels && logLevels}
+                onToggleLogLevel={onToggleLogLevel}
+                onToggleMaximized={onToggleTaskRunMaximized}
+                onToggleShowTimestamps={onToggleShowTimestamps}
+                showTimestamps={showTimestamps}
+                // stepStatus={stepStatus}
+                taskRun={taskRun}
+              />
+            )}
+            isMaximized={isTaskRunMaximized}
+            onRetryChange={handleRetryChange}
+            onStepSelected={onStepSelected}
+            onToggleMaximized={onToggleTaskRunMaximized}
             onViewChange={onViewChange}
             pod={podDetails}
+            selectedIndex={1}
+            selectedRetry={currentRetry}
+            selectedStepId={selectedStepId}
+            TabPanel={Fragment}
+            TabPanels={Fragment}
             task={task}
             taskRun={taskRunToUse}
+            taskRuns={[taskRun]}
             view={view}
           />
+        ) : (
+          <>
+            <TaskTree
+              onRetryChange={handleRetryChange}
+              onSelect={handleTaskSelected}
+              selectedRetry={currentRetry}
+              selectedStepId={selectedStepId}
+              selectedTaskId={
+                taskRun.metadata.labels?.[labelConstants.PIPELINE_TASK]
+              }
+              taskRuns={[taskRun]}
+            />
+            {(selectedStepId && (
+              <StepDetails
+                definition={definition}
+                logContainer={logContainer}
+                onViewChange={onViewChange}
+                stepName={selectedStepId}
+                stepStatus={stepStatus}
+                taskRun={taskRunToUse}
+                view={view}
+              />
+            )) || (
+              <TaskRunDetails
+                onViewChange={onViewChange}
+                pod={podDetails}
+                task={task}
+                taskRun={taskRunToUse}
+                view={view}
+              />
+            )}
+          </>
         )}
       </div>
     </>
