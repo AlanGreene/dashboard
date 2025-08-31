@@ -14,7 +14,7 @@ limitations under the License.
 
 import { Component, createRef } from 'react';
 import { Button, PrefixContext, SkeletonText } from '@carbon/react';
-import { FixedSizeList as List } from 'react-window';
+import { List } from 'react-window';
 import { injectIntl, useIntl } from 'react-intl';
 import { getStepStatusReason, isRunning } from '@tektoncd/dashboard-utils';
 import { DownToBottom, Information, UpToTop } from '@carbon/react/icons';
@@ -426,22 +426,19 @@ export class LogContainer extends Component {
           totalLogLines={logs.length}
         />
         <List
-          height={height}
-          itemCount={parsedLogs.length}
-          itemData={parsedLogs}
-          itemSize={itemSize}
-          width="100%"
-        >
-          {({ data, index, style }) => (
-            <div style={style}>
-              <LogFormat
-                fields={{ level: showLevels, timestamp: showTimestamps }}
-                logs={[data[index]]}
-                onToggleGroup={this.onToggleGroup}
-              />
-            </div>
+          rowComponent={({ data, index, style }) => (
+            <LogFormat
+              fields={{ level: showLevels, timestamp: showTimestamps }}
+              logs={[data[index]]}
+              onToggleGroup={this.onToggleGroup}
+              style={style}
+            />
           )}
-        </List>
+          rowCount={parsedLogs.length}
+          rowProps={{ data: parsedLogs }}
+          rowHeight={itemSize}
+          style={{ height }}
+        />
       </>
     );
   };
