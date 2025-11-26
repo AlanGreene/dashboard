@@ -130,7 +130,7 @@ function getFormattedResources({
   }));
 }
 
-export function Pipelines() {
+function Pipelines() {
   const intl = useIntl();
   const location = useLocation();
   const params = useParams();

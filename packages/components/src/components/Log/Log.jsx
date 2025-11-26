@@ -79,7 +79,7 @@ function LogsFilteredNotification({ displayedLogLines, totalLogLines }) {
   );
 }
 
-export class LogContainer extends Component {
+class LogContainer extends Component {
   constructor(props) {
     super(props);
     this.state = { groupsExpanded: {}, loading: true, logs: [] };

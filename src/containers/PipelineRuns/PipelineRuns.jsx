@@ -51,7 +51,7 @@ import {
   useSelectedNamespace
 } from '../../api';
 
-export function PipelineRuns() {
+function PipelineRuns() {
   const intl = useIntl();
   const location = useLocation();
   const navigate = useNavigate();

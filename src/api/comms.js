@@ -137,7 +137,7 @@ export function post(uri, body) {
   });
 }
 
-export function put(uri, body) {
+function put(uri, body) {
   return request(uri, {
     method: 'PUT',
     headers: getHeaders(),

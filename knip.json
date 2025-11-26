@@ -1,0 +1,22 @@
+{
+  "cypress": {
+    "config": [
+      "packages/e2e/cypress.config.{js,ts,mjs,cjs}"
+    ],
+    "entry": [
+      "packages/e2e/cypress/e2e/**/*.cy.{js,jsx,ts,tsx}",
+      "packages/e2e/cypress/support/e2e.{js,jsx,ts,tsx}",
+      "packages/e2e/cypress/support/commands.{js,ts}",
+      "packages/e2e/cypress/support/component.{js,ts}",
+      "packages/e2e/cypress/plugins/index.js"
+    ]
+  },
+  "entry": ["index.{js,ts,jsx}", "src/index.{js,ts,jsx}"],
+  "project": ["**/*.{js,ts,jsx}"],
+  "vite": {
+    "config": [
+      "vite.config.{js,mjs,ts,cjs,mts,cts}",
+      "vite.config.*.{js,mjs,ts,cjs,mts,cts}"
+    ]
+  }
+}

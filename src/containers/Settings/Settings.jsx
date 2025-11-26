@@ -27,7 +27,7 @@ import {
   setPipelinesV1ResourcesEnabled
 } from '../../api/utils';
 
-export function Settings() {
+function Settings() {
   const intl = useIntl();
   useTitleSync({
     page: intl.formatMessage({

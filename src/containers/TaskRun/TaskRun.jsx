@@ -64,7 +64,7 @@ import {
 
 const { STEP, RETRY, TASK_RUN_DETAILS, VIEW } = queryParamConstants;
 
-export function TaskRunContainer({
+function TaskRunContainer({
   // we may consider customisation of the log format in future
   showLogLevels = true
 }) {

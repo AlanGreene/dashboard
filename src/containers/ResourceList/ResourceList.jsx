@@ -30,7 +30,7 @@ import {
   useTenantNamespaces
 } from '../../api';
 
-export function ResourceListContainer() {
+function ResourceListContainer() {
   const intl = useIntl();
   const location = useLocation();
 

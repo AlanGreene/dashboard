@@ -41,7 +41,7 @@ function ClickableTile(props) {
   );
 }
 
-export function About() {
+function About() {
   const intl = useIntl();
   const carbonPrefix = usePrefix();
   useTitleSync({

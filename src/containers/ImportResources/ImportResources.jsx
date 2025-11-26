@@ -66,7 +66,7 @@ const HelpIcon = ({ title }) => (
   </Tooltip>
 );
 
-export function ImportResources() {
+function ImportResources() {
   const intl = useIntl();
   const { selectedNamespace: navNamespace } = useSelectedNamespace();
   const tenantNamespaces = useTenantNamespaces();

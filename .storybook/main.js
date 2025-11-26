@@ -26,7 +26,7 @@ const config = {
     buildStoriesJson: true
   },
   framework: '@storybook/react-vite',
-  refs: (_config, { configType }) => {
+  refs: (_config, { configType } = { configType: 'DEVELOPMENT' }) => {
     if (configType === 'DEVELOPMENT') {
       return {
         carbon11: {
@@ -38,7 +38,7 @@ const config = {
     }
     return {};
   },
-  stories: (_config, { configType }) =>
+  stories: (_config, { configType } = { configType: 'DEVELOPMENT' }) =>
     [
       { directory: '.', files: 'Welcome.mdx' },
       configType === 'DEVELOPMENT'
@@ -59,7 +59,7 @@ const config = {
         titlePrefix: 'Experimental/Graph'
       }
     ].filter(Boolean),
-  async viteFinal(config, { _configType }) {
+  async viteFinal(config, { _configType } = { configType: 'DEVELOPMENT' }) {
     config.server.watch = {
       ignored: ['**/coverage/**']
     };

@@ -187,7 +187,7 @@ export function getViewChangeHandler({ location, navigate }) {
   };
 }
 
-export function formatLocale(locale) {
+function formatLocale(locale) {
   switch (locale) {
     case 'zh':
       return 'zh-Hans';
@@ -201,7 +201,7 @@ export function formatLocale(locale) {
   }
 }
 
-export function getSupportedLocale(requestedLocale, locales) {
+function getSupportedLocale(requestedLocale, locales) {
   let locale = formatLocale(requestedLocale);
   if (!locales.includes(locale)) {
     locale = formatLocale(locale.split('-')[0]);
