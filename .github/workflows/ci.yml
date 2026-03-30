@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     env:
-      GOPATH: ${{ github.workspace }}
+      # GOPATH: ${{ github.workspace }}
       GO111MODULE: ''
 
     steps:
@@ -134,16 +134,18 @@ jobs:
           node-version-file: src/github.com/tektoncd/dashboard/.nvmrc
           registry-url: 'https://registry.npmjs.org/'
 
+      - uses: ko-build/setup-ko@v0.8
+
       - name: Install dependencies
         working-directory: ./
         env:
           GO111MODULE: "on"
         run: |
-          echo '::group::install ko'
-          curl -L https://github.com/ko-build/ko/releases/download/v0.15.4/ko_0.15.4_Linux_x86_64.tar.gz | tar xzf - ko
-          chmod +x ./ko
-          sudo mv ko /usr/local/bin
-          echo '::endgroup::'
+          # echo '::group::install ko'
+          # curl -L https://github.com/ko-build/ko/releases/download/v0.15.4/ko_0.15.4_Linux_x86_64.tar.gz | tar xzf - ko
+          # chmod +x ./ko
+          # sudo mv ko /usr/local/bin
+          # echo '::endgroup::'
 
           echo '::group::install kind'
           go install sigs.k8s.io/kind@v0.27.0
