@@ -37,7 +37,9 @@ export default defineConfig(({ mode }) => ({
     devSourcemap: true,
     preprocessorOptions: {
       scss: {
-        quietDeps: true
+        api: 'modern',
+        quietDeps: true,
+        silenceDeprecations: ['mixed-decls']
       }
     }
   },
