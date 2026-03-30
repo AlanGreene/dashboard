@@ -84,11 +84,6 @@ body:has(.tkn--taskrun--maximized) {
 
 .#{$prefix}--header ~ {
   .#{$prefix}--content {
-    position: relative;
-    background-color: $background;
-    transform: none;
-    padding-block-start: $spacing-06;
-
     h1 {
       @include type-style('heading-04');
       margin-block-end: $spacing-06;
