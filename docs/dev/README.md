@@ -30,7 +30,7 @@ You will also need the following tools in order to build the Dashboard locally a
 1. [Node.js & npm](https://nodejs.org/): For building and running the frontend locally. See [`.nvmrc`](/.nvmrc) for version, or run `nvm use`
 1. [`ko`](https://github.com/google/ko): For building the backend locally. `ko` version v0.15.x
 1. [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl/): For interacting with your kube cluster
-1. [`kustomize`](https://kubectl.docs.kubernetes.io/installation/kustomize/): For building the Dashboard manifests. v5.3.0 is known to work
+1. [`kustomize`](https://kubectl.docs.kubernetes.io/installation/kustomize/): For building the Dashboard manifests. v5.3.0 is known to work # TODO: test with v5.4.2
 
 ## Checkout your fork
 
