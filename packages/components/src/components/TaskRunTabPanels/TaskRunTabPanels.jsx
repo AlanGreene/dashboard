@@ -288,6 +288,7 @@ function Logs({
         {intl.formatMessage({
           id: 'dashboard.taskRun.logs.skipped',
           defaultMessage:
+            // TODO: 'Steps did not run as the task was skipped…'
             'This step did not run as the task was skipped. See status for more details.'
         })}
       </span>
