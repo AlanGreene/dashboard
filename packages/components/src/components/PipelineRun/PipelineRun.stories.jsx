@@ -231,7 +231,6 @@ const pipelineRunWithMinimalStatus = {
 
 export default {
   args: {
-    enableTabLayout: false,
     selectedRetry: '',
     selectedStepId: undefined,
     selectedTaskId: undefined,

@@ -45,11 +45,9 @@ limitations under the License.
 @use '@tektoncd/dashboard-components/src/components/Spinner/Spinner';
 @use '@tektoncd/dashboard-components/src/components/StatusIcon/StatusIcon';
 @use '@tektoncd/dashboard-components/src/components/Step/Step';
-@use '@tektoncd/dashboard-components/src/components/StepDetails/StepDetails';
 @use '@tektoncd/dashboard-components/src/components/Table/Table';
 @use '@tektoncd/dashboard-components/src/components/Task/Task';
 @use '@tektoncd/dashboard-components/src/components/TaskRunDetails/TaskRunDetails';
-@use '@tektoncd/dashboard-components/src/components/TaskTree/TaskTree';
 @use '@tektoncd/dashboard-components/src/components/Trigger/Trigger';
 @use '@tektoncd/dashboard-components/src/components/ViewYAML/ViewYAML';
 

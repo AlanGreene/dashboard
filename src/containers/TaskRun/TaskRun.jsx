@@ -22,18 +22,12 @@ import {
   Log,
   Portal,
   RunHeader,
-  StepDetails,
-  TaskRunDetails,
-  TaskRunTabPanels,
-  TaskTree
+  TaskRunTabPanels
 } from '@tektoncd/dashboard-components';
 import {
   getStatus,
-  getStepDefinition,
-  getStepStatus,
   isPending,
   isRunning,
-  labels as labelConstants,
   queryParams as queryParamConstants,
   urls,
   useTitleSync
@@ -59,7 +53,6 @@ import NotFound from '../NotFound';
 import {
   getLogLevels,
   isLogTimestampsEnabled,
-  isPipelineRunTabLayoutEnabled,
   setLogLevels,
   setLogTimestampsEnabled
 } from '../../api/utils';
@@ -93,7 +86,6 @@ export function TaskRunContainer({
   const view = queryParams.get(VIEW);
   const showTaskRunDetails = queryParams.get(TASK_RUN_DETAILS);
 
-  const [enableTabLayout] = useState(isPipelineRunTabLayoutEnabled());
   const [isTaskRunMaximized, setIsTaskRunMaximized] = useState(false);
   const [expandedSteps, setExpandedSteps] = useState(() =>
     selectedStepId ? { [selectedStepId]: true } : {}
@@ -120,9 +112,8 @@ export function TaskRunContainer({
   const namespace = namespaceParam || selectedNamespace;
 
   const maximizedLogsContainer = useRef();
-  const [isLogsMaximized, setIsLogsMaximized] = useState(false);
+  const [isLogsMaximized] = useState(false);
   const [showNotification, setShowNotification] = useState(null);
-  const [isUsingExternalLogs, setIsUsingExternalLogs] = useState(false);
 
   const externalLogsURL = useExternalLogsURL();
   const isLogStreamingEnabled = useIsLogStreamingEnabled();
@@ -171,10 +162,6 @@ export function TaskRunContainer({
     { enabled: !!podName && view === 'pod' }
   );
 
-  function onToggleLogsMaximized() {
-    setIsLogsMaximized(state => !state);
-  }
-
   function getLogContainer({ stepName, stepStatus, taskRun: run }) {
     if ((!selectedStepId && !stepName) || !stepStatus) {
       return null;
@@ -182,8 +169,7 @@ export function TaskRunContainer({
 
     const logsRetriever = getLogsRetriever({
       externalLogsURL,
-      isLogStreamingEnabled,
-      onFallback: setIsUsingExternalLogs
+      isLogStreamingEnabled
     });
 
     const LogsRoot = isLogsMaximized ? Portal : Fragment;
@@ -206,25 +192,7 @@ export function TaskRunContainer({
           showLevels={showLogLevels}
           showTimestamps={showTimestamps}
           stepStatus={stepStatus}
-          toolbar={
-            !enableTabLayout && (
-              <LogsToolbar
-                externalLogsURL={externalLogsURL}
-                id={`${podName}-${stepName}-logs-toolbar`}
-                isMaximized={isLogsMaximized}
-                isUsingExternalLogs={isUsingExternalLogs}
-                logLevels={showLogLevels && logLevels}
-                onToggleLogLevel={onToggleLogLevel}
-                onToggleMaximized={
-                  !!maximizedLogsContainer && onToggleLogsMaximized
-                }
-                onToggleShowTimestamps={onToggleShowTimestamps}
-                showTimestamps={showTimestamps}
-                stepStatus={stepStatus}
-                taskRun={run}
-              />
-            )
-          }
+          toolbar={null}
         />
       </LogsRoot>
     );
@@ -477,41 +445,17 @@ export function TaskRunContainer({
     };
   }
 
-  const definition =
-    !enableTabLayout &&
-    getStepDefinition({
-      selectedStepId,
-      task,
-      taskRun: taskRunToUse
-    });
-
-  const stepStatus = getStepStatus({
-    selectedStepId,
-    taskRun: taskRunToUse
-  });
-
   const {
     reason: taskRunStatusReason,
     message: taskRunStatusMessage,
     status: succeeded
-  } = getStatus(enableTabLayout ? taskRun : taskRunToUse);
-
-  const logContainer =
-    !enableTabLayout &&
-    getLogContainer({
-      stepName: selectedStepId,
-      stepStatus,
-      taskRun: taskRunToUse
-    });
+  } = getStatus(taskRun);
 
   const onViewChange = getViewChangeHandler({ location, navigate });
 
   const runActions = taskRunActions();
 
-  let podDetails;
-  if (!selectedStepId || enableTabLayout) {
-    podDetails = (events || pod) && { events, resource: pod };
-  }
+  const podDetails = (events || pod) && { events, resource: pod };
 
   let duration;
   if (taskRun.status) {
@@ -568,71 +512,37 @@ export function TaskRunContainer({
         ) : null}
       </RunHeader>
       <div className="tkn--tasks">
-        {enableTabLayout ? (
-          <TaskRunTabPanels
-            expandedSteps={expandedSteps}
-            getLogContainer={getLogContainer}
-            getLogsToolbar={() => (
-              <LogsToolbar
-                id={`${podName}-${selectedStepId}-logs-toolbar`}
-                isMaximized={isLogsMaximized}
-                logLevels={showLogLevels && logLevels}
-                onToggleLogLevel={onToggleLogLevel}
-                onToggleMaximized={onToggleTaskRunMaximized}
-                onToggleShowTimestamps={onToggleShowTimestamps}
-                showTimestamps={showTimestamps}
-                taskRun={taskRun}
-              />
-            )}
-            isMaximized={isTaskRunMaximized}
-            onRetryChange={handleRetryChange}
-            onStepSelected={onStepSelected}
-            onToggleMaximized={onToggleTaskRunMaximized}
-            onViewChange={onViewChange}
-            pod={podDetails}
-            selectedIndex={1}
-            selectedRetry={currentRetry}
-            selectedStepId={selectedStepId}
-            TabPanel={Fragment}
-            TabPanels={Fragment}
-            task={task}
-            taskRun={taskRunToUse}
-            taskRuns={[taskRun]}
-            view={view}
-          />
-        ) : (
-          <>
-            <TaskTree
-              onRetryChange={handleRetryChange}
-              onSelect={handleTaskSelected}
-              selectedRetry={currentRetry}
-              selectedStepId={selectedStepId}
-              selectedTaskId={
-                taskRun.metadata.labels?.[labelConstants.PIPELINE_TASK]
-              }
-              taskRuns={[taskRun]}
+        <TaskRunTabPanels
+          expandedSteps={expandedSteps}
+          getLogContainer={getLogContainer}
+          getLogsToolbar={() => (
+            <LogsToolbar
+              id={`${podName}-${selectedStepId}-logs-toolbar`}
+              isMaximized={isLogsMaximized}
+              logLevels={showLogLevels && logLevels}
+              onToggleLogLevel={onToggleLogLevel}
+              onToggleMaximized={onToggleTaskRunMaximized}
+              onToggleShowTimestamps={onToggleShowTimestamps}
+              showTimestamps={showTimestamps}
+              taskRun={taskRun}
             />
-            {(selectedStepId && (
-              <StepDetails
-                definition={definition}
-                logContainer={logContainer}
-                onViewChange={onViewChange}
-                stepName={selectedStepId}
-                stepStatus={stepStatus}
-                taskRun={taskRunToUse}
-                view={view}
-              />
-            )) || (
-              <TaskRunDetails
-                onViewChange={onViewChange}
-                pod={podDetails}
-                task={task}
-                taskRun={taskRunToUse}
-                view={view}
-              />
-            )}
-          </>
-        )}
+          )}
+          isMaximized={isTaskRunMaximized}
+          onRetryChange={handleRetryChange}
+          onStepSelected={onStepSelected}
+          onToggleMaximized={onToggleTaskRunMaximized}
+          onViewChange={onViewChange}
+          pod={podDetails}
+          selectedIndex={1}
+          selectedRetry={currentRetry}
+          selectedStepId={selectedStepId}
+          TabPanel={Fragment}
+          TabPanels={Fragment}
+          task={task}
+          taskRun={taskRunToUse}
+          taskRuns={[taskRun]}
+          view={view}
+        />
       </div>
     </>
   );

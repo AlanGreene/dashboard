@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2025 The Tekton Authors
+Copyright 2019-2026 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -34,15 +34,49 @@ const pipelineRun = {
   spec: {}
 };
 
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
 it('PipelineRunContainer renders data', async () => {
   vi.spyOn(PipelineRunsAPI, 'usePipelineRun').mockImplementation(() => ({
     data: pipelineRun
   }));
   vi.spyOn(TaskRunsAPI, 'useTaskRuns').mockImplementation(() => ({ data: [] }));
   vi.spyOn(TasksAPI, 'useTasks').mockImplementation(() => ({ data: [] }));
+  vi.spyOn(PipelinesAPI, 'usePipeline').mockImplementation(() => ({
+    data: null,
+    isLoading: false
+  }));
 
   const { getByText } = renderWithRouter(<PipelineRunContainer intl={intl} />);
   await waitFor(() => getByText(pipelineRun.metadata.name));
+});
+
+it('PipelineRunContainer disables log auto-scroll for the always-on tab layout', async () => {
+  const pipelineRunWithSpec = {
+    metadata: {
+      name: 'pipeline-run'
+    },
+    spec: {
+      pipelineRef: {
+        name: 'pipeline'
+      }
+    }
+  };
+
+  vi.spyOn(PipelineRunsAPI, 'usePipelineRun').mockImplementation(() => ({
+    data: pipelineRunWithSpec
+  }));
+  vi.spyOn(TaskRunsAPI, 'useTaskRuns').mockImplementation(() => ({ data: [] }));
+  vi.spyOn(TasksAPI, 'useTasks').mockImplementation(() => ({ data: [] }));
+  vi.spyOn(PipelinesAPI, 'usePipeline').mockImplementation(() => ({
+    data: null,
+    isLoading: false
+  }));
+
+  const { container } = renderWithRouter(<PipelineRunContainer intl={intl} />);
+  await waitFor(() => expect(container.textContent).toContain('pipeline-run'));
 });
 
 it('PipelineRunContainer renders not found state', async () => {
