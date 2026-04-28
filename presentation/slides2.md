@@ -16,11 +16,11 @@ background: '#0f172a'
   <img
     src="https://github.com/tektoncd/dashboard/raw/main/docs/tekton-dashboard-color.svg"
     alt="Tekton Dashboard logo"
-    class="w-36 h-36"
+    class="w-64 h-64"
   />
   <div>
-    <h1 class="text-5xl font-bold text-white tracking-tight">Tekton Dashboard</h1>
-    <p class="text-2xl text-blue-300 mt-2 font-light">Contributor &amp; maintainer onboarding</p>
+    <!-- <h1 class="text-5xl font-bold text-white tracking-tight">Tekton Dashboard</h1> -->
+    <p class="text-2xl text-blue-300- mt-2 font-light">Contributor &amp; maintainer onboarding</p>
   </div>
   <p class="text-slate-400 text-base mt-4">
     github.com/tektoncd/dashboard
@@ -454,24 +454,23 @@ Speaker notes:
 -->
 
 ---
-layout: center
+layout: cover
 background: '#0f172a'
 ---
 
-<div class="flex flex-col items-center justify-center h-full gap-6 text-center">
+# Demo & code tour 🗺️
 
-<div class="text-6xl">🗺️</div>
+Let's see the Dashboard in action and walk through the codebase
 
-<div>
-  <h1 class="text-4xl font-bold text-white tracking-tight">Demo & code tour</h1>
-  <p class="text-xl text-blue-300 mt-2 font-light">Let's see the Dashboard in action and walk through the codebase</p>
-</div>
+<img
+  src="https://github.com/tektoncd/dashboard/raw/main/docs/tekton-dashboard-color.svg"
+  alt="Tekton Dashboard logo"
+  class="w-48 h-48 mt-16 mb-32 m-auto"
+/>
 
-<div class="mt-8 text-blue-300 text-lg">
+<div class="text-blue-300 text-lg absolute bottom-4">
 
 **Up next in this series →** Codebase deep dive: frontend patterns, backend API & Kubernetes integration, CI/release process
-
-</div>
 
 </div>
 
@@ -624,7 +623,7 @@ Speaker notes:
 -->
 
 ---
-layout: center
+layout: cover
 background: '#0f172a'
 ---
 
