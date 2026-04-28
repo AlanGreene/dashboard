@@ -16,11 +16,11 @@ background: '#0f172a'
   <img
     src="https://github.com/tektoncd/dashboard/raw/main/docs/tekton-dashboard-color.svg"
     alt="Tekton Dashboard logo"
-    class="w-36 h-36"
+    class="w-64 h-64"
   />
   <div>
-    <h1 class="text-5xl font-bold text-white tracking-tight">Tekton Dashboard</h1>
-    <p class="text-2xl text-blue-300 mt-2 font-light">Contributor &amp; maintainer onboarding</p>
+    <!-- <h1 class="text-5xl font-bold text-white tracking-tight">Tekton Dashboard</h1> -->
+    <p class="text-2xl text-blue-300- mt-2 font-light">Contributor &amp; maintainer onboarding</p>
   </div>
   <p class="text-slate-400 text-base mt-4">
     github.com/tektoncd/dashboard
@@ -398,18 +398,19 @@ layout: two-cols
 - a Kubernetes cluster — `kind` works great
 - see docs for more
 
-<br>
-
 ```bash
-# 1. Clone and install frontend deps
+# 1. Clone repo and install frontend deps
 git clone https://github.com/tektoncd/dashboard
 npm install
 
-# 2. Set up a local cluster with Tekton
-#    and the Dashboard already installed
+# 2. Set up local cluster with Tekton services installed
 ./scripts/prepare-kind-cluster create
 
-# 3. Start the frontend dev server
+# 3. Expose the Dashboard service
+kubectl --namespace tekton-pipelines port-forward \
+  svc/tekton-dashboard 9097:9097
+
+# 4. Start the frontend dev server
 #    (hot-reloads; proxies to local cluster)
 npm start
 ```
@@ -454,24 +455,23 @@ Speaker notes:
 -->
 
 ---
-layout: center
+layout: cover
 background: '#0f172a'
 ---
 
-<div class="flex flex-col items-center justify-center h-full gap-6 text-center">
+# Demo & code tour 🗺️
 
-<div class="text-6xl">🗺️</div>
+Let's see the Dashboard in action and walk through the codebase
 
-<div>
-  <h1 class="text-4xl font-bold text-white tracking-tight">Demo & code tour</h1>
-  <p class="text-xl text-blue-300 mt-2 font-light">Let's see the Dashboard in action and walk through the codebase</p>
-</div>
+<img
+  src="https://github.com/tektoncd/dashboard/raw/main/docs/tekton-dashboard-color.svg"
+  alt="Tekton Dashboard logo"
+  class="w-48 h-48 mt-16 mb-32 m-auto"
+/>
 
-<div class="mt-8 text-blue-300 text-lg">
+<div class="text-blue-300 text-lg absolute bottom-4">
 
 **Up next in this series →** Codebase deep dive: frontend patterns, backend API & Kubernetes integration, CI/release process
-
-</div>
 
 </div>
 
@@ -624,7 +624,7 @@ Speaker notes:
 -->
 
 ---
-layout: center
+layout: cover
 background: '#0f172a'
 ---
 
