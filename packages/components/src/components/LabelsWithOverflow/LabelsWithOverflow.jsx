@@ -25,8 +25,11 @@ import { urls } from '@tektoncd/dashboard-utils';
 import Link from '../Link';
 
 export default function LabelsWithOverflow({
+  group,
+  kind,
   namespace,
   resource,
+  version,
   LinkComponent = Link
 }) {
   const intl = useIntl();
@@ -74,18 +77,25 @@ export default function LabelsWithOverflow({
       value.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const getPipelineRunsByPipelineURL = ({ label, name }) =>
-    urls.pipelineRuns.labels({ namespace, label, name, resourceType });
+  const getResourcesByLabel = ({ label, value }) =>
+    urls.resources.byLabel({
+      group,
+      kind,
+      namespace,
+      label,
+      resourceType: `${resourceType[0].toLowerCase() + resourceType.slice(1)}s`,
+      value,
+      version
+    });
 
   const renderLabelLink = allLabels =>
     allLabels.map(([key, value]) => (
       <LinkComponent
         className={`${carbonPrefix}--tag ${carbonPrefix}--tag__label`}
         key={key}
-        to={getPipelineRunsByPipelineURL({
-          namespace,
+        to={getResourcesByLabel({
           label: key,
-          name: value
+          value
         })}
         title={`${key}: ${value}`}
       >

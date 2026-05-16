@@ -1,5 +1,5 @@
 /*
-Copyright 2020-2025 The Tekton Authors
+Copyright 2020-2026 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -20,12 +20,12 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  Tabs,
-  Tag
+  Tabs
 } from '@carbon/react';
 import { formatLabels, getErrorMessage } from '@tektoncd/dashboard-utils';
 
 import FormattedDate from '../FormattedDate';
+import LabelsWithOverflow from '../LabelsWithOverflow';
 import ViewYAML from '../ViewYAML';
 
 const tabs = ['overview', 'yaml'];
@@ -39,9 +39,12 @@ const ResourceDetails = ({
   additionalMetadata = null,
   children = null,
   error = null,
+  group,
+  kind,
   loading,
   onViewChange = defaults.onViewChange,
   resource: originalResource = null,
+  version,
   view = null
 }) => {
   const intl = useIntl();
@@ -147,16 +150,20 @@ const ResourceDetails = ({
                         defaultMessage: 'Labels:'
                       })}
                     </span>
-                    {formattedLabels.length === 0
-                      ? intl.formatMessage({
-                          id: 'dashboard.metadata.none',
-                          defaultMessage: 'None'
-                        })
-                      : formattedLabels.map(label => (
-                          <Tag key={label} size="sm" type="blue">
-                            {label}
-                          </Tag>
-                        ))}
+                    {formattedLabels.length === 0 ? (
+                      intl.formatMessage({
+                        id: 'dashboard.metadata.none',
+                        defaultMessage: 'None'
+                      })
+                    ) : (
+                      <LabelsWithOverflow
+                        group={group}
+                        kind={kind}
+                        namespace={resource.metadata.namespace}
+                        resource={resource}
+                        version={version}
+                      />
+                    )}
                   </li>
                   {resource.metadata.namespace && (
                     <li>

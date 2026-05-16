@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2025 The Tekton Authors
+Copyright 2019-2026 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -206,30 +206,50 @@ const reducer = target =>
 
 const urls = reducer(paths);
 
-function filteredURL({ baseURL, label, name }) {
-  const labelSelector = `${label}=${name}`;
+function filteredURL({ baseURL, label, value }) {
+  const labelSelector = `${label}=${value}`;
   const searchParams = new URLSearchParams({ labelSelector }).toString();
   return `${baseURL}?${searchParams}`;
 }
 
-urls.pipelineRuns.labels = ({ namespace, label, name, resourceType }) => {
-  let baseURL;
-  if (resourceType === 'PipelineRun') {
-    baseURL = urls.pipelineRuns.byNamespace({ namespace });
-  } else if (resourceType === 'TaskRun') {
-    baseURL = urls.taskRuns.byNamespace({ namespace });
+urls.resources = {
+  byLabel: ({
+    group,
+    kind,
+    namespace,
+    label,
+    resourceType,
+    value,
+    version
+  }) => {
+    let baseURLFunction;
+    if (namespace) {
+      baseURLFunction =
+        urls[resourceType]?.byNamespace || urls.kubernetesResources.byNamespace;
+    } else {
+      baseURLFunction = urls[resourceType]?.all || urls.kubernetesResources.all;
+    }
+    const baseURL = baseURLFunction({ group, kind, namespace, version });
+    return filteredURL({ baseURL, label, value });
   }
-  return filteredURL({ baseURL, label, name });
 };
 
-urls.pipelineRuns.byPipeline = ({ namespace, pipelineName: name }) => {
-  const baseURL = urls.pipelineRuns.byNamespace({ namespace });
-  return filteredURL({ baseURL, label: labels.PIPELINE, name });
+urls.pipelineRuns.byPipeline = ({ namespace, pipelineName: value }) => {
+  return urls.resources.byLabel({
+    namespace,
+    label: labels.PIPELINE,
+    resourceType: 'pipelineRuns',
+    value
+  });
 };
 
-urls.taskRuns.byTask = ({ namespace, taskName: name }) => {
-  const baseURL = urls.taskRuns.byNamespace({ namespace });
-  return filteredURL({ baseURL, label: labels.TASK, name });
+urls.taskRuns.byTask = ({ namespace, taskName: value }) => {
+  return urls.resources.byLabel({
+    namespace,
+    label: labels.TASK,
+    resourceType: 'taskRuns',
+    value
+  });
 };
 
 export { urls };
