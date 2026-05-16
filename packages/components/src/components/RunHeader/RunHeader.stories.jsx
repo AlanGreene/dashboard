@@ -17,6 +17,8 @@ import RunHeader from './RunHeader';
 const now = new Date();
 
 const pipelineRun = {
+  apiVersion: 'tekton.dev/v1',
+  kind: 'PipelineRun',
   metadata: {
     labels: {
       'tekton.dev/pipeline': 'ci-pipeline',
@@ -95,6 +97,8 @@ export const WithLabelOverflow = {
   args: {
     ...WithDuration.args,
     resource: {
+      apiVersion: 'tekton.dev/v1',
+      kind: 'TaskRun',
       metadata: {
         labels: {
           'app.kubernetes.io/managed-by': 'tekton-pipelines',

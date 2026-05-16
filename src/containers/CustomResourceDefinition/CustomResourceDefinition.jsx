@@ -57,9 +57,12 @@ function CustomResourceDefinition() {
   return (
     <ResourceDetails
       error={error}
+      group={group}
+      kind={kind}
       loading={isFetching}
       onViewChange={getViewChangeHandler({ location, navigate })}
       resource={data}
+      version={version}
       view={view}
     />
   );

@@ -12,6 +12,7 @@ limitations under the License.
 */
 
 import { useArgs } from 'storybook/preview-api';
+import { withRouter } from 'storybook-addon-remix-react-router';
 
 import ResourceDetails from '.';
 
@@ -39,6 +40,7 @@ const resource = {
 
 export default {
   component: ResourceDetails,
+  decorators: [withRouter()],
   title: 'ResourceDetails'
 };
 

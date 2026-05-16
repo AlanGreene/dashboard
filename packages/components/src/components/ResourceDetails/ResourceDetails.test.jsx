@@ -1,5 +1,5 @@
 /*
-Copyright 2020-2024 The Tekton Authors
+Copyright 2020-2026 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -12,7 +12,7 @@ limitations under the License.
 */
 
 import { fireEvent, waitFor } from '@testing-library/react';
-import { render } from '../../utils/test';
+import { renderWithRouter as render } from '../../utils/test';
 import ResourceDetails from './ResourceDetails';
 
 describe('ResourceDetails', () => {
@@ -49,11 +49,13 @@ describe('ResourceDetails', () => {
   });
 
   it('renders custom content', () => {
+    const kind = 'CustomRun';
     const labelKey = 'fake_label-key';
     const labelValue = 'fake_label-value';
     const name = 'fake_name';
     const namespace = 'fake_namespace';
     const resource = {
+      kind,
       metadata: {
         labels: {
           [labelKey]: labelValue
@@ -68,6 +70,7 @@ describe('ResourceDetails', () => {
 
     const { queryByText } = render(
       <ResourceDetails
+        namespace={namespace}
         resource={resource}
         additionalMetadata={additionalMetadata}
       >
