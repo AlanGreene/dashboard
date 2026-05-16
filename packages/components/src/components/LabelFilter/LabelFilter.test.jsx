@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2024 The Tekton Authors
+Copyright 2019-2026 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -87,10 +87,11 @@ it('LabelFilter handles adding a duplicate filter', async () => {
 it('LabelFilter handles deleting a filter', () => {
   const filter = 'tekton.dev/pipeline=demo-pipeline';
   const handleDeleteFilter = vi.fn();
-  const { getByText } = render(
+  const { getByLabelText, queryByText } = render(
     <LabelFilter filters={[filter]} handleDeleteFilter={handleDeleteFilter} />
   );
-  fireEvent.click(getByText(filter.replace('=', ':')));
+  expect(queryByText(filter.replace('=', ':'))).toBeTruthy();
+  fireEvent.click(getByLabelText('Remove this label filter'));
   expect(handleDeleteFilter).toHaveBeenCalledWith(filter);
 });
 

@@ -13,7 +13,7 @@ limitations under the License.
 
 import { Component } from 'react';
 import { injectIntl } from 'react-intl';
-import { Button, Form, Link, Search, Tag } from '@carbon/react';
+import { Button, DismissibleTag, Form, Link, Search } from '@carbon/react';
 import ActionableNotification from '../ActionableNotification';
 
 function arrayUnique(arr) {
@@ -120,6 +120,10 @@ class LabelFilter extends Component {
       id: 'dashboard.labelFilter.searchPlaceholder',
       defaultMessage: 'Input a label filter of the format labelKey:labelValue'
     });
+    const dismissTooltip = intl.formatMessage({
+      id: 'dashboard.labelFilter.dismiss',
+      defaultMessage: 'Remove this label filter'
+    });
 
     return (
       <div className="tkn--label-filter">
@@ -152,15 +156,14 @@ class LabelFilter extends Component {
         </Form>
         <div className="tkn--filters">
           {filters.map(filter => (
-            <Tag
-              filter
+            <DismissibleTag
+              dismissTooltipLabel={dismissTooltip}
               key={filter}
-              onClick={() => this.props.handleDeleteFilter(filter)}
               onClose={() => this.props.handleDeleteFilter(filter)}
+              text={filter.replace(/=/g, ':')}
+              title={dismissTooltip}
               type="high-contrast"
-            >
-              {filter.replace(/=/g, ':')}
-            </Tag>
+            />
           ))}
           {filters.length > 0 && (
             <Button

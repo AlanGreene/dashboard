@@ -10,6 +10,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+/* istanbul ignore next */
 
 import { useState } from 'react';
 import { InlineNotification, SkeletonText, TabsVertical } from '@carbon/react';
@@ -40,8 +41,6 @@ export default /* istanbul ignore next */ function PipelineRun({
   description,
   displayRunHeader,
   duration,
-  enableLogAutoScroll,
-  enableLogScrollButtons,
   error,
   fetchLogs,
   forceLogPolling,
@@ -109,8 +108,6 @@ export default /* istanbul ignore next */ function PipelineRun({
 
     return (
       <Log
-        enableLogAutoScroll={enableLogAutoScroll}
-        enableLogScrollButtons={enableLogScrollButtons}
         fetchLogs={() => fetchLogs({ stepName, stepStatus, taskRun })}
         forcePolling={forceLogPolling}
         isSidecar={isSidecar}
