@@ -24,6 +24,27 @@ import './LabelsWithOverflow.scss';
 import { urls } from '@tektoncd/dashboard-utils';
 import Link from '../Link';
 
+function LabelLinks({ labels, LinkComponent, namespace, resourceType }) {
+  const carbonPrefix = usePrefix();
+  const getPipelineRunsByPipelineURL = ({ label, name }) =>
+    urls.pipelineRuns.labels({ namespace, label, name, resourceType });
+
+  return labels.map(([key, value]) => (
+    <LinkComponent
+      className={`${carbonPrefix}--tag ${carbonPrefix}--tag__label`}
+      key={key}
+      to={getPipelineRunsByPipelineURL({
+        namespace,
+        label: key,
+        name: value
+      })}
+      title={`${key}: ${value}`}
+    >
+      {`${key}: ${value}`}
+    </LinkComponent>
+  ));
+}
+
 export default function LabelsWithOverflow({
   namespace,
   resource,
@@ -74,25 +95,6 @@ export default function LabelsWithOverflow({
       value.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const getPipelineRunsByPipelineURL = ({ label, name }) =>
-    urls.pipelineRuns.labels({ namespace, label, name, resourceType });
-
-  const renderLabelLink = allLabels =>
-    allLabels.map(([key, value]) => (
-      <LinkComponent
-        className={`${carbonPrefix}--tag ${carbonPrefix}--tag__label`}
-        key={key}
-        to={getPipelineRunsByPipelineURL({
-          namespace,
-          label: key,
-          name: value
-        })}
-        title={`${key}: ${value}`}
-      >
-        {`${key}: ${value}`}
-      </LinkComponent>
-    ));
-
   /* istanbul ignore next */
   const handleFocusOut = event => {
     if (
@@ -112,7 +114,12 @@ export default function LabelsWithOverflow({
 
   return (
     <div className="tkn--overflow-menu-container">
-      {renderLabelLink(visibleLabels)}
+      <LabelLinks
+        labels={visibleLabels}
+        LinkComponent={LinkComponent}
+        namespace={namespace}
+        resourceType={resourceType}
+      />
       {totalHiddenLabels > 0 && (
         <div className="tkn--tag-popover-container">
           <Popover
@@ -141,7 +148,12 @@ export default function LabelsWithOverflow({
                   padding: '0.5rem'
                 }}
               >
-                {renderLabelLink(overflowLabels)}
+                <LabelLinks
+                  labels={overflowLabels}
+                  LinkComponent={LinkComponent}
+                  namespace={namespace}
+                  resourceType={resourceType}
+                />
                 {remainingLabels.length > 0 && (
                   <button
                     type="button"
@@ -184,7 +196,14 @@ export default function LabelsWithOverflow({
             value={searchQuery}
             onChange={handleSearchChange}
           />
-          <div className="tkn--tag-list">{renderLabelLink(filteredLabels)}</div>
+          <div className="tkn--tag-list">
+            <LabelLinks
+              labels={filteredLabels}
+              LinkComponent={LinkComponent}
+              namespace={namespace}
+              resourceType={resourceType}
+            />
+          </div>
         </Modal>
       )}
     </div>

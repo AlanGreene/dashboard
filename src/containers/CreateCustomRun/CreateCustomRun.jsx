@@ -1,5 +1,5 @@
 /*
-Copyright 2023-2025 The Tekton Authors
+Copyright 2023-2026 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -73,14 +73,14 @@ function CreateCustomRun() {
   }
 
   const externalCustomRunName = getCustomRunName();
+  const { data: customRunObject, isPending } = useCustomRun(
+    {
+      name: externalCustomRunName,
+      namespace: getNamespace()
+    },
+    { disableWebSocket: true, enabled: !!externalCustomRunName }
+  );
   if (externalCustomRunName) {
-    const { data: customRunObject, isPending } = useCustomRun(
-      {
-        name: externalCustomRunName,
-        namespace: getNamespace()
-      },
-      { disableWebSocket: true }
-    );
     let payloadYaml = null;
     if (customRunObject) {
       const { payload } = generateNewCustomRunPayload({

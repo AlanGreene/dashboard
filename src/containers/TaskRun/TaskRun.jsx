@@ -68,8 +68,8 @@ export function TaskRunContainer({
   const navigate = useNavigate();
   const params = useParams();
 
-  const [logLevels, setLogLevelsState] = useState(getLogLevels());
-  const [showTimestamps, setShowTimestamps] = useState(
+  const [logLevels, setLogLevelsState] = useState(() => getLogLevels());
+  const [showTimestamps, setShowTimestamps] = useState(() =>
     isLogTimestampsEnabled()
   );
 

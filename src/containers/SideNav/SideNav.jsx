@@ -215,6 +215,7 @@ function SideNav({ expanded, showKubernetesResources = false }) {
                 return (
                   <SideNavMenuItem
                     {...getMenuItemProps(to)}
+                    // react-doctor-disable-next-line react-doctor/jsx-key
                     key={name}
                     title={displayName}
                   >

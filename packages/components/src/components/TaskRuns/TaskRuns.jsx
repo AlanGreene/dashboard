@@ -27,8 +27,10 @@ import Link from '../Link';
 import StatusIcon from '../StatusIcon';
 import Table from '../Table';
 
+const defaultBatchActionButtons = [];
+
 const TaskRuns = ({
-  batchActionButtons = [],
+  batchActionButtons = defaultBatchActionButtons,
   filters,
   getRunActions = () => [],
   getTaskRunsDisplayName = ({ taskRunMetadata }) => taskRunMetadata.name,

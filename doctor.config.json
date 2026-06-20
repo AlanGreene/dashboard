@@ -1,0 +1,16 @@
+{
+  "$schema": "https://react.doctor/schema/config.json",
+  "ignore": {
+    "files": ["cmd/dashboard/kodata/**", "packages/graph/**"]
+  },
+  "rules": {
+    "react-doctor/no-barrel-import": "off",
+    "react-doctor/plugin-update-trust-risk": "off",
+    "react-doctor/rendering-hydration-mismatch-time": "off",
+    "react-doctor/rules-of-hooks": "off"
+  },
+  "projects": ["@tektoncd/dashboard", "@tektoncd/dashboard-components"],
+  "scope": "full",
+  "share": false,
+  "verbose": true
+}

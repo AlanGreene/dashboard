@@ -41,6 +41,7 @@ export default function DataTableSkeleton({
   const columnsArray = Array.from({ length: columnCount }, (_, index) => index);
   for (let i = 0; i < rowCount; i += 1) {
     rows[i] = (
+      // react-doctor-disable-next-line react-doctor/no-array-index-as-key
       <tr key={i}>
         {columnsArray.map(j => (
           <td key={j}>

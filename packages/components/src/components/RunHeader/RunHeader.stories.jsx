@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2025 The Tekton Authors
+Copyright 2019-2026 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -85,6 +85,7 @@ export const WithTriggerInfo = {
     ...Complete.args,
     triggerHeader: (
       <span>
+        {/* react-doctor-disable-next-line react-doctor/anchor-is-valid */}
         Triggered by <a href="#">Update README.md</a>
       </span>
     )

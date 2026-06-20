@@ -20,11 +20,13 @@ import {
 import TaskRunDetails from '../TaskRunDetails';
 import TaskRunLogs from '../TaskRunLogs';
 
+const defaultIgnoredSidecars = {};
+
 const TaskRunTabPanels = ({
   expandedSteps,
   getLogContainer,
   getLogsToolbar,
-  ignoredSidecars = {},
+  ignoredSidecars = defaultIgnoredSidecars,
   isMaximized,
   onRetryChange,
   onStepSelected,

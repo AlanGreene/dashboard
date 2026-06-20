@@ -259,6 +259,7 @@ const Table = ({
                       header.header ? (
                         <TableHeader
                           {...getHeaderProps({ header })}
+                          // react-doctor-disable-next-line react-doctor/jsx-key
                           key={header.key}
                         >
                           {header.header}
@@ -282,6 +283,7 @@ const Table = ({
                     </TableRow>
                   )}
                   {rows.map(row => (
+                    // react-doctor-disable-next-line react-doctor/jsx-key
                     <TableRow {...getRowProps({ row })} key={row.id}>
                       {shouldRenderBatchActions && (
                         <TableSelectRow {...getSelectionProps({ row })} />

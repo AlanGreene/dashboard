@@ -21,11 +21,13 @@ import { getErrorMessage } from '@tektoncd/dashboard-utils';
 
 import LabelFilter from '../LabelFilter';
 
+const defaultResources = [];
+
 export const ListPageLayout = ({
   children,
   error,
   filters,
-  resources = [],
+  resources = defaultResources,
   title
 }) => {
   const intl = useIntl();

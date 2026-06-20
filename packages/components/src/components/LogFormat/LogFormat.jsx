@@ -1,5 +1,5 @@
 /*
-Copyright 2020-2025 The Tekton Authors
+Copyright 2020-2026 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -24,6 +24,8 @@ const linkifyIt = LinkifyIt().tlds(tlds);
 // eslint-disable-next-line no-control-regex
 const ansiRegex = /^\u001b([@-_])(.*?)([@-~])/;
 const characterRegex = /[^]/m;
+
+const defaultEmptyLogs = [];
 
 const getDecoratedLevel = level => {
   if (!level) {
@@ -99,7 +101,7 @@ const linkify = (str, styleObj, classNameString) => {
 
 const LogFormat = ({
   fields = { message: true },
-  logs = [],
+  logs = defaultEmptyLogs,
   onToggleGroup
 }) => {
   let properties = {
@@ -267,6 +269,7 @@ const LogFormat = ({
       timestamp
     } = log;
     if (!message?.length && !timestamp && !level) {
+      // react-doctor-disable-next-line react-doctor/no-array-index-as-key
       return <br key={index} />;
     }
     let offset = 0;
@@ -303,6 +306,7 @@ const LogFormat = ({
           'tkn--log-line--group': command === 'group',
           'tkn--log-line--in-group': command !== 'group' && groupIndex !== null
         })}
+        // react-doctor-disable-next-line react-doctor/no-array-index-as-key
         key={index}
       >
         {fields.timestamp && (

@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2025 The Tekton Authors
+Copyright 2019-2026 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -18,6 +18,8 @@ import { dashboardReasonSkipped, getStatus } from '@tektoncd/dashboard-utils';
 import FormattedDuration from '../FormattedDuration';
 import StatusIcon from '../StatusIcon';
 
+const defaultEmptyTaskRun = {};
+
 export default function DetailsHeader({
   children,
   displayName,
@@ -26,7 +28,7 @@ export default function DetailsHeader({
   reason,
   stepStatus,
   status,
-  taskRun = {},
+  taskRun = defaultEmptyTaskRun,
   type = 'step'
 }) {
   const intl = useIntl();

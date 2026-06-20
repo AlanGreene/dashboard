@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2025 The Tekton Authors
+Copyright 2019-2026 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -38,10 +38,16 @@ function getDefaultPipelineRunStatusDetail(pipelineRun) {
   );
 }
 
+const defaults = {
+  batchActionButtons: [],
+  columns: ['run', 'status', 'pipeline', 'time'],
+  customColumns: {}
+};
+
 const PipelineRuns = ({
-  batchActionButtons = [],
-  columns = ['run', 'status', 'pipeline', 'time'],
-  customColumns = {},
+  batchActionButtons = defaults.batchActionButtons,
+  columns = defaults.columns,
+  customColumns = defaults.customColumns,
   filters,
   getPipelineRunCreatedTime = pipelineRun =>
     pipelineRun.metadata.creationTimestamp,
@@ -276,7 +282,7 @@ const PipelineRuns = ({
           </div>
         </div>
       ),
-      actions: pipelineRunActions.length && (
+      actions: pipelineRunActions.length > 0 && (
         <Actions items={pipelineRunActions} resource={pipelineRun} />
       ),
       ...getCustomColumnValues(pipelineRun)

@@ -1,5 +1,5 @@
 /*
-Copyright 2021-2025 The Tekton Authors
+Copyright 2021-2026 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -24,7 +24,9 @@ const smallConfig = { offset: 1, span: 2 };
 const mediumConfig = { offset: 2, span: 4 };
 const largeConfig = { offset: 5, span: 6 };
 
-function NotFound({ suggestions = [] }) {
+const defaultSuggestions = [];
+
+function NotFound({ suggestions = defaultSuggestions }) {
   const intl = useIntl();
   const { selectedNamespace: namespace } = useSelectedNamespace();
 

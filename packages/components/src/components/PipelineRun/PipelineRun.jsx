@@ -25,6 +25,8 @@ import RunHeader from '../RunHeader';
 import TaskRunTabPanels from '../TaskRunTabPanels';
 import TaskRunTabs from '../TaskRunTabs';
 
+const defaultIgnoredSidecars = {};
+
 function getPipelineTask({ pipeline, pipelineRun, selectedTaskId, taskRun }) {
   const memberOf = taskRun?.metadata?.labels?.[labelConstants.MEMBER_OF];
   const pipelineTask = (
@@ -47,7 +49,7 @@ export default /* istanbul ignore next */ function PipelineRun({
   getStepLogToolbar,
   handlePipelineRunInfo = () => {},
   handleTaskSelected = /* istanbul ignore next */ () => {},
-  ignoredSidecars = {},
+  ignoredSidecars = defaultIgnoredSidecars,
   loading,
   logLevels,
   onRetryChange,
