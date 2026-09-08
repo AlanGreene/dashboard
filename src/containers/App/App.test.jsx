@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2024 The Tekton Authors
+Copyright 2019-2026 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -11,10 +11,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { fireEvent, waitFor } from '@testing-library/react';
+import {
+  fireEvent,
+  waitFor,
+  waitForElementToBeRemoved
+} from '@testing-library/react';
 
 import { App } from './App';
-import { render } from '../../utils/test';
+import { renderWithRouter } from '../../utils/test';
 import * as API from '../../api';
 import * as PipelinesAPI from '../../api/pipelines';
 
@@ -31,21 +35,23 @@ describe('App', () => {
 
   it('renders successfully in full cluster mode', async () => {
     vi.spyOn(API, 'useTenantNamespaces').mockImplementation(() => []);
-    const { findAllByText, queryAllByText, queryByText } = render(
-      <App lang="en" />
-    );
+    const { debug, findAllByText, queryAllByText, queryByText } =
+      renderWithRouter(<App lang="en" />);
 
     await waitFor(() => queryByText('Tekton resources'));
+    await waitForElementToBeRemoved(() =>
+      queryAllByText('Loading configuration…')
+    );
     await findAllByText('PipelineRuns');
     fireEvent.click(queryAllByText('PipelineRuns')[0]);
-
+    debug();
     expect(queryByText('Pipelines')).toBeTruthy();
     expect(queryByText('Tasks')).toBeTruthy();
   });
 
   it('renders successfully in tenant namespace mode', async () => {
     vi.spyOn(API, 'useTenantNamespaces').mockImplementation(() => ['fake']);
-    const { findAllByText, queryAllByText, queryByText } = render(
+    const { findAllByText, queryAllByText, queryByText } = renderWithRouter(
       <App lang="en" />
     );
 
@@ -59,7 +65,7 @@ describe('App', () => {
 
   it('does not call namespaces API in tenant namespace mode', async () => {
     vi.spyOn(API, 'useTenantNamespaces').mockImplementation(() => ['fake']);
-    const { queryByText } = render(<App lang="en" />);
+    const { queryByText } = renderWithRouter(<App lang="en" />);
 
     await waitFor(() => queryByText('Tekton resources'));
     expect(API.useNamespaces).toHaveBeenCalledWith(
@@ -69,7 +75,7 @@ describe('App', () => {
 
   it('calls namespaces API in full cluster mode', async () => {
     vi.spyOn(API, 'useTenantNamespaces').mockImplementation(() => []);
-    const { queryByText } = render(<App lang="en" />);
+    const { queryByText } = renderWithRouter(<App lang="en" />);
 
     await waitFor(() => queryByText('Tekton resources'));
     await waitFor(() =>

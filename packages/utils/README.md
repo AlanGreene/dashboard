@@ -18,7 +18,7 @@ instead:
 yarn add @tektoncd/dashboard-utils
 ```
 
-You will also need to install `react-router-dom@5`.
+You will also need to install `react-router@7`.
 
 ## Usage
 
